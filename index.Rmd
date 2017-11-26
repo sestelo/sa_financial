@@ -6,7 +6,7 @@ date: "27-28 /11/2017, v1.0"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: [/Users/Sestelo/Dropbox/bib_tex/bibliografia.bib,/Users/Sestelo/Dropbox/bib_tex/bib_condsurv.bib]
+bibliography: [bib/bibliografia.bib,bib/bib_condsurv.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
