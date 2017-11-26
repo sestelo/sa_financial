@@ -2,7 +2,7 @@ Package: sa_financial
 Title: sa_financial
 Version: 0.0.1
 Authors@R: person("Marta", "Sestelo", role = c("aut", "cre"), email = "sestelo@uvigo.es")
-Description: A short course on survival analysis applied to the financial field
+Description: A short course on survival analysis applied to the financial field.
 Depends:
     R (>= 3.1.0),
     ggplot2,
