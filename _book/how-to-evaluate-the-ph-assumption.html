@@ -14,7 +14,7 @@
   
   
   <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="sestelo/sa_financial" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
@@ -184,62 +184,63 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="how-to-evaluate-the-ph-assumption" class="section level2">
 <h2><span class="header-section-number">3.6</span> How to evaluate the PH assumption?</h2>
-<p>Now we are going to illustrate two methods to evaluate the proportional hazards assumptions: one graphical approach and one goodness-of-fit test. Recall that the Hazard Ratio that compares two specifications of the covariates (defined as <span class="math inline">\(\textbf{X}^*\)</span> and <span class="math inline">\(\textbf{X}\)</span>) can be expressed as</p>
+<p>Now we are going to illustrate two methods to evaluate the proportional hazards assumptions: one <strong>graphical approach</strong> and one <strong>goodness-of-fit test</strong>. Recall that the Hazard Ratio that compares two specifications of the covariates (defined as <span class="math inline">\(\textbf{X}^*\)</span> and <span class="math inline">\(\textbf{X}\)</span>) can be expressed as</p>
 <p><span class="math display">\[
 HR = \exp(\sum_{j=1}^p \beta_j (X_j^* - X_j)) 
 \]</span> where <span class="math inline">\(\textbf{X}^*=(X_1^*, X_2^*, \ldots, X_j^*)\)</span> and <span class="math inline">\(\textbf{X}=(X_1, X_2, \ldots, X_j)\)</span>, and proportionally of hazards assumption indicates that this quantity is constant over time. Equivalently, this means that the hazard for one individual is proportional to the hazard for any other individual, where the proportionality constant is independent of time.</p>
 
 <div class="rmdhint_sestelo">
 <p><strong>Think about this…</strong></p>
-It is important to note that if the graph of the hazards cross for two or more categories of a predictor of interest, the PH assumption is not met. However, althought the hazard functions do not cross, it is possible that the PH assumption is not met. Thus, rather than checking for crossing hazards, we need to use other apporaches.
+It is important to note that if the graph of the <strong>hazards cross</strong> for two or more categories of a predictor of interest, the <strong>PH assumption is not met</strong>. However, althought the hazard functions do not cross, it is possible that the PH assumption is not met. Thus, rather than checking for crossing hazards, we need to use other apporaches.
 </div>
 
 <div id="graphical-approach" class="section level3">
 <h3><span class="header-section-number">3.6.1</span> Graphical approach</h3>
-<p>The most popular graphical techniques for evaluating the PH assumption involves comparing estimated <strong>–ln(–ln) survivor curves</strong> over different (combinations of) categories of variables being investigated.</p>
+<p>The most popular graphical techniques for evaluating the PH assumption involves comparing estimated <strong>–ln(–ln) survival curves</strong> over different (combinations of) categories of variables being investigated.</p>
 <p>A log–log survival curve is simply a transformation of an estimated survival curve that results from taking the natural log of an estimated survival probability twice.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
 <p>As we said, the hazard function can be rewritten as <span class="math display">\[
 S(t|\textbf X) = \bigg[ S_0(t) \bigg]^{e^{\sum_{j=1}^p \beta_j X_j}}
 \]</span> and once we applied the -ln(-ln), the expression can be rewritten as <span class="math display">\[
--\ln \bigg[-\ln S(t|\textbf X) \bigg] =  - \sum_{j=1}^p \beta_j X_j - \ln  \bigg[-\ln S_0(t|\textbf X) \bigg]  
+-\ln \bigg[-\ln S(t|\textbf X) \bigg] =  - \sum_{j=1}^p \beta_j X_j - \ln  \bigg[-\ln S_0(t|\textbf X) \bigg].  
 \]</span></p>
 <p>Now, considering two different specifications of the covariates, corresponding to two different individuals, <span class="math inline">\(\textbf X_1\)</span> and <span class="math inline">\(\textbf X_2\)</span>, and subtracting the second log–log curve from the first yields the expression</p>
 <p><span class="math display">\[
 -\ln \bigg[-\ln S(t|\textbf X_1) \bigg] = -\ln \bigg[-\ln S(t|\textbf X_2) \bigg] + \sum_{j=1}^p \beta_j (X_{1j} - X_{2j}) 
 \]</span></p>
 <p>This expression indicates that if we use a Cox model (well-used) and plot the estimated log-log survival curves for individuals on the same graph, the two plots would be approximately parallel. The distance between the two curves is the linear expression involving the differences in predictor values, which does not involve time.</p>
-<p>Note that there is an important problem associated with this approach, that is, how to decide “how parallel is parallel?”. This fact can be subjective, thus the proposal is to be conservative for this decision by assuming the PH assumption is satisfied unless there is strong evidence of nonparallelism of the log–log curves.</p>
-<p>Now we are going to check the proportinal hazards assumption for the variable <code>clinic</code>. This can be done by plotting <strong>log-log Kaplan Meier survival estimates</strong> against time (or against the log of time) and evaluating whether the curves are reasonably parallel.</p>
+<p>Note that there is an <strong>important problem</strong> associated with this approach, that is, <strong>how to decide</strong> “how parallel is parallel?”. This fact can be subjective, thus the proposal is to be conservative for this decision by assuming the PH assumption is satisfied unless there is strong evidence of nonparallelism of the log–log curves.</p>
+<p>Now we are going to check the proportinal hazards assumption for the variable <code>IsBorrowerHomeowner</code>. This can be done by plotting <strong>log-log Kaplan Meier survival estimates</strong> against time (or against the log of time) and evaluating whether the curves are reasonably parallel.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">km_home &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>IsBorrowerHomeowner, <span class="dt">data =</span> loan_filtered)
-<span class="co">#autoplot(km_clinic) # just to see the km curves</span>
+<span class="co">#autoplot(km_home) # just to see the km curves</span>
 
 <span class="kw">plot</span>(km_home, <span class="dt">fun =</span> <span class="st">&quot;cloglog&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days) using log&quot;</span>,
      <span class="dt">ylab =</span> <span class="st">&quot;log-log survival&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;log-log curves by clinic&quot;</span>) </code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another option</span>
 <span class="kw">ggsurvplot</span>(km_home, <span class="dt">fun =</span> <span class="st">&quot;cloglog&quot;</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
-<p>It seems that the proportional hazards assumption is violated as the log-log survival curves are not parallel.</p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p>It seems that <strong>the proportional hazards assumption is violated</strong> as the log-log survival curves are not parallel.</p>
+<p><br></p>
 <p>Another graphical option could be to use the <strong>Schoenfeld residuals</strong> to examine model fit and detect outlying covariate values. Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggcoxdiagnostics</span>(m2, <span class="dt">type =</span> <span class="st">&quot;schoenfeld&quot;</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another option</span>
 zph &lt;-<span class="st"> </span><span class="kw">cox.zph</span>(m2)
 <span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))
 <span class="kw">plot</span>(zph, <span class="dt">var =</span> <span class="dv">1</span>)
 <span class="kw">plot</span>(zph, <span class="dt">var =</span> <span class="dv">2</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
 </div>
 <div id="goodness-of-fit-test" class="section level3">
 <h3><span class="header-section-number">3.6.2</span> Goodness-of-fit test</h3>
-<p>A second approach for assessing the PH assumption involves goodness-of-fit (GOF) tests. To this end, different test have been proposed in the literature <span class="citation">(Grambsch and Therneau <a href="#ref-1568a5d7e9974c31be97c0ff34c233a7">1994</a>)</span>. We focuss in the <span class="citation">Harrell (<a href="#ref-Harrell86">1986</a>)</span>, a variation of a test originally proposed by <span class="citation">Schoenfeld (<a href="#ref-doi:10.1093/biomet/69.1.239">1982</a>)</span>. This is a test of correlation between the Schoenfeld residuals and survival time. A correlation of zero indicates that the model met the proportional hazards assumption (the null hypothesis).</p>
+<p>A second approach for assessing the PH assumption involves <strong>goodness-of-fit (GOF) tests</strong>. To this end, different test have been proposed in the literature <span class="citation">(Grambsch and Therneau <a href="#ref-1568a5d7e9974c31be97c0ff34c233a7">1994</a>)</span>. We focuss in the <span class="citation">Harrell (<a href="#ref-Harrell86">1986</a>)</span>, a variation of a test originally proposed by <span class="citation">Schoenfeld (<a href="#ref-doi:10.1093/biomet/69.1.239">1982</a>)</span>. This is a test of <strong>correlation between the Schoenfeld residuals and survival time</strong>. A correlation of zero indicates that the model met the proportional hazards assumption (the null hypothesis).</p>
 <p>This can be applied by means of the <code>cox.zph</code> function of the <code>survival</code> package.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cox.zph</span>(m2)
 ##                           rho chisq        p
 ## LoanOriginalAmount2     0.130  27.1 1.96e-07
 ## IsBorrowerHomeownerTrue 0.103  14.0 1.81e-04
 ## GLOBAL                     NA  49.3 1.96e-11</code></pre></div>
-<p>It seems again that the proportional hazards assumption is not satisfied for the variable <code>clinic</code> (as we saw with the log-log survival curves).</p>
+<p>It seems again that the proportional hazards assumption is not satisfied (as we saw with the log-log survival curves).</p>
 </div>
 </div>
 <h3>References</h3>
@@ -295,7 +296,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04_cox_model.Rmd",
+"link": "https://github.com/sestelo/sa_financial/edit/master/04_cox_model.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub"],

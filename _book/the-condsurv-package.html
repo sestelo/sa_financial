@@ -14,7 +14,7 @@
   
   
   <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="sestelo/sa_financial" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
@@ -259,17 +259,17 @@ kmw4 &lt;-<span class="st"> </span><span class="kw">survCOND</span>(<span class=
 ##  1095 0.2165459    0.1024390    0.3146710</code></pre></div>
 <p>Similarly, one can obtain the results for the landmark methods (<code>LDM</code> and <code>PLDM</code>) using the same function <code>survCOND</code>. The unsmoothed landmark estimator is obtained using argument <code>method = &quot;LDM&quot;</code> whereas for obtaining the presmoothed landmark estimator the argument <code>presmooth = TRUE</code> is also required.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(kmw3, <span class="dt">confcol =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (days)&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;S(y|365)&quot;</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>One important goal is to obtain estimates for the above estimated quantities (conditional survival probabilities) conditionally on current or past covariate measures. The current version of the package allow the inclusion of a single covariate.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">grade &lt;-<span class="st"> </span><span class="kw">survCOND</span>(<span class="kw">survCS</span>(rectime, censrec, survtime, censdead) <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(grade),
                   <span class="dt">x =</span> <span class="dv">365</span>, <span class="dt">data =</span> gbcsCS, <span class="dt">method =</span> <span class="st">&quot;LDM&quot;</span>, <span class="dt">conf =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(grade)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
 <p>Finally, the package also allow the user to estimate the conditional survival given a continuous covariate (i.e., objects of class ‘integer’ or ‘numeric’). For example, estimates and plot for the conditional survival for women aged 60 years, <span class="math inline">\(S(y|x,Z=z)=P(T&gt;y|T_1&gt;x, age=60)\)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">age &lt;-<span class="st"> </span><span class="kw">survCOND</span>(<span class="kw">survCS</span>(rectime, censrec, survtime, censdead) <span class="op">~</span><span class="st"> </span>age, <span class="dt">x =</span> <span class="dv">365</span>, 
                 <span class="dt">z.value =</span> <span class="dv">60</span>, <span class="dt">data =</span> gbcsCS, <span class="dt">conf =</span> <span class="ot">FALSE</span>)
 <span class="kw">plot</span>(age)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 
 <div class="rmdhint_sestelo">
 The <strong>inclusion of continuous covariates</strong> can be computationally demanding. In particular, the use of bootstrap resampling techniques are time-consuming processes because it is necessary to estimate the model a great number of times.
@@ -326,7 +326,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-condsurv.Rmd",
+"link": "https://github.com/sestelo/sa_financial/edit/master/06-condsurv.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub"],

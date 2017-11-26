@@ -10,7 +10,7 @@ bookdown::gitbook:
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     edit:
-      link: https://github.com/rstudio/bookdown-demo/edit/master/%s
+      link: https://github.com/sestelo/sa_financial/edit/master/%s
       text: "Edit"
     download: ["pdf", "epub"]
 
@@ -20,7 +20,15 @@ bookdown::pdf_book:
   latex_engine: xelatex
   citation_package: natbib
   keep_tex: yes
+  
 bookdown::epub_book: default
+stylesheet: css/style.css
+
+bookdown::html_chapters:
+  css: [css/style.css, css/toc.css]
+
+
+
 
 
 

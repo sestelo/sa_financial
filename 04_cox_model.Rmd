@@ -526,7 +526,7 @@ The [`rpart`](https://cran.r-project.org/web/packages/rpart/index.html) package 
 Additionally, the new package [`ranger`](https://cran.r-project.org/web/packages/ranger/index.html) [@Wright:2017aa] is a fast implementation of the Random Forests algorithm for building ensembles of classification and regression trees, working also with survival data. Since `ranger()` uses standard `Surv survival objects, it’s an ideal tool for getting acquainted with survival analysis in this machine-learning age.
 
 
-Under construction...
+Under construction!
 
 
 

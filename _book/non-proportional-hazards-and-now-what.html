@@ -14,7 +14,7 @@
   
   
   <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="sestelo/sa_financial" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
@@ -193,10 +193,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="an-example-stratified-proportional-hazards-models" class="section level3">
 <h3><span class="header-section-number">3.7.1</span> An example… Stratified Proportional Hazards Models</h3>
 <p>Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to stratify taking this variable into account and use the proportional hazards model in each stratum for the other covariates. We include in the model predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.</p>
-<p>Now, the subjects in the <span class="math inline">\(z\)</span>-th stratum have an arbitrary baseline hazard function $h_{0z}(t) and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum as</p>
+<p>Now, the subjects in the <span class="math inline">\(z\)</span>-th stratum have an arbitrary baseline hazard function <span class="math inline">\(h_{0z}(t)\)</span> and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum.</p>
 <p>In the Stratified Proportional Hazards Model the regression coefficients are assumed to be the same for each stratum although the baseline hazard functions may be different and completely unrelated.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">coxph</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>LoanOriginalAmount2  <span class="op">+</span><span class="st"> </span><span class="kw">strata</span>(IsBorrowerHomeowner), 
-            <span class="dt">data =</span> loan_filtered) 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">coxph</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>LoanOriginalAmount2  <span class="op">+</span>
+<span class="st">              </span><span class="kw">strata</span>(IsBorrowerHomeowner), <span class="dt">data =</span> loan_filtered) 
 <span class="kw">summary</span>(m3)
 ## Call:
 ## coxph(formula = Surv(time, status) ~ LoanOriginalAmount2 + strata(IsBorrowerHomeowner), 
@@ -219,7 +219,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Score (logrank) test = 3.22  on 1 df,   p=0.07255</code></pre></div>
 <p>You can see that the output is similar to previous model without stratification however, in this case, we do not have information about the hazard ratio of the stratification variable, <code>IsBorrowerHomeowner</code>. This variable is not really in the model. In any case, you can plot it…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsurvplot</span>(<span class="kw">survfit</span>(m3), <span class="dt">data =</span> loan_filtered, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+
+<div class="rmdexercise_sestelo">
+Check the proportional hazard assumption of the Cox PH model estimated in your dataset.
+</div>
+
 </div>
 </div>
             </section>
@@ -257,7 +262,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04_cox_model.Rmd",
+"link": "https://github.com/sestelo/sa_financial/edit/master/04_cox_model.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub"],

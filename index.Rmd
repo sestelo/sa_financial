@@ -9,7 +9,7 @@ documentclass: book
 bibliography: [bib/bibliografia.bib,bib/bib_condsurv.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: rstudio/bookdown-demo
+github-repo: sestelo/sa_financial
 description: "This is a short course on survival analysis applied to the financial field."
 ---
 

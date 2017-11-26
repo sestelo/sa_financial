@@ -1,6 +1,5 @@
-# A short course on Survival Analysis in the Financial Industry
+# A short course on Survival Analysis applied to the Financial Industry
 
-[![Travis-CI Build Status](https://travis-ci.org/)](https://travis-ci.org/)
 [![License](https://img.shields.io/badge/license-CC_BY--NC--SA_4.0-blue.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
 

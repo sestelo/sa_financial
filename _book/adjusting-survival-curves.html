@@ -14,7 +14,7 @@
   
   
   <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta name="github-repo" content="sestelo/sa_financial" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
@@ -208,11 +208,17 @@ fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(m2, <span clas
 survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(fit)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># easier... without refitting</span>
-<span class="kw">ggcoxadjustedcurves</span>(m2, <span class="dt">data =</span> loan_filtered, <span class="dt">variable =</span> loan_filtered<span class="op">$</span>IsBorrowerHomeowner)</code></pre></div>
+<span class="kw">ggcoxadjustedcurves</span>(m2, <span class="dt">data =</span> loan_filtered, 
+                    <span class="dt">variable =</span> loan_filtered<span class="op">$</span>IsBorrowerHomeowner)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 
 <div class="rmdhint_sestelo">
 For some help with the <code>survminer</code> package… Download the cheatsheet <a href="http://www.sthda.com/english/rpkgs/survminer/survminer_cheatsheet.pdf">here</a>.
+</div>
+
+
+<div class="rmdexercise_sestelo">
+Try to estimate a Cox PH model using your dataset.
 </div>
 
 </div>
@@ -251,7 +257,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04_cox_model.Rmd",
+"link": "https://github.com/sestelo/sa_financial/edit/master/04_cox_model.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.pdf", "bookdown.epub"],
