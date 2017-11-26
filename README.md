@@ -13,7 +13,7 @@ This book is designed to provide a guide for a short course on **Survival Analys
 
 ## Syllabus
 
-The notes are available at <https://bookdown.org/sestelo/sa_>.
+The notes are available at <https://bookdown.org/sestelo/sa_financial>.
 
 Here is a broad view of the syllabus:
 

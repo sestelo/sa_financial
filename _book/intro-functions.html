@@ -268,8 +268,7 @@ h(t) = \displaystyle{lim_{\Delta_t \to 0}} \frac{P(t \le T &lt; t + \Delta t | T
 </ul>
 <p>Finally note that the hazard function can be expressed as the probability density function divided by the survival function, <span class="math inline">\(h(t) = \frac{f(t)}{S(t)}\)</span>:</p>
 <p><span class="math display">\[
-P(t \le T \lt t + dt | T \ge t) = \frac{P(t \le T \lt t + dt, T \ge t)}{P(T \ge t)} = 
-\frac{P(t \le T \lt t + dt)}{P(T \ge t)}
+P(t \le T \lt t + dt | T \ge t) = \frac{P(t \le T \lt t + dt, T \ge t)}{P(T \ge t)} = \frac{P(t \le T \lt t + dt)}{P(T \ge t)}
 \]</span></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">h &lt;-<span class="st"> </span><span class="kw">hist</span>(t, <span class="dt">plot =</span> <span class="ot">FALSE</span>)
 x &lt;-<span class="st"> </span>h<span class="op">$</span>mids
@@ -340,7 +339,7 @@ gitbook.start({
 "link": "https://github.com/sestelo/sa_financial/edit/master/02_intro.Rmd",
 "text": "Edit"
 },
-"download": ["bookdown.pdf", "bookdown.epub"],
+"download": ["bookdown.epub", "bookdown.mobi"],
 "toc": {
 "collapse": "section",
 "scroll_highlight": true

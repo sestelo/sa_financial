@@ -381,8 +381,7 @@ Finally note that the hazard function can be expressed as the probability densit
   
 
 \[
-P(t \le T \lt t + dt | T \ge t) = \frac{P(t \le T \lt t + dt, T \ge t)}{P(T \ge t)} = 
-\frac{P(t \le T \lt t + dt)}{P(T \ge t)}
+P(t \le T \lt t + dt | T \ge t) = \frac{P(t \le T \lt t + dt, T \ge t)}{P(T \ge t)} = \frac{P(t \le T \lt t + dt)}{P(T \ge t)}
 \]
 
 

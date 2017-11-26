@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
+<meta name="github-repo" content="sestelo/sa_financial" />
+
+<meta name="author" content="Marta Sestelo" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="This is a short course on survival analysis applied to the financial field.">
+
+<title>A short course on Survival Analysis applied to the Financial Industry</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#preface">Preface</a></li>
+<li><a href="programing-language-and-software.html#programing-language-and-software">Programing language and software</a></li>
+<li><a href="main-references-and-credits.html#main-references-and-credits">Main references and credits</a></li>
+<li><a href="about-the-author.html#about-the-author">About the Author</a></li>
+<li class="has-sub"><a href="1-intro.html#intro"><span class="toc-section-number">1</span> Introduction</a><ul>
+<li class="has-sub"><a href="1-1-intro-what.html#intro-what"><span class="toc-section-number">1.1</span> What is survival analysis?</a><ul>
+<li><a href="1-1-intro-what.html#time-time-origen-time-scale-event"><span class="toc-section-number">1.1.1</span> Time, time origen, time scale, event</a></li>
+<li><a href="1-1-intro-what.html#goals-of-the-survival-analysis"><span class="toc-section-number">1.1.2</span> Goals of the survival analysis</a></li>
+</ul></li>
+<li><a href="1-2-intro-censor.html#intro-censor"><span class="toc-section-number">1.2</span> Censoring</a></li>
+<li><a href="1-3-intro-notation.html#intro-notation"><span class="toc-section-number">1.3</span> Some notation</a></li>
+<li><a href="1-4-intro-functions.html#intro-functions"><span class="toc-section-number">1.4</span> Survival/hazard functions</a></li>
+<li><a href="1-5-relation-between-functions.html#relation-between-functions"><span class="toc-section-number">1.5</span> Relation between functions</a></li>
+<li><a href="1-6-intro-distri.html#intro-distri"><span class="toc-section-number">1.6</span> Some common distributions</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-km.html#km"><span class="toc-section-number">2</span> Kaplan Meier estimator</a><ul>
+<li class="has-sub"><a href="2-1-estimating-survival-by-means-of-the-kaplan-meier-estimator.html#estimating-survival-by-means-of-the-kaplan-meier-estimator"><span class="toc-section-number">2.1</span> Estimating survival by means of the Kaplan Meier estimator</a><ul>
+<li><a href="2-1-estimating-survival-by-means-of-the-kaplan-meier-estimator.html#other-representation"><span class="toc-section-number">2.1.1</span> Other representation</a></li>
+</ul></li>
+<li><a href="2-2-pointwise-confidence-interval-for-st.html#pointwise-confidence-interval-for-st"><span class="toc-section-number">2.2</span> Pointwise confidence interval for <span class="math inline">\(S(t)\)</span></a></li>
+<li><a href="2-3-comparing-survival-curves.html#comparing-survival-curves"><span class="toc-section-number">2.3</span> Comparing survival curves</a></li>
+<li><a href="2-4-pros-and-cons-of-the-kaplan-meirs-estimator.html#pros-and-cons-of-the-kaplan-meirs-estimator"><span class="toc-section-number">2.4</span> Pros and Cons of the Kaplan-Meirs estimator</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-cox.html#cox"><span class="toc-section-number">3</span> The Cox Proportional Hazards Model</a><ul>
+<li><a href="3-1-the-semiparametric-model.html#the-semiparametric-model"><span class="toc-section-number">3.1</span> The semiparametric model</a></li>
+<li><a href="3-2-estimation.html#estimation"><span class="toc-section-number">3.2</span> Estimation</a></li>
+<li><a href="3-3-computing-the-hazard-ratio.html#computing-the-hazard-ratio"><span class="toc-section-number">3.3</span> Computing the Hazard Ratio</a></li>
+<li><a href="3-4-hypothesis-testing.html#hypothesis-testing"><span class="toc-section-number">3.4</span> Hypothesis testing</a></li>
+<li><a href="3-5-adjusting-survival-curves.html#adjusting-survival-curves"><span class="toc-section-number">3.5</span> Adjusting Survival Curves</a></li>
+<li class="has-sub"><a href="3-6-how-to-evaluate-the-ph-assumption.html#how-to-evaluate-the-ph-assumption"><span class="toc-section-number">3.6</span> How to evaluate the PH assumption?</a><ul>
+<li><a href="3-6-how-to-evaluate-the-ph-assumption.html#graphical-approach"><span class="toc-section-number">3.6.1</span> Graphical approach</a></li>
+<li><a href="3-6-how-to-evaluate-the-ph-assumption.html#goodness-of-fit-test"><span class="toc-section-number">3.6.2</span> Goodness-of-fit test</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-7-non-proportional-hazards-and-now-what.html#non-proportional-hazards-and-now-what"><span class="toc-section-number">3.7</span> Non-Proportional Hazards… and now what?</a><ul>
+<li><a href="3-7-non-proportional-hazards-and-now-what.html#an-example-stratified-proportional-hazards-models"><span class="toc-section-number">3.7.1</span> An example… Stratified Proportional Hazards Models</a></li>
+</ul></li>
+<li><a href="3-8-why-cox-ph-model-is-so-popular-pros-of-the-model.html#why-cox-ph-model-is-so-popular-pros-of-the-model"><span class="toc-section-number">3.8</span> Why Cox PH model is so popular? (pros of the model)</a></li>
+<li><a href="3-9-bonus-track-1-additive-cox-model.html#bonus-track-1-additive-cox-model"><span class="toc-section-number">3.9</span> Bonus track 1: Additive Cox model</a></li>
+<li><a href="3-10-bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html#bonus-track-2-machine-learning-for-estimating-the-cox-pm-model"><span class="toc-section-number">3.10</span> Bonus track 2: Machine Learning for estimating the Cox PM model</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-joint-models-for-longitudinal-and-time-to-event-data.html#joint-models-for-longitudinal-and-time-to-event-data"><span class="toc-section-number">4</span> Joint Models for Longitudinal and Time-to-Event Data</a><ul>
+<li><a href="4-1-linear-mixed-models.html#linear-mixed-models"><span class="toc-section-number">4.1</span> Linear Mixed Models</a></li>
+<li><a href="4-2-estimation-of-the-joint-model.html#estimation-of-the-joint-model"><span class="toc-section-number">4.2</span> Estimation of the Joint Model</a></li>
+<li><a href="4-3-the-jm-package.html#the-jm-package"><span class="toc-section-number">4.3</span> The <code>JM</code> package</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-condsurv.html#condsurv"><span class="toc-section-number">5</span> Conditinal Survival with <code>condSURV</code></a><ul>
+<li><a href="5-1-introduction.html#introduction"><span class="toc-section-number">5.1</span> Introduction</a></li>
+<li><a href="5-2-notation.html#notation"><span class="toc-section-number">5.2</span> Notation</a></li>
+<li class="has-sub"><a href="5-3-estimation-of-the-conditional-survival.html#estimation-of-the-conditional-survival"><span class="toc-section-number">5.3</span> Estimation of the conditional survival</a><ul>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#kaplan-meier-weighted-estimator-kmw"><span class="toc-section-number">5.3.1</span> Kaplan-Meier Weighted Estimator (<code>KMW</code>)</a></li>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#the-landmark-approach-ldm"><span class="toc-section-number">5.3.2</span> The Landmark approach (<code>LDM</code>)</a></li>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#the-presmoothed-landmark-approach-pldm"><span class="toc-section-number">5.3.3</span> The Presmoothed Landmark approach (<code>PLDM</code>)</a></li>
+</ul></li>
+<li><a href="5-4-the-condsurv-package.html#the-condsurv-package"><span class="toc-section-number">5.4</span> The <code>condSURV</code> package</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li><a href="A-appendix-install.html#appendix-install"><span class="toc-section-number">A</span> Installation of <code>R</code> and <code>RStudio</code></a></li>
+<li><a href="B-appendix-rstudio.html#appendix-rstudio"><span class="toc-section-number">B</span> Introduction to <code>RStudio</code></a></li>
+<li><a href="C-appendix-r.html#appendix-r"><span class="toc-section-number">C</span> Introduction to <code>R</code></a></li>
+<li><a href="references.html#references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="estimating-survival-by-means-of-the-kaplan-meier-estimator" class="section level2">
+<h2><span class="header-section-number">2.1</span> Estimating survival by means of the Kaplan Meier estimator</h2>
+<p>If there are no censored observations in a sample of dimension <span class="math inline">\(n\)</span>, the most natural estimator for survival is the <strong>empirical estimator</strong>, given by</p>
+<p><span class="math display">\[
+\hat S(t) = P(T \gt t) = \frac{1}{n} \sum_{i=1}^{n} I(t_i \gt t)
+\]</span> that is, the proportion of observations with failure times greater than <span class="math inline">\(t\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">22</span>, <span class="dv">23</span>)
+<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span><span class="op">/</span><span class="kw">length</span>(n)) <span class="co"># hat S(8) </span>
+## [1] 8
+<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span><span class="op">/</span><span class="kw">length</span>(n)) <span class="co"># hat S(12) </span>
+## [1] 4</code></pre></div>
+<p>Another option for estimating survival could be to use the hazard:</p>
+<p><span class="math display">\[
+\hat S(t) = \prod_{k = 1}^{t-1} \bigg [ 1- \hat \lambda(k)\bigg] \quad {\text{where}} \quad  \hat \lambda(t) = \frac{\sum_{i=1}^{n} I(Y_i = t)}{\sum_{i=1}^{n} I (Y_i \ge t)} 
+\]</span></p>
+<p>Note that <span class="math inline">\(\hat \lambda(t)\)</span> is obtained as the number of individuals that die at time <span class="math inline">\(t\)</span> divided by the number of individuals that survive to <span class="math inline">\(t\)</span>, the number of individuals at risk at time <span class="math inline">\(t\)</span> (using the death as event).</p>
+<p>However, alternative methods are necessary to incorporate censoring (censored times are different than event times).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#  preprocesing data</span>
+
+<span class="kw">head</span>(loan)[, <span class="kw">c</span>(<span class="dv">51</span>, <span class="dv">65</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">50</span>)]
+##                   LoanKey LoanOriginationDate LoanStatus
+## 1 E33A3400205839220442E84 2007-09-12 00:00:00  Completed
+## 2 9E3B37071505919926B1D82 2014-03-03 00:00:00    Current
+## 3 6954337960046817851BCB2 2007-01-17 00:00:00  Completed
+## 4 A0393664465886295619C51 2012-11-01 00:00:00    Current
+## 5 A180369302188889200689E 2013-09-20 00:00:00    Current
+## 6 C3D63702273952547E79520 2013-12-24 00:00:00    Current
+##            ClosedDate    Occupation BorrowerState StatedMonthlyIncome
+## 1 2009-08-14 00:00:00         Other            CO            3083.333
+## 2                      Professional            CO            6125.000
+## 3 2009-12-17 00:00:00         Other            GA            2083.333
+## 4                     Skilled Labor            GA            2875.000
+## 5                         Executive            MN            9583.333
+## 6                      Professional            NM            8333.333
+<span class="kw">table</span>(loan<span class="op">$</span>LoanStatus)
+## 
+##              Cancelled             Chargedoff              Completed 
+##                      5                  11992                  38074 
+##                Current              Defaulted FinalPaymentInProgress 
+##                  56576                   5018                    205 
+##   Past Due (&gt;120 days)   Past Due (1-15 days)  Past Due (16-30 days) 
+##                     16                    806                    265 
+##  Past Due (31-60 days)  Past Due (61-90 days) Past Due (91-120 days) 
+##                    363                    313                    304
+
+<span class="co"># removing duplicates</span>
+loan_nd &lt;-<span class="st"> </span>loan[<span class="kw">unique</span>(loan<span class="op">$</span>LoanKey), ] 
+
+<span class="co"># removing LoanStatus no needed </span>
+sel_status  &lt;-<span class="st"> </span>loan_nd<span class="op">$</span>LoanStatus <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Completed&quot;</span>, <span class="st">&quot;Current&quot;</span>, 
+                                          <span class="st">&quot;ChargedOff&quot;</span>, <span class="st">&quot;Defaulted&quot;</span>, 
+                                          <span class="st">&quot;Cancelled&quot;</span>)
+loan_filtered &lt;-<span class="st"> </span>loan_nd[sel_status, ]
+
+<span class="co"># creating status variable for censoring</span>
+loan_filtered<span class="op">$</span>status &lt;-<span class="st"> </span><span class="kw">ifelse</span>(
+  loan_filtered<span class="op">$</span>LoanStatus <span class="op">==</span><span class="st"> &quot;Defaulted&quot;</span> <span class="op">|</span>
+<span class="st">    </span>loan_filtered<span class="op">$</span>LoanStatus <span class="op">==</span><span class="st"> &quot;Chargedoff&quot;</span>,  <span class="dv">1</span>, <span class="dv">0</span>)
+
+<span class="co"># adding the final date to &quot;current&quot; status</span>
+<span class="kw">head</span>(<span class="kw">levels</span>(loan_filtered<span class="op">$</span>ClosedDate))
+## [1] &quot;&quot;                    &quot;2005-11-25 00:00:00&quot; &quot;2005-11-29 00:00:00&quot;
+## [4] &quot;2005-11-30 00:00:00&quot; &quot;2005-12-08 00:00:00&quot; &quot;2005-12-28 00:00:00&quot;
+<span class="kw">levels</span>(loan_filtered<span class="op">$</span>ClosedDate)[<span class="dv">1</span>] &lt;-<span class="st"> &quot;2014-11-03 00:00:00&quot;</span>
+
+<span class="co"># creating the time-to-event variable</span>
+loan_filtered<span class="op">$</span>start &lt;-<span class="st"> </span><span class="kw">as.Date</span>(loan_filtered<span class="op">$</span>LoanOriginationDate)
+loan_filtered<span class="op">$</span>end &lt;-<span class="st"> </span><span class="kw">as.Date</span>(loan_filtered<span class="op">$</span>ClosedDate)
+loan_filtered<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">difftime</span>(loan_filtered<span class="op">$</span>end, loan_filtered<span class="op">$</span>start, <span class="dt">units =</span> <span class="st">&quot;days&quot;</span>))
+
+<span class="co"># there is an error in the data (time to event less than 0)</span>
+loan_filtered &lt;-<span class="st"> </span>loan_filtered[<span class="op">-</span>loan_filtered<span class="op">$</span>time <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, ]
+
+<span class="co"># just considering a year of loans creation</span>
+ii &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.Date</span>(loan_filtered<span class="op">$</span>LoanOriginationDate),<span class="st">&#39;%Y&#39;</span>) <span class="op">%in%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;2006&quot;</span>)
+loan_filtered &lt;-<span class="st"> </span>loan_filtered[ii, ] 
+
+
+<span class="kw">dim</span>(loan_filtered)
+## [1] 4923   85
+<span class="kw">head</span>(loan_filtered)[, <span class="kw">c</span>(<span class="dv">51</span>, <span class="dv">65</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">19</span>, <span class="dv">18</span>, <span class="dv">50</span>, <span class="dv">83</span>, <span class="dv">84</span>, <span class="dv">85</span>)]
+##                       LoanKey LoanOriginationDate LoanStatus
+## 55706 569F3376160094112B0CCBC 2006-12-07 00:00:00  Completed
+## 5258  E3C433749566192177F6A25 2006-11-21 00:00:00  Completed
+## 64330 3E5A33783711441966A924A 2006-12-29 00:00:00  Completed
+## 1485  AC4533744391314602B8E3A 2006-12-07 00:00:00  Completed
+## 22540 08B63364821540522E94FD2 2006-06-13 00:00:00  Completed
+## 50637 31C9337247671326054DF29 2006-11-03 00:00:00  Completed
+##                ClosedDate   Occupation BorrowerState StatedMonthlyIncome
+## 55706 2009-07-27 00:00:00 Professional                          4534.250
+## 5258  2008-07-03 00:00:00        Other                          3833.333
+## 64330 2009-12-29 00:00:00       Doctor                         18083.333
+## 1485  2008-11-21 00:00:00        Other            IN            4576.000
+## 22540 2007-09-05 00:00:00                                       3458.333
+## 50637 2009-11-03 00:00:00 Professional            IN           15666.667
+##            start        end time
+## 55706 2006-12-07 2009-07-27  963
+## 5258  2006-11-21 2008-07-03  590
+## 64330 2006-12-29 2009-12-29 1096
+## 1485  2006-12-07 2008-11-21  715
+## 22540 2006-06-13 2007-09-05  449
+## 50637 2006-11-03 2009-11-03 1096
+
+<span class="co">#------</span>
+
+
+
+<span class="co"># censoring status 0 = censored, 1 = no censored (default)</span>
+<span class="kw">table</span>(loan_filtered<span class="op">$</span>status)
+## 
+##    0    1 
+## 3560 1363
+<span class="kw">prop.table</span>(<span class="kw">table</span>(loan_filtered<span class="op">$</span>status))
+## 
+##         0         1 
+## 0.7231363 0.2768637
+
+
+<span class="co"># median time until default (taking into account just no cendored data)</span>
+<span class="kw">median</span>(loan_filtered<span class="op">$</span>time[loan_filtered<span class="op">$</span>status<span class="op">==</span><span class="dv">1</span>])  <span class="co"># I&#39;m underestimating</span>
+## [1] 333
+
+
+<span class="co"># median time until default (with all data)</span>
+<span class="kw">mean</span>(loan_filtered<span class="op">$</span>time)  <span class="co"># I&#39;m underestimating the median survival too </span>
+## [1] 633.4331
+<span class="co"># (in censored times, the real time is bigger)</span></code></pre></div>
+<p><span class="citation">Kaplan and Meier (<a href="#ref-KM58">1958</a>)</span> obtained a nonparametric estimate of the survival function, called product-limit, which is the generalization of the empirical estimator for censored data</p>
+<p><span class="math display">\[
+\hat S(t) = P(T \gt t) = \prod_{i:t_i \le t} \bigg[1-\frac{d_i}{n_i} \bigg]
+\]</span> where <span class="math inline">\(t_1, t_2, \ldots,t_n\)</span> are the observed event times, <span class="math inline">\(d_i\)</span> is the number of events at time <span class="math inline">\(t_i\)</span>, and <span class="math inline">\(n_i\)</span> is the number of individuals at risk at time <span class="math inline">\(t_i\)</span> (i.e, the original sample minus all those who had the event before <span class="math inline">\(t_j\)</span>.)</p>
+<p>Note that <span class="math inline">\(d_i/n_i\)</span> is the proportion that failed at the event time <span class="math inline">\(t_i\)</span> and <span class="math inline">\(1 - d_i/n_i\)</span> is the proportion surviving the event time <span class="math inline">\(t_j\)</span>.</p>
+<p>The Kaplan-Meier estimate is a step function with jumps at event times. The size of the steps depend on the number of events and the number of individuals at risk at the corresponding time. Note that if the last data is censored, the estimator will not reach the zero value.</p>
+<p>Without censoring, the estimator is equivalent to the empirical survival function <span class="math inline">\(\hat S(t) = \frac{1}{n} \sum_{i=1}^{n} I(t_i \gt t)\)</span> or to the one using the risk estimates <span class="math inline">\(\hat S(t) = \prod_{k = 1}^{t-1} \bigg [ 1- \hat \lambda(k)\bigg]\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">km &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> loan_filtered)
+km  <span class="co"># we can see the correct estimated median</span>
+## Call: survfit(formula = Surv(time, status) ~ 1, data = loan_filtered)
+## 
+##       n  events  median 0.95LCL 0.95UCL 
+##    4923    1363    1189    1158    1217
+<span class="kw">print</span>(km, <span class="dt">print.rmean =</span> <span class="ot">TRUE</span>)
+## Call: survfit(formula = Surv(time, status) ~ 1, data = loan_filtered)
+## 
+##          n     events     *rmean *se(rmean)     median    0.95LCL 
+##    4923.00    1363.00     926.53       6.85    1189.00    1158.00 
+##    0.95UCL 
+##    1217.00 
+##     * restricted mean with upper limit =  1224</code></pre></div>
+
+<div class="rmdexercise_sestelo">
+Take a look at <code>?Surv</code> of the survival package.
+</div>
+
+<div id="other-representation" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Other representation</h3>
+<p>Assume that <span class="math inline">\(\widetilde T_i = min (T_i, C_i)\)</span> and <span class="math inline">\(\Delta_i = I (T_i \le C_i)\)</span>, we introduce a weighted average representation of the Kaplan-Meier estimator which will be used later to introduce estimators for the conditional survival function</p>
+<span class="math display">\[\begin{equation*}
+\widehat S(y)=1-\sum_{i=1}^{n}W_{i}I(\widetilde T_{(i)}\leq y),
+\end{equation*}\]</span>
+<p>where <span class="math inline">\(\widetilde T_{\left( 1\right) }\leq ...\leq \widetilde T_{\left( n\right) }\)</span> denotes the ordered <span class="math inline">\(\widetilde T\)</span>-sample and</p>
+<span class="math display">\[\begin{equation*}
+W_{i}=\frac{\Delta_{\left[ i\right] }}{n-i+1}\prod_{j=1}^{i-1}\left[ 1-\frac{%
+\Delta _{\left[ j\right] }}{n-j+1}\right]
+\end{equation*}\]</span>
+<p>is the Kaplan-Meier weight attached to <span class="math inline">\(\widetilde T_{\left( i\right) }\)</span>. In the expression of <span class="math inline">\(W_{i}\)</span> notation <span class="math inline">\(\Delta_{\left[ i\right] }\)</span> is used for the <span class="math inline">\(i\)</span>-th concomitant value of the censoring indicator (that is, <span class="math inline">\(\Delta_{\left[ i \right] }=\Delta _{j}\)</span> if <span class="math inline">\(\widetilde T_{\left( i\right) }=\widetilde T_{j}\)</span>).</p>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-KM58">
+<p>Kaplan, E.L., and P. Meier. 1958. “Nonparametric Estimation from Incomplete Observations.” <em>Journal of the American Statistical Association</em> 53: 457–81.</p>
+</div>
+</div>
+<p style="text-align: center;">
+<a href="2-km.html"><button class="btn btn-default">Previous</button></a>
+<a href="2-2-pointwise-confidence-interval-for-st.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

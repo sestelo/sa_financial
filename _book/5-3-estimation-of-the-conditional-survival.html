@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+<meta property="og:type" content="book" />
+
+
+<meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
+<meta name="github-repo" content="sestelo/sa_financial" />
+
+<meta name="author" content="Marta Sestelo" />
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML-full" type="text/javascript"></script>
+
+<meta name="description" content="This is a short course on survival analysis applied to the financial field.">
+
+<title>A short course on Survival Analysis applied to the Financial Industry</title>
+
+<script src="libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="libs/navigation-1.1/tabsets.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container-fluid main-container">
+
+
+<div class="row">
+<div class="col-sm-12">
+<div id="TOC">
+<ul>
+<li><a href="index.html#preface">Preface</a></li>
+<li><a href="programing-language-and-software.html#programing-language-and-software">Programing language and software</a></li>
+<li><a href="main-references-and-credits.html#main-references-and-credits">Main references and credits</a></li>
+<li><a href="about-the-author.html#about-the-author">About the Author</a></li>
+<li class="has-sub"><a href="1-intro.html#intro"><span class="toc-section-number">1</span> Introduction</a><ul>
+<li class="has-sub"><a href="1-1-intro-what.html#intro-what"><span class="toc-section-number">1.1</span> What is survival analysis?</a><ul>
+<li><a href="1-1-intro-what.html#time-time-origen-time-scale-event"><span class="toc-section-number">1.1.1</span> Time, time origen, time scale, event</a></li>
+<li><a href="1-1-intro-what.html#goals-of-the-survival-analysis"><span class="toc-section-number">1.1.2</span> Goals of the survival analysis</a></li>
+</ul></li>
+<li><a href="1-2-intro-censor.html#intro-censor"><span class="toc-section-number">1.2</span> Censoring</a></li>
+<li><a href="1-3-intro-notation.html#intro-notation"><span class="toc-section-number">1.3</span> Some notation</a></li>
+<li><a href="1-4-intro-functions.html#intro-functions"><span class="toc-section-number">1.4</span> Survival/hazard functions</a></li>
+<li><a href="1-5-relation-between-functions.html#relation-between-functions"><span class="toc-section-number">1.5</span> Relation between functions</a></li>
+<li><a href="1-6-intro-distri.html#intro-distri"><span class="toc-section-number">1.6</span> Some common distributions</a></li>
+</ul></li>
+<li class="has-sub"><a href="2-km.html#km"><span class="toc-section-number">2</span> Kaplan Meier estimator</a><ul>
+<li class="has-sub"><a href="2-1-estimating-survival-by-means-of-the-kaplan-meier-estimator.html#estimating-survival-by-means-of-the-kaplan-meier-estimator"><span class="toc-section-number">2.1</span> Estimating survival by means of the Kaplan Meier estimator</a><ul>
+<li><a href="2-1-estimating-survival-by-means-of-the-kaplan-meier-estimator.html#other-representation"><span class="toc-section-number">2.1.1</span> Other representation</a></li>
+</ul></li>
+<li><a href="2-2-pointwise-confidence-interval-for-st.html#pointwise-confidence-interval-for-st"><span class="toc-section-number">2.2</span> Pointwise confidence interval for <span class="math inline">\(S(t)\)</span></a></li>
+<li><a href="2-3-comparing-survival-curves.html#comparing-survival-curves"><span class="toc-section-number">2.3</span> Comparing survival curves</a></li>
+<li><a href="2-4-pros-and-cons-of-the-kaplan-meirs-estimator.html#pros-and-cons-of-the-kaplan-meirs-estimator"><span class="toc-section-number">2.4</span> Pros and Cons of the Kaplan-Meirs estimator</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-cox.html#cox"><span class="toc-section-number">3</span> The Cox Proportional Hazards Model</a><ul>
+<li><a href="3-1-the-semiparametric-model.html#the-semiparametric-model"><span class="toc-section-number">3.1</span> The semiparametric model</a></li>
+<li><a href="3-2-estimation.html#estimation"><span class="toc-section-number">3.2</span> Estimation</a></li>
+<li><a href="3-3-computing-the-hazard-ratio.html#computing-the-hazard-ratio"><span class="toc-section-number">3.3</span> Computing the Hazard Ratio</a></li>
+<li><a href="3-4-hypothesis-testing.html#hypothesis-testing"><span class="toc-section-number">3.4</span> Hypothesis testing</a></li>
+<li><a href="3-5-adjusting-survival-curves.html#adjusting-survival-curves"><span class="toc-section-number">3.5</span> Adjusting Survival Curves</a></li>
+<li class="has-sub"><a href="3-6-how-to-evaluate-the-ph-assumption.html#how-to-evaluate-the-ph-assumption"><span class="toc-section-number">3.6</span> How to evaluate the PH assumption?</a><ul>
+<li><a href="3-6-how-to-evaluate-the-ph-assumption.html#graphical-approach"><span class="toc-section-number">3.6.1</span> Graphical approach</a></li>
+<li><a href="3-6-how-to-evaluate-the-ph-assumption.html#goodness-of-fit-test"><span class="toc-section-number">3.6.2</span> Goodness-of-fit test</a></li>
+</ul></li>
+<li class="has-sub"><a href="3-7-non-proportional-hazards-and-now-what.html#non-proportional-hazards-and-now-what"><span class="toc-section-number">3.7</span> Non-Proportional Hazards… and now what?</a><ul>
+<li><a href="3-7-non-proportional-hazards-and-now-what.html#an-example-stratified-proportional-hazards-models"><span class="toc-section-number">3.7.1</span> An example… Stratified Proportional Hazards Models</a></li>
+</ul></li>
+<li><a href="3-8-why-cox-ph-model-is-so-popular-pros-of-the-model.html#why-cox-ph-model-is-so-popular-pros-of-the-model"><span class="toc-section-number">3.8</span> Why Cox PH model is so popular? (pros of the model)</a></li>
+<li><a href="3-9-bonus-track-1-additive-cox-model.html#bonus-track-1-additive-cox-model"><span class="toc-section-number">3.9</span> Bonus track 1: Additive Cox model</a></li>
+<li><a href="3-10-bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html#bonus-track-2-machine-learning-for-estimating-the-cox-pm-model"><span class="toc-section-number">3.10</span> Bonus track 2: Machine Learning for estimating the Cox PM model</a></li>
+</ul></li>
+<li class="has-sub"><a href="4-joint-models-for-longitudinal-and-time-to-event-data.html#joint-models-for-longitudinal-and-time-to-event-data"><span class="toc-section-number">4</span> Joint Models for Longitudinal and Time-to-Event Data</a><ul>
+<li><a href="4-1-linear-mixed-models.html#linear-mixed-models"><span class="toc-section-number">4.1</span> Linear Mixed Models</a></li>
+<li><a href="4-2-estimation-of-the-joint-model.html#estimation-of-the-joint-model"><span class="toc-section-number">4.2</span> Estimation of the Joint Model</a></li>
+<li><a href="4-3-the-jm-package.html#the-jm-package"><span class="toc-section-number">4.3</span> The <code>JM</code> package</a></li>
+</ul></li>
+<li class="has-sub"><a href="5-condsurv.html#condsurv"><span class="toc-section-number">5</span> Conditinal Survival with <code>condSURV</code></a><ul>
+<li><a href="5-1-introduction.html#introduction"><span class="toc-section-number">5.1</span> Introduction</a></li>
+<li><a href="5-2-notation.html#notation"><span class="toc-section-number">5.2</span> Notation</a></li>
+<li class="has-sub"><a href="5-3-estimation-of-the-conditional-survival.html#estimation-of-the-conditional-survival"><span class="toc-section-number">5.3</span> Estimation of the conditional survival</a><ul>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#kaplan-meier-weighted-estimator-kmw"><span class="toc-section-number">5.3.1</span> Kaplan-Meier Weighted Estimator (<code>KMW</code>)</a></li>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#the-landmark-approach-ldm"><span class="toc-section-number">5.3.2</span> The Landmark approach (<code>LDM</code>)</a></li>
+<li><a href="5-3-estimation-of-the-conditional-survival.html#the-presmoothed-landmark-approach-pldm"><span class="toc-section-number">5.3.3</span> The Presmoothed Landmark approach (<code>PLDM</code>)</a></li>
+</ul></li>
+<li><a href="5-4-the-condsurv-package.html#the-condsurv-package"><span class="toc-section-number">5.4</span> The <code>condSURV</code> package</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li><a href="A-appendix-install.html#appendix-install"><span class="toc-section-number">A</span> Installation of <code>R</code> and <code>RStudio</code></a></li>
+<li><a href="B-appendix-rstudio.html#appendix-rstudio"><span class="toc-section-number">B</span> Introduction to <code>RStudio</code></a></li>
+<li><a href="C-appendix-r.html#appendix-r"><span class="toc-section-number">C</span> Introduction to <code>R</code></a></li>
+<li><a href="references.html#references">References</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-12">
+<div id="estimation-of-the-conditional-survival" class="section level2">
+<h2><span class="header-section-number">5.3</span> Estimation of the conditional survival</h2>
+<p>Let <span class="math inline">\(S_1\)</span> and <span class="math inline">\(S\)</span> be the marginal survival functions of <span class="math inline">\(T_1\)</span> and <span class="math inline">\(T\)</span>; that is, <span class="math inline">\(S_1(y)=P(T_1&gt;y)\)</span> and <span class="math inline">\(S(y)=P(T&gt;y)\)</span>. Introduce also the conditional survival probabilities <span class="math inline">\(P(T&gt;y|T_1&gt;x)\)</span> and <span class="math inline">\(P(T&gt;y|T_1\leq x)\)</span>. without loss of generality, we only consider the estimation of <span class="math inline">\(S(y|x)=P(T&gt;y|T_1&gt;x)\)</span>.</p>
+<p>The Kaplan-Meier estimator, also known as the product-limit estimator, is the most frequently used method to estimate survival for censored data. The most used representation of the Kaplan-Meier estimator of the total time is through a product of the following form</p>
+<span class="math display">\[\begin{eqnarray*}
+\widehat S(y)=\prod_{\widetilde T_i\leq t}\left(1-\frac{\Delta_{2i}}{R(\widetilde T_i)}\right)
+\end{eqnarray*}\]</span>
+<p>where <span class="math inline">\(R(t)=\sum_{i=1}^{n} I(\widetilde T_i \geq t)\)</span> denote the number of individuals at risk just before time <span class="math inline">\(t\)</span>.</p>
+<p>Below we introduce a weighted average representation of the Kaplan-Meier estimator which will be used later to introduce estimators for the conditional survival function</p>
+<span class="math display">\[\begin{equation*}
+\widehat S(y)=1-\sum_{i=1}^{n}W_{i}I(\widetilde T_{(i)}\leq y),%\equiv 1-\widehat{F}_1(x),
+\end{equation*}\]</span>
+<p>where <span class="math inline">\(\widetilde T_{\left( 1\right) }\leq ...\leq \widetilde T_{\left( n\right) }\)</span> denotes the ordered <span class="math inline">\(\widetilde T\)</span>-sample and</p>
+<span class="math display">\[\begin{equation*}
+W_{i}=\frac{\Delta_{2\left[ i\right] }}{n-i+1}\prod_{j=1}^{i-1}\left[ 1-\frac{%
+\Delta _{2\left[ j\right] }}{n-j+1}\right]
+\end{equation*}\]</span>
+<p>is the Kaplan-Meier weight attached to <span class="math inline">\(\widetilde T_{\left( i\right) }\)</span>. In the expression of <span class="math inline">\(W_{i}\)</span> notation <span class="math inline">\(\Delta_{2\left[ i\right] }\)</span> is used for the <span class="math inline">\(i\)</span>-th concomitant value of the censoring indicator (that is, <span class="math inline">\(\Delta_{2\left[ i \right] }=\Delta _{2j}\)</span> if <span class="math inline">\(\widetilde T_{\left( i\right) }=\widetilde T_{j}\)</span>).</p>
+<p><br></p>
+<p>Well, we are interested in the estimation of the <strong>conditional survival function, <span class="math inline">\(S(y\mid x)=P(T&gt;y\mid T_1&gt;x)\)</span></strong>. Below we provide estimators for this quantity, all based on the Kaplan-Meier estimator.</p>
+<div id="kaplan-meier-weighted-estimator-kmw" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> Kaplan-Meier Weighted Estimator (<code>KMW</code>)</h3>
+<p>Since <span class="math inline">\(S(y\mid x)\)</span> can be expressed as <span class="math inline">\(S(y\mid x)=P(T &gt; y|T_1 &gt; x) = 1 - P(T\leq y\mid T_1 &gt; x)= 1 - P(T_1 &gt; x, T\leq y)/\left(1-P\left(T_1\leq x\right)\right),\)</span> the conditional survival function may be estimated as</p>
+<span class="math display">\[\begin{equation}
+\widehat S^{\texttt{KMW}}(y\mid x)=1-\frac{\sum_{i=1}^{n}{W_iI(\widetilde T_{1\left[i\right]} &gt;x, \widetilde T_{\left(i\right)} \leq y)}}{\widehat S_1(x)}.
+\end{equation}\]</span>
+</div>
+<div id="the-landmark-approach-ldm" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> The Landmark approach (<code>LDM</code>)</h3>
+<p>The Landmark approach <span class="citation">(Van Houwelingen <a href="#ref-vanHouwelingen">2007</a>)</span> states that, given the time point <span class="math inline">\(x\)</span>, to estimate <span class="math inline">\(S(y\mid x)=P(T&gt; y\mid T_1&gt;x)\)</span> the analysis can be restricted to the individuals with an observed first event time greater than <span class="math inline">\(x\)</span>.</p>
+<p>Let <span class="math inline">\(n_x\)</span> be the cardinal of <span class="math inline">\(\left\{i:\widetilde T_{1i}&gt;x\right\}\)</span> and <span class="math inline">\(\left( \widetilde T_{\left( i\right) }^{x},\Delta_{\left[ i\right]}^{x}\right)\)</span>, <span class="math inline">\(i=1,...,n_{x}\)</span>, is the <span class="math inline">\(\left(\widetilde T,\Delta\right)\)</span>-sample in <span class="math inline">\(\left\{i:\widetilde T_{1i}&gt;x\right\}\)</span> ordered with respect to <span class="math inline">\(\widetilde T\)</span>.</p>
+<span class="math display">\[\begin{equation*}
+\widehat S^{\texttt{LDM}}(y\mid x)=1-\sum_{i=1}^{n_x}{W_i^{x}I(\widetilde T_{\left(i\right)}^x \leq y)}.
+\end{equation*}\]</span>
+<p>where <span class="math inline">\(W_i^{x}\)</span> denotes the Kaplan-Meier weight attached to the i-th ordered T-datum, computed from the subsample <span class="math inline">\(\left\{i:\widetilde T_{1i}&gt;x\right\}\)</span>.</p>
+</div>
+<div id="the-presmoothed-landmark-approach-pldm" class="section level3">
+<h3><span class="header-section-number">5.3.3</span> The Presmoothed Landmark approach (<code>PLDM</code>)</h3>
+<p>The standard error of the LDM approach may be large when the censoring is heavy, particularly with a small sample size. Interestingly, the variance of this estimator may be reduced by presmoothing <span class="citation">(Dikta <a href="#ref-Dikta1998">1998</a>)</span>. Here, the idea of presmoothing involves replacing the censoring indicators (in the expression of the Kaplan-Meier weights) by some smooth fit before the Kaplan-Meier formula is applied. This preliminary smoothing may be based on a certain parametric family such as the logistic (thus leading to a semiparametric estimator), or on a nonparametric estimator of the binary regression curve. The corresponding presmoothed landmark estimator is then given by</p>
+<span class="math display">\[\begin{equation*}
+\widehat S^{\texttt{PDLM}}(y\mid x)=1-\sum_{i=1}^{n_x}{W_i^{x\star}I(\widetilde T_{\left(i\right)}^x \leq y)}
+\end{equation*}\]</span>
+<p>where <span class="math inline">\(W_{i}^{x\star}\)</span> is defined through</p>
+<span class="math display">\[\begin{equation*}
+    W_{i}^{x\star}=\frac {m(\widetilde T_{\left(i\right)}^{x})}{n_x-i+1}\prod_{j=1}^{i-1}\left[1-\frac {m(\widetilde T_{\left(j\right)}^{x})}{n_x-j+1}\right], \quad 1\leq i\leq n_{x},
+\end{equation*}\]</span>
+<p>where <span class="math inline">\(\left( \widetilde T_{\left( i\right) }^{x},\Delta_{\left[ i\right]}^{x}\right)\)</span>, <span class="math inline">\(i=1,...,n_{x}\)</span>, is the <span class="math inline">\(\left( \widetilde T,\Delta\right)\)</span>-sample in <span class="math inline">\(\left\{i:\widetilde T_{1i}&gt;x\right\}\)</span> ordered with respect to <span class="math inline">\(\widetilde T\)</span>.</p>
+<p>Here, <span class="math inline">\(m(t)= P(\Delta=1\mid \widetilde T^{x}=t)\)</span>. <span class="math inline">\(m(\widetilde T^{x})\)</span> belongs to a parametric (smooth) family of binary regression curves, e.g., logistic.</p>
+<p>According to the performance, it has been demonstrated that <strong>all of the estimators perform well</strong>, approaching their targets as the sample size increases. Besides, simulation results reveal that the landmark estimator (<code>LDM</code>) perform favorably when compared with the first method (<code>KMW</code>). Furthermore, the reported simulation results reveal relative benefits of presmoothing (<code>PLDM</code>) in the heavily censored scenarios or small sample sizes.</p>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-vanHouwelingen">
+<p>Van Houwelingen, H.C. 2007. “Dynamic Prediction by Landmarking in Event History Analysis.” <em>Scandinavian Journal of Statistics</em> 34: 70–85.</p>
+</div>
+<div id="ref-Dikta1998">
+<p>Dikta, G. 1998. “On Semiparametric Random Censorship Models.” <em>Journal of Statistical Planning and Inference</em> 66: 253–79.</p>
+</div>
+</div>
+<p style="text-align: center;">
+<a href="5-2-notation.html"><button class="btn btn-default">Previous</button></a>
+<a href="5-4-the-condsurv-package.html"><button class="btn btn-default">Next</button></a>
+</p>
+</div>
+</div>
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+</body>
+</html>

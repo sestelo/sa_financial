@@ -12,24 +12,10 @@ bookdown::gitbook:
     edit:
       link: https://github.com/sestelo/sa_financial/edit/master/%s
       text: "Edit"
-    download: ["pdf", "epub"]
+    download: ["epub", "mobi"]
 
-bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
   
 bookdown::epub_book: default
-stylesheet: css/style.css
-
-bookdown::html_chapters:
-  css: [css/style.css, css/toc.css]
-
-
-
-
 
 
 sharing:
