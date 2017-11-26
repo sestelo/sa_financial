@@ -1,0 +1,535 @@
+# The Cox Proportional Hazards Model {#cox}
+
+This Chapter describes the Cox Proportional Hazards model, a very popular statistical model used for analyzing survival data. 
+
+As we seen before, the survival function is the probability that the time-to-event will be greater than some specified time and this probability depends on:
+
+- the **underlying hazard function** (how the risk of occurs the event per unit time changes over time at baseline covariates)
+
+- the **effect parameters** (how the hazard varies in response to the covariates)
+
+We are going to use the Cox proportional hazards model to determine the effect of the covariates on survival. 
+
+
+
+## The semiparametric model
+
+
+A parametric survival model is one in which survival time (the outcome) is assumed to follow a known distribution. Examples of distributions that are commonly used for survival time are: the **Weibull**, the **exponential** (a special case of the Weibull), the **log-logistic**, the **log-normal**, etc.
+
+
+The Cox proportional hazards model, by contrast, is not a fully parametric model. Rather it is a **semi-parametric model** because even if the regression parameters (the betas) are known, the distribution of the outcome remains unknown. The baseline survival (or hazard) function is not specified in a Cox model (we do not assume any shape or form).
+
+
+
+
+As before, let $T$ denote the time to some event. Our data, based on a sample of size $n$, consists of the triple $(\widetilde{T}_i, \Delta_i, \textbf{X}_i$, $i  = 1,...,n$ where $\widetilde{T}_i$ is the time on study for the $i$-th patient, $\Delta_i$ is the event indicator for the $i$-th patient ($\Delta_i=1$ if the event has occurred and  $\Delta_i=0$ if the lifetime is right-censored) and $\textbf{X}_i=   (X_{i1},\ldots, X_{ip})^t$ is the vector of covariates or risk factors for the $i$-th individual which may affect the survival distribution of $T$.  
+
+
+```{block2, type = "rmdhint_sestelo"}
+Note that the covariates $X_{ij}$, with $j = 1, \ldots, p$,  may be time-dependent as $\textbf X_i(t)=(X_{i1},\ldots,X_{ip})^t$ whose value changes over time. This situation must be analyzed using the **Extended Cox PH model**. However, for ease of presentation, we shall consider the fixed-covariate case.
+```
+
+
+The Cox PH regression model [@CIS-11133] is usually written in terms of the hazard model formula as follows
+
+\[
+h(t, \textbf X) = h_0(t)  e^{\sum_{j=1}^p \beta_j X_j}.
+\]
+
+This model gives an expression for the hazard at time $t$ for an individual with a given specification of a set of explanatory variables denoted by the bold $\textbf X$. 
+
+Based on this model we can say that the hazard at time $t$ is the product of two quantities:
+
+- The first of these, $h_0(t)$, is called the **baseline hazard function** or the hazard for a reference individual with covariate values 0.
+
+- The second quantity is a **parametric component** which is a linear function of a set of $p$ explanatory $X$ variables that is exponentiated (it will be the *relative risk* associated with covariate values $X$).
+
+<!-- The second quantity is the exponential expression $e$ to the **linear sum of $\beta_j X_j$**, where the sum is over the $p$ explanatory $X$ variables. -->
+
+
+Note that an important feature of this model, which concerns the  **proportional hazards (PH) assumption**, is that  the baseline hazard is a function of $t$, but does not involve the covariates. By contrast, the exponential expresion involves the $X$'s but not the time. The covariates here have a multiplicative effect and are called **time-independent**.[^3]
+
+
+
+[^3]: It is possible, nevertheless, to consider covariates which do involve time. Such covariates are called **time-dependent** variables. When we consider these time-dependent covariates, the model is called the **extended Cox model** and in this case it no longer satisfies the proportional hazards assumption.
+
+
+Note that **the model is assuming proportional hazards** (the hazard for any individual $i$ is a fixed proportion of the hazard for any other individual $j$), that is:
+
+\[
+\frac{h_i(t|\textbf X_i)}{h_j(t|\textbf X_j)} = exp(\boldsymbol \beta(\textbf X_i - \textbf X_j))
+\]
+
+or
+
+\[
+h_i(t|\textbf X_i) = \exp( \boldsymbol \beta(\textbf X_i - \textbf X_j)) h_j(t|\textbf X_j)
+\]
+so hazard functions for each individual should be strictly parallel and the hazard ratio is constant over time.
+
+
+
+
+
+## Estimation
+
+
+The estimation of the model is obtained by **Maximun Likelihood**, particularly maximazing the **"partial" likelihood function** rather than a (complete) likelihood function. The term "partial" likelihood is used because the likelihood formula considers probabilities only for those subjects who fail, and does not explicitly consider probabilities for those subjects who are censored. The "partial" likekihood is given by:
+
+\[
+L(\boldsymbol \beta) = \prod_{i:\Delta_i = 1} \frac{\exp\bigg[ \sum_{j=1}^{p}\beta_j X_{(i)j} \bigg]}{\sum_{k \in R(t_i)} \exp \bigg[ \sum_{j=1}^{p}\beta_j X_{(k)j} \bigg]}
+\]
+being $t_1 < t_2 < \ldots < t_D$  the ordered event times, $Z_{(i)j}$ the $j$-th covariate associated with the individual whose failure time is $t_i$ and $R(t_i)$ the risk set at time $t_i$, that is, the the set of all individuals who are still under study at a time just prior to $t_i$.
+
+Note that the numerator of the likelihood depends only on information from the individual who experiences the event, whereas the denominator uses information about all individuals who have not yet experienced the event (including some individuals who will be censored later).
+
+
+The **(partial) maximum likelihood** estimates are found by maximizing the $ln (L(\boldsymbol \beta))$ particularly, by taking partial derivatives of $ln (L(\boldsymbol \beta))$ with respect to each parameter in the model, and then solving a system of equations. For this algorithm such as Newton–Raphson [@doi:10.1137/1037125] or Expectation-Maximitazion [@10.2307/2984875] are used.[^4]
+
+[^4]: In the presence of ties, the @10.2307/1402659 or @doi:10.1080/01621459.1977.10480613 approximations to the log-likelihood can be used.
+
+
+
+In `R`, we can estimate this model using the `coxph` function of the `survival` package.
+
+
+
+```{r}
+loan_filtered$LoanOriginalAmount2 <-  loan_filtered$LoanOriginalAmount/10000
+
+model <- coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner +
+                 IncomeVerifiable, data = loan_filtered) 
+```
+
+
+
+
+For taking the **ties** into account we can use the `method` argument
+
+
+```{r, eval = FALSE}
+coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner +
+        IncomeVerifiable, data = loan_filtered, method = "efron") 
+
+coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner +
+        IncomeVerifiable, data = loan_filtered, method = "breslow") 
+
+coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner +
+        IncomeVerifiable, data = loan_filtered, method = "exact") 
+```
+
+
+
+
+## Computing the Hazard Ratio
+
+One of the main goals of the Cox PH model is to **compare the hazard rates** of individuals who have different values for the covariates. The idea is that we care more about comparing groups than about estimating absolute survival. To this end, we are going to use the **Hazard Ratio** (HR).
+
+A hazard ratio is defined as the hazard for one individual divided by the hazard for a different individual. The two individuals being compared can be distinguished by their values for the set of predictors, that is, the $X$'s. We can write the hazard ratio as the estimate of
+
+
+
+\[
+\widehat{HR} = \frac{\hat h_i(t|\textbf X_i)}{h_j(t|\textbf X_j)} = \frac{\hat h_0(t) \exp (\boldsymbol{\hat \beta} \textbf X_i)}{\hat h_0(t) \exp (\boldsymbol{\hat \beta}\textbf X_j)}=exp(\boldsymbol{\hat \beta}(\textbf X_i - \textbf X_j)).
+\]
+
+
+
+
+
+
+Additionally, we can construct a $(1-\alpha)$% confidence interval for the hazard ratio as
+\[
+\exp( \boldsymbol{\hat \beta}(\textbf X_i - \textbf X_j) \pm z_{1-\alpha/2} \hspace{0.2cm} \widehat{se}(\boldsymbol{\hat \beta}(\textbf X_i - \textbf X_j)), 
+\]
+where $\widehat{se}(\boldsymbol{\hat \beta}(\textbf X_i - \textbf X_j))$ is equal to $\sqrt{ \widehat{Var}(\boldsymbol{\hat \beta}(\textbf X_i - \textbf X_j))}$.
+
+
+In order to understand what this hazard ratio means, we are going to see same examples. 
+
+In the first one we are using **a discrete predictor** (`smoking`) and  we will see the hazard ratio for smoking versus not smoking adjusted by the age. So, let $\textbf X_i:(smoking=1, age = 60)$ and $\textbf X_j:(smoking=0, age = 60)$, the hazard ratio is
+
+\[
+HR= \frac{h_i(t|\textbf X_i)}{h_j(t|\textbf X_j)} = \frac{h_0(t) e^{\beta_{smoking} \cdot 1 + \beta_{age} \cdot 60}}{h_0(t) e^{\beta_{age} \cdot 60}} = e^ {\beta_{smoking}}
+\]
+
+For example, if $\beta_{smoking}= 0.5$,  the hazard ratio for smoking adjusted for age will be $exp(0.5)= 1.65$. That is, the hazard of death increases 65% for smokers.
+
+
+
+In the second example we use a **continuous predictor**, `age` of the individuals.  Let $\textbf X_i:(smoking=0, age = 70)$ and $\textbf X_j:(smoking=0, age = 60)$, the hazard ratio for a ten years increase in age adjusted by smoking is
+
+\[
+HR= \frac{h_i(t|\textbf X_i)}{h_j(t|\textbf X_j)} = \frac{h_0(t) e^{\beta_{smoking} \cdot 0 + \beta_{age} \cdot 70}}{h_0(t) e^{\beta_{smoking} \cdot 0+ \beta_{age} \cdot 60}} = e^{\beta_{age}(70-60)} = e^{\beta_{age}\cdot 10 = (e^{\beta_{age}})^{10} }
+\]
+
+Note that $e^{\beta_{age}}$ is the hazard ratio for a 1-unit increase in the predictor.
+
+
+```{block2, type = "rmdhint_sestelo"}
+**Interpretation of the hazard ratio (like Odds Ratio in Logistic Models)**
+  
+  - HR = 1: no effect 
+  - HR > 1: increase in the hazard      
+  - HR < 1/10: reduction in the hazard    
+```
+
+
+
+Moving again on the `R` code, we can see (by means of the `summary` function) the hazard ratios for the covariates included in the model
+
+```{r}
+m1 <- coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner +
+              IncomeVerifiable, data = loan_filtered) 
+summary(m1)
+termplot(m1, terms = "IsBorrowerHomeowner")
+```
+
+
+The estimated hazard ratio for `IsBorrowerHomeowner == True` vs `IsBorrowerHomeowner == False` is 0.78 with a 95% CI of (0.69, 0.88), that is, `IsBorrowerHomeowner == True` has 0.78 times the hazard of `IsBorrowerHomeowner == False`, a 22% lower hazard rate.  The estimated hazard ratio for `IsBorrowerHomeowner == False` vs `IsBorrowerHomeowner == True` is  1.28. Note that the procedure is the same for the other covariates. 
+
+
+
+
+## Hypothesis testing
+
+In order to test the significance of a variable or a interaction term in the model we can use two procedures:
+
+- the **Wald test** (typically used with Maximun Likelihood estimates)
+
+- the **Likelihood Ratio test (LRT)** (it uses the log likelihood to compare two nested models)
+
+The null hypothesis of the **Wald test** states that the coeficient $\beta_j$ is equal to 0. The test statistics is
+
+\[
+Z = \frac{\hat \beta_j - 0}{Std. Err (\hat \beta_j)} \sim N(0,1)
+\]
+
+```{r}
+summary(m1)$coef
+
+# by hand... for IncomeVerifiable
+z <- summary(m1)$coef[3, 1]/summary(m1)$coef[3, 3]  
+pvalue <- 2 * pnorm(z, lower.tail = FALSE)
+pvalue
+```
+According to the pvalue of the test, the null hypothesis is accepted (for the `IncomeVerifiable` variable). Thus, the model must not include this variable.
+
+
+The other approach is to use the  **Likelihood Ratio test**. In this case, we need to compute the difference between the log likelihood statistic of the *reduced model* which does not contain the variable that we want to test and the log likelihood statistic of the *full model* containing the variable. In general, the LRT statistic can be written in the form of 
+
+\[
+LRT = -2 ln \frac{L_R}{L_F}= 2 ln(L_F) - 2 ln(L_R) \sim \chi^2_p
+\]
+where $L_R$ denotes the log likelihood of the reduced model with $k$ parameter  and $L_F$ is the log likelihood of the full model with $k + p$ parameters. $\chi^2_p$ is a Chi-square with $p$ degrees of freedom, where $p$ denotes the number of predictors being assessed.
+
+
+
+```{block2, type = "rmdhint_sestelo"}
+In general, the Likelihood Ratio test and Wald statistics may not give exactly the same answer. It has been shown that of the two test procedures, the LR statistic has better statistical properties, so when in doubt, you should use the **LRT**.
+```
+
+
+
+
+```{r}
+
+m_red <- coxph(Surv(time, status) ~ LoanOriginalAmount2 + IsBorrowerHomeowner,
+               data = loan_filtered) 
+anova(m_red, m1) #fist the reduced, second the full
+
+# by hand... for IncomeVerifiable variable
+m1$loglik  # the first is the log likelihood of a model that contains
+           #      none of the predictors, so we need the second one
+
+chi <- 2 * m1$loglik[2] - 2 * m_red$loglik[2]
+pvalue <- 1 - pchisq(chi, df = 1) # df = 3 - 2
+pvalue
+```
+
+In this case, using an $\alpha = 0.05$ and testing the significance of the `IncomeVerifiable` variable, we must remove it from the model.
+
+
+
+## Adjusting Survival Curves
+
+From a survival analysis point of view, we want to obtain also estimates for the survival curve. Remember that if we do not use a model, we can apply the Kaplan-Meier estimator.  However, when a Cox model is used to fit survival data, survival curves can be obtained adjusted for the explanatory variables used as predictors. These are called **adjusted survival curves** and, like Kaplan-Meier curves, these are also plotted as step functions.
+
+
+The hazard formula seen before can be converted to a survival function as
+
+\[
+S(t|\textbf X) = \bigg[ S_0(t) \bigg]^{e^{\sum_{j=1}^p \beta_j X_j}}.
+\]
+
+This survival function formula is the basis for determining adjusted survival curves. The estimates of $\hat S_0(t)$ and $\hat b_j$ are provided by the computer program that fits the Cox model. The $X$'s, however, must first be specified by the investigator before the computer program can compute the estimated survival curve.
+
+
+```{block2, type = "rmdhint_sestelo"}
+Typically, when computing adjusted survival curves, the value chosen for a covariate being adjusted is an average value like an arithmetic mean or a median.
+```
+
+
+The `survfit` function estimates $S(t)$, by default at the mean values of the covariates:
+
+```{r}
+m2 <- m_red
+newdf <- data.frame(IsBorrowerHomeowner = levels(loan_filtered$IsBorrowerHomeowner), 
+                    LoanOriginalAmount2 = rep(mean(loan_filtered$LoanOriginalAmount2), 2))
+fit <- survfit(m2, newdata = newdf)
+#summary(fit) # to see the estimated values
+plot(fit, conf.int = TRUE, col = c(1,2))
+legend("bottomleft", levels(newdf[,1]), col = c(1, 2), lty = c(1,1))
+```
+
+```{r}
+# another option using the survminer package
+survminer::ggsurvplot(fit)
+```
+
+
+```{r}
+# easier... without refitting
+ggcoxadjustedcurves(m2, data = loan_filtered, 
+                    variable = loan_filtered$IsBorrowerHomeowner)
+```
+
+
+
+
+```{block2, type = "rmdhint_sestelo"}
+For some help with the `survminer` package... Download the cheatsheet [here](
+http://www.sthda.com/english/rpkgs/survminer/survminer_cheatsheet.pdf).
+```
+
+
+```{block2, type = "rmdexercise_sestelo"}
+Try to estimate a Cox PH model using your dataset.
+```
+
+
+
+
+
+## How to evaluate the PH assumption?
+
+Now we are going to illustrate two methods to evaluate the proportional hazards assumptions: one **graphical approach** and one **goodness-of-fit test**. Recall that the Hazard Ratio that compares two specifications of the covariates (defined as $\textbf{X}^*$ and $\textbf{X}$) can be expressed as
+
+\[
+HR = \exp(\sum_{j=1}^p \beta_j (X_j^* - X_j)) 
+\]
+where $\textbf{X}^*=(X_1^*, X_2^*, \ldots, X_j^*)$ and $\textbf{X}=(X_1, X_2, \ldots, X_j)$, and proportionally of hazards assumption indicates that this quantity is constant over time. Equivalently, this means that the hazard for one individual is proportional to the hazard for any other individual, where the proportionality constant is independent of time.
+
+
+```{block2, type = "rmdhint_sestelo"}
+**Think about this...**
+
+It is important to note that if the graph of the **hazards cross** for two or more categories of a predictor of interest, the **PH assumption is not met**. However, althought the hazard functions do not cross, it is possible that the PH assumption is not met. Thus, rather than checking for crossing hazards, we need to use other apporaches.
+```
+
+
+
+
+
+### Graphical approach
+
+
+The most popular graphical techniques for evaluating the PH assumption involves comparing estimated **–ln(–ln) survival curves** over different (combinations of) categories of variables being investigated. 
+
+A log–log survival curve is simply a transformation of an estimated survival curve that results from taking the natural log of an estimated survival probability twice.[^5] 
+
+[^5]: Note that the scale of the y-axis of an estimated survival curve ranges between 0 and 1, whereas the corresponding scale for a  -ln(-ln) curve ranges between  $-\infty$ and $+\infty$.
+
+
+As we said, the hazard function can be rewritten as 
+\[
+S(t|\textbf X) = \bigg[ S_0(t) \bigg]^{e^{\sum_{j=1}^p \beta_j X_j}}
+\]
+and once we applied the -ln(-ln),  the expression can be rewritten as 
+\[
+-\ln \bigg[-\ln S(t|\textbf X) \bigg] =  - \sum_{j=1}^p \beta_j X_j - \ln  \bigg[-\ln S_0(t|\textbf X) \bigg].  
+\]
+
+Now, considering two different specifications of the covariates, corresponding to two different individuals, $\textbf X_1$ and $\textbf X_2$, and subtracting the second log–log curve from the first yields the expression
+
+\[
+-\ln \bigg[-\ln S(t|\textbf X_1) \bigg] = -\ln \bigg[-\ln S(t|\textbf X_2) \bigg] + \sum_{j=1}^p \beta_j (X_{1j} - X_{2j}) 
+\]
+
+This expression indicates that if we use a Cox model (well-used) and plot the estimated log-log survival curves for individuals on the same graph, the two plots would be approximately parallel. The distance between the two curves is the linear expression involving the differences in predictor values, which does not involve time.
+
+
+Note that there is an **important problem** associated with this approach, that is, **how to decide** "how parallel is parallel?". This fact can be subjective, thus the proposal is to be conservative for this decision by assuming the PH assumption is satisfied unless there is strong evidence of nonparallelism of the log–log curves.
+
+
+Now we are going to check the proportinal hazards assumption for the variable `IsBorrowerHomeowner`. This can be done by plotting **log-log Kaplan Meier survival estimates** against time (or against the log of time) and evaluating whether the curves are reasonably parallel. 
+
+```{r}
+km_home <- survfit(Surv(time, status) ~ IsBorrowerHomeowner, data = loan_filtered)
+#autoplot(km_home) # just to see the km curves
+
+plot(km_home, fun = "cloglog", xlab = "Time (in days) using log",
+     ylab = "log-log survival", main = "log-log curves by clinic") 
+```
+
+
+```{r}
+# another option
+ggsurvplot(km_home, fun = "cloglog")
+```
+
+It seems that **the proportional hazards assumption is violated** as the log-log survival curves are not parallel.
+
+<br>
+
+Another graphical option could be to use the **Schoenfeld residuals** to examine model fit and detect outlying covariate values.  Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero.
+
+
+```{r}
+ggcoxdiagnostics(m2, type = "schoenfeld")
+```
+
+
+
+```{r}
+# another option
+zph <- cox.zph(m2)
+par(mfrow = c(1, 2))
+plot(zph, var = 1)
+plot(zph, var = 2)
+```
+
+
+
+### Goodness-of-fit test
+
+A second approach for assessing the PH assumption involves **goodness-of-fit (GOF) tests**. To this end,  different test have been proposed in the literature [@1568a5d7e9974c31be97c0ff34c233a7]. We focuss in the @Harrell86, a variation of a test originally proposed by  @doi:10.1093/biomet/69.1.239. This is a test of **correlation between the Schoenfeld residuals and survival time**. A correlation of zero indicates that the model met the proportional hazards assumption (the null hypothesis). 
+
+
+This can be applied by means of the `cox.zph` function of the  `survival` package.
+
+
+```{r}
+cox.zph(m2)
+```
+
+
+It seems again that the proportional hazards assumption is not satisfied (as we saw with the log-log survival curves).
+
+
+
+
+
+
+## Non-Proportional Hazards... and now what?
+
+A insignificant nonproportionality may make no difference to the interpretation of a dataset, particularly for large sample sizes. What if the nonproportionality is large and real? Possible approaches are possible in the context of the Cox model itself:
+
+- **Stratify**. Covariates with nonproportional effects may be incorporated into the model as stratification factors rather than predictors (but... be careful, stratification works naturally for categorical variables, however for quantitative variables you would have to discretize).
+
+- **Partition of the time axis**, if the proportional hazards assumption holds for short time periods but not for the entire study.
+
+- **Nonlinear effect**. Continuous covariates with nonlinear effect may lead to nonproportional effects.
+
+
+
+
+
+### An example... Stratified Proportional Hazards Models
+
+Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to stratify taking this variable into account and use the proportional hazards model in each stratum for the other covariates. We include in the model  predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.
+
+Now, the subjects in the $z$-th stratum have an arbitrary baseline hazard function $h_{0z}(t)$ and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum.
+
+
+
+In the Stratified Proportional Hazards Model the regression coefficients are assumed to be the same for each stratum although the baseline hazard functions may be different and completely unrelated.
+
+
+
+
+
+```{r}
+m3 <- coxph(Surv(time, status) ~ LoanOriginalAmount2  +
+              strata(IsBorrowerHomeowner), data = loan_filtered) 
+summary(m3)
+```
+You can see that the output is similar to previous model without stratification however, in this case, we do not have information about the hazard ratio of the stratification variable, `IsBorrowerHomeowner`. This variable is not really in the model.  In any case, you can plot it...
+
+
+```{r}
+ggsurvplot(survfit(m3), data = loan_filtered, conf.int = TRUE)
+```
+
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+Check  the proportional hazard assumption of the Cox PH model estimated in your dataset.
+```
+
+
+
+## Why Cox PH model is so popular? (pros of the model)
+
+
+
+- It is a "robust" model, so that the results from using the Cox model will closely approximate the results for the correct parametric model (even though the baseline hazard is not specified).
+
+- The specific form of the model - which gives the hazard function as a product of a baseline hazard involving $t$ and an exponential expression involving the $X$'s without $t$ - is very interesting. The exponential part of this product is appealing because it ensures that the fitted model will always give estimated hazards that are non-negative (this is perfect, because by definition, the value of the hazard function must range between zero and plus infinity).
+
+- Although the baseline hazard part of the model is unspecified, we can estimate the betas in the exponential part of the model (as we have seen). Then, the hazard function $h(t,\textbf X)$ and its corresponding survival curves $S(t, \textbf X$) can also be estimated. 
+
+- Finally, it is preferred over the logistic model when survival time information is available and there is censoring. Because you can obtain more information!
+
+
+
+
+
+
+
+## Bonus track 1: Additive Cox model
+
+The Cox PH model assumes a linear effect of the predictors. If the true effect is highly nonlinear this can lead to a nonproportinal hazards or misleading statistical conclusions.
+
+One alternative approach is to use an Additive Cox model [@NoRefworks:5] of the form
+
+\[
+h(t, \textbf X) = h_0(t) e^{\sum_{j=1}^p f_j(\textbf X_j)}
+\]
+with $f_j$ being an unknown and smooth function.
+
+In order to estimate this model one could use  the [`mgcv`](https://cran.r-project.org/web/packages/mgcv/index.html) package as follows 
+
+
+```{r}
+m4 <- mgcv::gam(time ~ s(LoanOriginalAmount2) + IsBorrowerHomeowner, 
+                data = loan_filtered, family = "cox.ph", weights = status)
+summary(m4)
+plot(m4, pages = 1, all.terms = TRUE)
+```
+
+
+```{block2, type = "rmdhint_sestelo"}
+Note the change in the sintaxis compared with the previous examples. The status indicator in used in the `weights` argument.
+```
+
+
+
+
+## Bonus track 2: Machine Learning for estimating the Cox PM model
+
+The [`rpart`](https://cran.r-project.org/web/packages/rpart/index.html) package  builds R's basic tree models of survival data. For an overview you can consult the section 8.4 of the rpart [vignette](https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf).
+
+
+Additionally, the new package [`ranger`](https://cran.r-project.org/web/packages/ranger/index.html) [@Wright:2017aa] is a fast implementation of the Random Forests algorithm for building ensembles of classification and regression trees, working also with survival data. Since `ranger()` uses standard `Surv survival objects, it’s an ideal tool for getting acquainted with survival analysis in this machine-learning age.
+
+
+Under construction...
+
+
+
+
+
+

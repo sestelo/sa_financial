@@ -1,39 +1,78 @@
 --- 
-title: "A short course on Survival Analysis in the Financial Industry"
+title: "A short course on Survival Analysis applied to the Financial Industry"
 subtitle: "BBVA Data & Analytics, Madrid"
 author: "Marta Sestelo"
 date: "27-28 /11/2017, v1.0"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
-bibliography: [book.bib, packages.bib]
+bibliography: [/Users/Sestelo/Dropbox/bib_tex/bibliografia.bib,/Users/Sestelo/Dropbox/bib_tex/bib_condsurv.bib]
 biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
-description: "This is a short course on survival analysis applied to financial field."
+description: "This is a short course on survival analysis applied to the financial field."
 ---
 
 # Preface {-}
 
 
+
 This book is designed to provide a guide for a short course on survival analysis. It is mainly focussed on applying the stastical tecnquines developed in the survival field to the financial industry. The emphasis is placed in understanding the methods, building intuition about when aplying each of them and showing their application through the use of statistical software.
 
 
-<!-- This is a _sample_ book written in **Markdown**. You can use anything that Pandoc's Markdown supports, e.g., a math equation $a^2 + b^2 = c^2$. -->
 
-<!-- For now, you have to install the development versions of **bookdown** from Github: -->
 
-<!-- ```{r eval=FALSE} -->
-<!-- devtools::install_github("rstudio/bookdown") -->
-<!-- ``` -->
 
-<!-- Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading `#`. -->
+# Programing language and software {-}
 
-<!-- To compile this example to PDF, you need to install XeLaTeX. -->
+The **software** used in the course is the statistical language [`R`](https://cran.r-project.org/) and the IDE (Integrated Development Environment) used is [`RStudio`](https://www.rstudio.com/products/rstudio/download/). A basic prior knowledge of both is assumed. Basic introductions to `R` and `RStudio` are presented in the Appendix \@ref(appendix-r) and \@ref(appendix-rstudio) for those students lacking basic expertise on them.
 
-<!-- ```{r include=FALSE} -->
-<!-- # automatically create a bib database for R packages -->
-<!-- knitr::write_bib(c( -->
-<!--   .packages(), 'bookdown', 'knitr', 'rmarkdown' -->
-<!-- ), 'packages.bib') -->
-<!-- ``` -->
+The required packages for the course are:
+
+```{r, echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE, eval = FALSE}
+# Install packages
+install.packages(c("survival", "condSURV", "JM", "dplyr", "survminer", "ggplot2"))
+devtools::install_github("noramvillanueva/clustcurv")
+```
+
+The codes in the notes may assume that the packages have been loaded, so it is better to do it now:
+```{r, echo = TRUE, cache = TRUE, warning = FALSE, message = FALSE, eval = TRUE}
+# Load packages
+library(survival)
+library(condSURV)
+library(JM)
+library(dplyr)
+library(survminer)
+library(clustcurv)
+```
+
+Links: [`survival`](https://cran.r-project.org/web/packages/survival/index.html)[@survival-package],  [`condSURV`](https://cran.r-project.org/web/packages/condSURV/index.html)[@condsurv_package; @meiramachado-sestelo:2016],
+[`JM`](https://cran.r-project.org/web/packages/JM/index.html)[@Rizopoulos:2010aa],
+[`dplyr`](https://cran.r-project.org/web/packages/dplyr/index.html)[@Wickham:2017aa],
+ [`survminer`](https://cran.r-project.org/web/packages/survminer/index.html)[@Kassambara:2017aa],
+ [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/index.html)[@Wickham:2009aa],
+ and [`clustcurv`](https://github.com/noramvillanueva/clustcurv).
+ 
+
+
+
+# Main references and credits {-}
+
+Several reference books have been used for preparing these notes. The following list details
+the most important ones:
+
+- @kalbfleisch1980statistical
+- @book:1205652
+- @book:1129209
+- @book:1298616
+- @kleinbaum2011survival
+- @book:1606416
+
+In addition, this material is possible due to the work of persons who contribute greatly to the open source software with incredible pieces of software: @Xie:2015aa, @Xie:2016aa, @R-rmarkdown and @NoRefWorks:1.
+
+
+The icons used in the notes were designed by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresna) from [Flaticon](http://www.flaticon.com/).
+
+All material in these notes is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+

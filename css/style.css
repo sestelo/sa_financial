@@ -1,8 +1,22 @@
-.rmdcaution, .rmdimportant, .rmdnote, .rmdtip, .rmdwarning {
+.rmdcaution, .rmdimportant, .rmdnote, .rmdtip, .rmdwarning, .rmdhint_sestelo,
+.rmdexercise_sestelo {
   padding: 1em 1em 1em 4em;
   margin-bottom: 10px;
   background: #f5f5f5 5px center/3em no-repeat;
 }
+
+
+
+.rmdhint_sestelo {
+  background-image: url("../images/light-bulb-black.png");
+}
+.rmdexercise_sestelo {
+  background-image: url("../images/exercise.png");
+}
+
+
+
+
 .rmdcaution {
   background-image: url("../images/caution.png");
 }
@@ -18,6 +32,10 @@
 .rmdwarning {
   background-image: url("../images/warning.png");
 }
+
+
+
+
 p.caption {
   color: #777;
   margin-top: 10px;
@@ -55,9 +73,60 @@ blockquote > p:first-child {
 h1, h2, h3, h4, h5, h6 {
   font-weight: normal;
 }
-h1.title {
-  font-weight: 700;
+
+
+
+
+
+#header .title {
+  margin-bottom: 0;
 }
+
+
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  padding-bottom: 0;
+}
+
+
+
+.subtitle {
+ font-weight: bold;
+  color: DimGray;
+}
+#header .subtitle em {
+  font-style: normal;
+    font-size: 85%;
+}
+
+
+
+
+.author {
+  margin: 0;
+    margin-top: 30em;
+ font-weight: bold;
+  color: DimGray;
+}
+#header .author em {
+ margin: 0;
+  font-style: normal;
+}
+
+
+
+#header .date em {
+  margin: 0;
+  font-style: normal;
+  color: DimGray;
+  font-size: 85%;
+}
+
+
 .book .book-body .page-wrapper .page-inner section.normal strong {
   font-weight: 500;
 }
+
+

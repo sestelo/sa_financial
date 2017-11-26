@@ -1,0 +1,112 @@
+
+# (APPENDIX) Appendix {-}
+
+# Installation of `R` and `RStudio` {#appendix-install}
+
+You can follow these steps to install `R` and `Rstudio`, please note that there will be a few new releases of `R` every year, and you may want to upgrade `R` occasionally.
+
+
+
+* For **Ubuntu** users, kindly follow the corresponding instructions [here](https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-16-04-2).
+
+* For **Mac OS X** users download `R` from [here](https://cran.r-project.org) or from the url below. To this end, click on *Download R for Mac OS X*. Then click on *Download R-3.4.2.pkg* (or a newer version) and install it. Leave all default settings in the installation options. Optional for some graphic experiences,  download and install [`XQuartz`](http://xquartz.macosforge.org/).
+
+
+```{r, screenshot.opts = list(delay = 5), echo = FALSE, fig.width = 8}
+ knitr::include_url("https://cran.r-project.org")
+```
+
+
+
+
+
+<br><br>
+
+    
+Once installed `R`, you can download `RStudio IDE` from [here](http://www.rstudio.com/ide/download/desktop) or from the url below. You must choose the appropriate version to your operative system and hardware (only certain Ubuntu and Fedora versions are supported), and install it using the package manager.
+
+```{r, screenshot.opts = list(delay = 5), echo = FALSE, fig.width = 8}
+ knitr::include_url("http://www.rstudio.com/ide/download/desktop")
+```
+
+
+
+
+
+
+
+
+
+# Introduction to `RStudio` {#appendix-rstudio}
+
+[`RStudio`](https://www.rstudio.com) is the premier integrated development environment (IDE) for `R`. It is available in open source and commercial editions on the desktop (Windows, Mac, and Linux) and from a web browser to a Linux server running RStudio Server or RStudio Server Pro.
+
+You can find a global view of the IDE in this [Cheat Sheet](https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf).
+
+An important advice is that for running a line or code selection from the script in the console, you can do it with the keyboard shortcut `'Ctrl+Enter'` (Linux) or `'Cmd+Enter'` (Mac OS X).
+
+
+
+
+# Introduction to `R` {#appendix-r}
+
+The  manual ["An Introduction to R"](https://cran.r-project.org/doc/manuals/r-release/R-intro.html) gives an introduction to the language and how to use `R` for doing statistical analysis and graphcis in detail. 
+
+
+
+Additionally, in this section you can find a set of Cheat Sheets of this programming language:
+
+* [R Base](https://www.rstudio.com/wp-content/uploads/2016/10/r-cheat-sheet-3.pdf) for first steps and basic functions of the language.
+
+* [R Advanced](https://www.rstudio.com/wp-content/uploads/2016/02/advancedR.pdf) for environments, data structures, functions, subsetting and more advanced things.
+
+* The [Data Import](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf) cheat sheet reminds you how to read in flat files with http://readr.tidyverse.org/, work with the results as tibbles, and reshape messy data with the [`tidyr`](https://cran.r-project.org/web/packages/tidyr/index.html) package. Use `tidyr` to reshape your tables into tidy data, the data format that works the most seamlessly with `R` and the [`tidyverse`](https://cran.r-project.org/web/packages/tidyverse/index.html).
+
+* [Data Transformations](https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf) for some functions in [`dplyr`](https://cran.r-project.org/web/packages/dplyr/index.html) packages very useful and computational efficient to preprocess data.
+
+* [Data Visualization](https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf) for make beautiful and customizable plots of your data by means of the [`ggplot2`](https://cran.r-project.org/web/packages/ggplot2/index.html) package. It implements the grammar of graphics, an easy to use system for building plots.
+
+
+
+
+
+
+Finally, you can find below a list with some well-know **web resources** related with this statistical language:
+
+- [R-bloggers](https://www.r-bloggers.com)
+- [Quick-R site](http://www.statmethods.net/index.html)
+- [Revolutions](http://revolution-computing.typepad.com)
+- [The R Journal](http://journal.r-project.org/current.html)
+- [Journal of Statistical Software](https://www.jstatsoft.org/index)
+
+
+
+
+
+<!-- ## Why Use `R`? {-} -->
+
+<!-- Why learn R if I currently use another statistical package? -->
+
+<!-- #. R is free. If you are a teacher or a student, the benefits are obvious.  -->
+
+<!-- #. R is very popular. It is becoming the Standard and is well manteined by an active and highly talented community.  -->
+
+<!-- #. R is powerful.  -->
+<!--     * It can handle complex and large data.  -->
+<!--     * R can easily program complex simulations -->
+<!--     * R can be used on High Performance Computer Clusters -->
+<!--     * R supports multicore task distribution -->
+
+<!-- #. R is flexible: from complex or standard statistical practices, to bayesian modelling, to GIS map building, to building interactive web applications, and to building interactive tests. -->
+<!--     * Statistical Models -->
+<!--     * Build R powered Web Applications using Shiny -->
+<!--     * Build R powered Adaptive Tests using Concerto -->
+<!--     * Build R powered Web book using Bookdown -->
+<!--     * Render beautiful HTML Slideshows using Slidify -->
+
+
+<!-- #. R is well supported. There is extensive support for R in the form of documentation, FAQs, StackOverflow, blogs (e.g. R-Bloggers), webinars, workshops, and many books (and many are also free).  -->
+
+
+
+<!-- ### Web Resources {-} -->

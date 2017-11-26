@@ -1,6 +1,0 @@
-# About the Author {-}
-
-Marta Sestelo is a PhD in Statistics and Data Scientist at the Centre of Mathematics (CMAT) of the University of Minho. She is focused on the development of new methodologies and algorithms linked with statistics. She is interested in estimation and inference methods of flexible models, in developing practical tools for data analysis and in gaining better understanding of real life issues through statistical knowledge. At the moment, her lines of research are closely related to computational statistics and machine learning, particularly, software development, feature selection, applied predictive modeling, nonparametric curves estimation, clustering, model performance, testing procedures, bootstrap resampling methods and applications to different areas of knowledge.
-
-
-You can see her complete cv at http://sestelo.github.io.

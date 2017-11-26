@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>A short course on Survival Analysis applied to the Financial Industry</title>
+  <meta name="description" content="This is a short course on survival analysis applied to the financial field.">
+  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+  
+  <meta name="twitter:description" content="This is a short course on survival analysis applied to the financial field." />
+  
+
+<meta name="author" content="Marta Sestelo">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="estimation-of-the-joint-model.html">
+<link rel="next" href="condsurv.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">A short course on Survival Analysis</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="programing-language-and-software.html"><a href="programing-language-and-software.html"><i class="fa fa-check"></i>Programing language and software</a></li>
+<li class="chapter" data-level="" data-path="main-references-and-credits.html"><a href="main-references-and-credits.html"><i class="fa fa-check"></i>Main references and credits</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro-what.html"><a href="intro-what.html"><i class="fa fa-check"></i><b>1.1</b> What is survival analysis?</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="intro-what.html"><a href="intro-what.html#time-time-origen-time-scale-event"><i class="fa fa-check"></i><b>1.1.1</b> Time, time origen, time scale, event</a></li>
+<li class="chapter" data-level="1.1.2" data-path="intro-what.html"><a href="intro-what.html#goals-of-the-survival-analysis"><i class="fa fa-check"></i><b>1.1.2</b> Goals of the survival analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="intro-censor.html"><a href="intro-censor.html"><i class="fa fa-check"></i><b>1.2</b> Censoring</a></li>
+<li class="chapter" data-level="1.3" data-path="intro-notation.html"><a href="intro-notation.html"><i class="fa fa-check"></i><b>1.3</b> Some notation</a></li>
+<li class="chapter" data-level="1.4" data-path="intro-functions.html"><a href="intro-functions.html"><i class="fa fa-check"></i><b>1.4</b> Survival/hazard functions</a></li>
+<li class="chapter" data-level="1.5" data-path="relation-between-functions.html"><a href="relation-between-functions.html"><i class="fa fa-check"></i><b>1.5</b> Relation between functions</a></li>
+<li class="chapter" data-level="1.6" data-path="intro-distri.html"><a href="intro-distri.html"><i class="fa fa-check"></i><b>1.6</b> Some common distributions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="km.html"><a href="km.html"><i class="fa fa-check"></i><b>2</b> Kaplan Meier estimator</a><ul>
+<li class="chapter" data-level="2.1" data-path="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><a href="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><i class="fa fa-check"></i><b>2.1</b> Estimating survival by means of the Kaplan Meier estimator</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><a href="estimating-survival-by-means-of-the-kaplan-meier-estimator.html#other-representation"><i class="fa fa-check"></i><b>2.1.1</b> Other representation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pointwise-confidence-interval-for-st.html"><a href="pointwise-confidence-interval-for-st.html"><i class="fa fa-check"></i><b>2.2</b> Pointwise confidence interval for <span class="math inline">\(S(t)\)</span></a></li>
+<li class="chapter" data-level="2.3" data-path="comparing-survival-curves.html"><a href="comparing-survival-curves.html"><i class="fa fa-check"></i><b>2.3</b> Comparing survival curves</a></li>
+<li class="chapter" data-level="2.4" data-path="pros-and-cons-of-the-kaplan-meirs-estimator.html"><a href="pros-and-cons-of-the-kaplan-meirs-estimator.html"><i class="fa fa-check"></i><b>2.4</b> Pros and Cons of the Kaplan-Meirs estimator</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cox.html"><a href="cox.html"><i class="fa fa-check"></i><b>3</b> The Cox Proportional Hazards Model</a><ul>
+<li class="chapter" data-level="3.1" data-path="the-semiparametric-model.html"><a href="the-semiparametric-model.html"><i class="fa fa-check"></i><b>3.1</b> The semiparametric model</a></li>
+<li class="chapter" data-level="3.2" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>3.2</b> Estimation</a></li>
+<li class="chapter" data-level="3.3" data-path="computing-the-hazard-ratio.html"><a href="computing-the-hazard-ratio.html"><i class="fa fa-check"></i><b>3.3</b> Computing the Hazard Ratio</a></li>
+<li class="chapter" data-level="3.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>3.4</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="3.5" data-path="adjusting-survival-curves.html"><a href="adjusting-survival-curves.html"><i class="fa fa-check"></i><b>3.5</b> Adjusting Survival Curves</a></li>
+<li class="chapter" data-level="3.6" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html"><i class="fa fa-check"></i><b>3.6</b> How to evaluate the PH assumption?</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html#graphical-approach"><i class="fa fa-check"></i><b>3.6.1</b> Graphical approach</a></li>
+<li class="chapter" data-level="3.6.2" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>3.6.2</b> Goodness-of-fit test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="non-proportional-hazards-and-now-what.html"><a href="non-proportional-hazards-and-now-what.html"><i class="fa fa-check"></i><b>3.7</b> Non-Proportional Hazards… and now what?</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="non-proportional-hazards-and-now-what.html"><a href="non-proportional-hazards-and-now-what.html#an-example-stratified-proportional-hazards-models"><i class="fa fa-check"></i><b>3.7.1</b> An example… Stratified Proportional Hazards Models</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="why-cox-ph-model-is-so-popular-pros-of-the-model.html"><a href="why-cox-ph-model-is-so-popular-pros-of-the-model.html"><i class="fa fa-check"></i><b>3.8</b> Why Cox PH model is so popular? (pros of the model)</a></li>
+<li class="chapter" data-level="3.9" data-path="bonus-track-1-additive-cox-model.html"><a href="bonus-track-1-additive-cox-model.html"><i class="fa fa-check"></i><b>3.9</b> Bonus track 1: Additive Cox model</a></li>
+<li class="chapter" data-level="3.10" data-path="bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html"><a href="bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html"><i class="fa fa-check"></i><b>3.10</b> Bonus track 2: Machine Learning for estimating the Cox PM model</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="joint-models-for-longitudinal-and-time-to-event-data.html"><a href="joint-models-for-longitudinal-and-time-to-event-data.html"><i class="fa fa-check"></i><b>4</b> Joint Models for Longitudinal and Time-to-Event Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="linear-mixed-models.html"><a href="linear-mixed-models.html"><i class="fa fa-check"></i><b>4.1</b> Linear Mixed Models</a></li>
+<li class="chapter" data-level="4.2" data-path="estimation-of-the-joint-model.html"><a href="estimation-of-the-joint-model.html"><i class="fa fa-check"></i><b>4.2</b> Estimation of the Joint Model</a></li>
+<li class="chapter" data-level="4.3" data-path="the-jm-package.html"><a href="the-jm-package.html"><i class="fa fa-check"></i><b>4.3</b> The <code>JM</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="condsurv.html"><a href="condsurv.html"><i class="fa fa-check"></i><b>5</b> Conditinal Survival with <code>condSURV</code></a><ul>
+<li class="chapter" data-level="5.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="notation.html"><a href="notation.html"><i class="fa fa-check"></i><b>5.2</b> Notation</a></li>
+<li class="chapter" data-level="5.3" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html"><i class="fa fa-check"></i><b>5.3</b> Estimation of the conditional survival</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#kaplan-meier-weighted-estimator-kmw"><i class="fa fa-check"></i><b>5.3.1</b> Kaplan-Meier Weighted Estimator (<code>KMW</code>)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#the-landmark-approach-ldm"><i class="fa fa-check"></i><b>5.3.2</b> The Landmark approach (<code>LDM</code>)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#the-presmoothed-landmark-approach-pldm"><i class="fa fa-check"></i><b>5.3.3</b> The Presmoothed Landmark approach (<code>PLDM</code>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="the-condsurv-package.html"><a href="the-condsurv-package.html"><i class="fa fa-check"></i><b>5.4</b> The <code>condSURV</code> package</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="appendix-install.html"><a href="appendix-install.html"><i class="fa fa-check"></i><b>A</b> Installation of <code>R</code> and <code>RStudio</code></a></li>
+<li class="chapter" data-level="B" data-path="appendix-rstudio.html"><a href="appendix-rstudio.html"><i class="fa fa-check"></i><b>B</b> Introduction to <code>RStudio</code></a></li>
+<li class="chapter" data-level="C" data-path="appendix-r.html"><a href="appendix-r.html"><i class="fa fa-check"></i><b>C</b> Introduction to <code>R</code></a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A short course on Survival Analysis applied to the Financial Industry</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="the-jm-package" class="section level2">
+<h2><span class="header-section-number">4.3</span> The <code>JM</code> package</h2>
+<p>Now it is time to fit these models in <code>R</code>. To this end, we need first to <strong>fit separately</strong> the linear mixed effect model and the Cox model, and then take the returned objects and use them as main arguments in the <code>jointModel</code> function. The dataset used is the same that the one seen with the mixed model, <code>aids</code>. The survival information can be found in <code>aids.id</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(aids)
+##   patient  Time death       CD4 obstime drug gender prevOI         AZT
+## 1       1 16.97     0 10.677078       0  ddC   male   AIDS intolerance
+## 2       1 16.97     0  8.426150       6  ddC   male   AIDS intolerance
+## 3       1 16.97     0  9.433981      12  ddC   male   AIDS intolerance
+## 4       2 19.00     0  6.324555       0  ddI   male noAIDS intolerance
+## 5       2 19.00     0  8.124038       6  ddI   male noAIDS intolerance
+## 6       2 19.00     0  4.582576      12  ddI   male noAIDS intolerance
+##   start  stop event
+## 1     0  6.00     0
+## 2     6 12.00     0
+## 3    12 16.97     0
+## 4     0  6.00     0
+## 5     6 12.00     0
+## 6    12 18.00     0
+
+<span class="kw">head</span>(aids.id)
+##   patient  Time death       CD4 obstime drug gender prevOI         AZT
+## 1       1 16.97     0 10.677078       0  ddC   male   AIDS intolerance
+## 2       2 19.00     0  6.324555       0  ddI   male noAIDS intolerance
+## 3       3 18.53     1  3.464102       0  ddI female   AIDS intolerance
+## 4       4 12.70     0  3.872983       0  ddC   male   AIDS     failure
+## 5       5 15.13     0  7.280110       0  ddI   male   AIDS     failure
+## 6       6  1.90     1  4.582576       0  ddC female   AIDS     failure
+##   start stop event
+## 1     0  6.0     0
+## 2     0  6.0     0
+## 3     0  2.0     0
+## 4     0  2.0     0
+## 5     0  2.0     0
+## 6     0  1.9     1</code></pre></div>
+<p>The idea here is to test for a <strong>treatment effect on survival</strong> after adjusting for the CD4 cell count.<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">xyplot</span>(<span class="kw">sqrt</span>(CD4) <span class="op">~</span><span class="st"> </span>obstime <span class="op">|</span><span class="st"> </span>drug, <span class="dt">group =</span> patient, <span class="dt">data =</span> aids, 
+    <span class="dt">xlab =</span> <span class="st">&quot;Months&quot;</span>, <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">sqrt</span>(<span class="st">&quot;CD4&quot;</span>)), <span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+
+lattice<span class="op">::</span><span class="kw">xyplot</span>(<span class="kw">sqrt</span>(CD4) <span class="op">~</span><span class="st"> </span>obstime <span class="op">|</span><span class="st"> </span>patient, <span class="dt">group =</span> patient, 
+       <span class="dt">data =</span> aids[aids<span class="op">$</span>patient <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>),], 
+       <span class="dt">xlab =</span> <span class="st">&quot;Months&quot;</span>, <span class="dt">ylab =</span> <span class="kw">expression</span>(<span class="kw">sqrt</span>(<span class="st">&quot;CD4&quot;</span>)), <span class="dt">col =</span> <span class="dv">1</span>, <span class="dt">type =</span> <span class="st">&quot;b&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-55-2.png" width="672" /></p>
+<p>Now we are going to specify and fit a joint model. The linear mixed effects model for the CD4 cell counts include:</p>
+<ul>
+<li>Fixed-effects part: main effect of time and the interaction with the treatment.</li>
+<li>random-effects design matrix: an intercept and a time term.</li>
+</ul>
+<p>The survival submodel include: treatment effect (as a time-independent covariate) and the true underlying effect of CD4 cell count as estimated from the longitudinal model (as time-dependent). The baseline risk function is assumed piecewise constant.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitLME &lt;-<span class="st"> </span><span class="kw">lme</span>(<span class="kw">sqrt</span>(CD4) <span class="op">~</span><span class="st"> </span>obstime <span class="op">:</span><span class="st"> </span>drug, <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span>obstime <span class="op">|</span><span class="st"> </span>patient, <span class="dt">data =</span> aids)
+fitSURV &lt;-<span class="st"> </span><span class="kw">coxph</span>(<span class="kw">Surv</span>(Time, death) <span class="op">~</span><span class="st"> </span>drug, <span class="dt">data =</span> aids.id, <span class="dt">x =</span> <span class="ot">TRUE</span>)
+fitJM &lt;-<span class="st"> </span><span class="kw">jointModel</span>(fitLME, fitSURV, <span class="dt">timeVar =</span> <span class="st">&quot;obstime&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;piecewise-PH-GH&quot;</span>)
+<span class="kw">summary</span>(fitJM)
+## 
+## Call:
+## jointModel(lmeObject = fitLME, survObject = fitSURV, timeVar = &quot;obstime&quot;, 
+##     method = &quot;piecewise-PH-GH&quot;)
+## 
+## Data Descriptives:
+## Longitudinal Process     Event Process
+## Number of Observations: 1405 Number of Events: 188 (40.3%)
+## Number of Groups: 467
+## 
+## Joint Model Summary:
+## Longitudinal Process: Linear mixed-effects model
+## Event Process: Relative risk model with piecewise-constant
+##      baseline risk function
+## Parameterization: Time-dependent 
+## 
+##    log.Lik      AIC      BIC
+##  -2107.647 4247.295 4313.636
+## 
+## Variance Components:
+##              StdDev    Corr
+## (Intercept)  0.8660  (Intr)
+## obstime      0.0388  0.0680
+## Residual     0.3754        
+## 
+## Coefficients:
+## Longitudinal Process
+##                   Value Std.Err z-value p-value
+## (Intercept)      2.5558  0.0372 68.7961 &lt;0.0001
+## obstime:drugddC -0.0423  0.0046 -9.1931 &lt;0.0001
+## obstime:drugddI -0.0372  0.0050 -7.4577 &lt;0.0001
+## 
+## Event Process
+##             Value Std.Err z-value p-value
+## drugddI    0.3511  0.1537  2.2839  0.0224
+## Assoct    -1.1016  0.1180 -9.3388 &lt;0.0001
+## log(xi.1) -1.6489  0.2498 -6.6000        
+## log(xi.2) -1.3393  0.2394 -5.5940        
+## log(xi.3) -1.0231  0.2861 -3.5758        
+## log(xi.4) -1.5802  0.3736 -4.2299        
+## log(xi.5) -1.4722  0.3500 -4.2069        
+## log(xi.6) -1.4383  0.4283 -3.3584        
+## log(xi.7) -1.4780  0.5455 -2.7094        
+## 
+## Integration:
+## method: Gauss-Hermite
+## quadrature points: 15 
+## 
+## Optimization:
+## Convergence: 0</code></pre></div>
+
+<div class="rmdhint_sestelo">
+<p>Remember that, due to the fact that the <code>jointModel</code> function extracts all the required information from these two objects (e.g., response vectors, design matrices, etc.), in the call to the <code>coxph</code> function we need to specify the argument <code>x = TRUE</code>. With this, the design matrix of the Cox model is included in the returned object.</p>
+Additionally, the main argument <code>timeVar</code> of <code>jointModel</code> function is used to specify the name of the time variable in the linear mixed effects model, which is required for the computation of <span class="math inline">\(m_i(t)\)</span>.
+</div>
+
+<p>Note that in the results of the event process the parameter labeled <code>Assoct</code> is the parameter <span class="math inline">\(\alpha\)</span> in the equation <a href="estimation-of-the-joint-model.html#eq:joint">(4.1)</a> that measures the effect of <span class="math inline">\(m_i(t)\)</span> (i.e., in our case of the true square root CD4 cell count) in the risk for death. The parameters <span class="math inline">\(x_i\)</span> are the parameters for the piecewise constant baseline risk function. As we can see there is a significant effect of longitudinal outcome on the risk. For obtaining the Hazard Ratio for this variable we have to exponenciate the value exposed in the table. In this case the result is 0.33. According to this, one unit increse on the CD4 count cell decreases the risk 67%.</p>
+<p>If we want to test for a treatment effect, an alternative to the Wald test with a pvalue around 0.03, is the Likelihood Ratio Test (LRT). To perform it we need to fit the joint model under the null hypothesis of no treatment effect in the survival submodel, and then use the <code>anova</code> function</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fitSURV2 &lt;-<span class="st"> </span><span class="kw">coxph</span>(<span class="kw">Surv</span>(Time, death) <span class="op">~</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">data =</span> aids.id, <span class="dt">x =</span> <span class="ot">TRUE</span>)
+fitJM2 &lt;-<span class="st"> </span><span class="kw">jointModel</span>(fitLME, fitSURV2, <span class="dt">timeVar =</span> <span class="st">&quot;obstime&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;piecewise-PH-GH&quot;</span>)
+<span class="kw">anova</span>(fitJM2, fitJM) <span class="co"># the model under the null is the first one</span>
+## 
+##            AIC     BIC  log.Lik  LRT df p.value
+## fitJM2 4250.53 4312.72 -2110.26                
+## fitJM  4247.29 4313.64 -2107.65 5.23  1  0.0222</code></pre></div>
+<p>According to the pvalue (as with the Wald test) we arrive to the same conclusion, there exist an affect of the treatment on the risk.</p>
+<p>Additionally, if we want to obtain <strong>estimates of the Hazard Ratio with confidence intervals</strong> for the final model it is possible ti apply the <code>confint</code> function to the created object</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(fitJM, <span class="dt">parm =</span> <span class="st">&quot;Event&quot;</span>)
+##               2.5 %       est.     97.5 %
+## drugddI  0.04979688  0.3511323  0.6524677
+## Assoct  -1.33281297 -1.1016129 -0.8704128
+<span class="kw">exp</span>(<span class="kw">confint</span>(fitJM, <span class="dt">parm =</span> <span class="st">&quot;Event&quot;</span>))
+##             2.5 %      est.    97.5 %
+## drugddI 1.0510576 1.4206752 1.9202736
+## Assoct  0.2637343 0.3323346 0.4187786</code></pre></div>
+<!-- As usually, we can check the fit of the model using residuals plots using the `plot` function. This include the plots of the subject-specific residuals versus the corresponding fitted values, the Q-Q plot of the subject-specific residuals, and the marginal survival and cumulative risk functions for the event process. -->
+<!-- ```{r} -->
+<!-- par(mfrow = c(2, 2)) -->
+<!-- plot(fitJM) -->
+<!-- ``` -->
+<!-- One problem associated with these models is the **nonrandom dropout** in the longitudinal outcome caused by the occurrence of events. This can be seen on the following plot -->
+<!-- ```{r} -->
+<!-- # a useful function used in the residual plots below -->
+<!-- plotResid <- function (x, y, ...) { -->
+<!--     plot(x, y, ...) -->
+<!--     lines(lowess(x, y), col = "red", lwd = 2) -->
+<!--     abline(h = 0, lty = 3, col = "grey", lwd = 2) -->
+<!-- } -->
+<!-- # Marginal Residuals vs Fitted Values -->
+<!-- resMargY <- residuals(fit.JM, process = "Longitudinal", type = "stand-Marginal") -->
+<!-- fitMargY <- fitted(fit.JM, process = "Longitudinal", type = "Marginal") -->
+<!-- plotResid(fitMargY, resMargY, xlab = "Fitted Values", ylab = "Residuals", -->
+<!--     main = "Marginal Residuals vs Fitted Values") -->
+<!-- ``` -->
+<!-- We can observe a systematic trend with more positive residuals for small fitted values. However, due to the **nonrandom dropout** in the longitudinal outcome caused by the occurrence of events, conclusions from residuals based on the observed data alone should be extracted with caution. Note that the problem occurs in low values of CD4 that are related with higher times (thus we have less individuals).  -->
+<!-- Based on the above, it is important to highlight that to **take dropout into account** we will use the multiply-imputed residuals.   -->
+<p>Finally, we will focus on the calculation of <strong>expected survival probabilities</strong>. For this we have to use the <code>survfitJM</code> function that accepts as main arguments a fitted joint model, and a data frame that contains the longitudinal and covariate information for the subjects for which we wish to calculate the predicted survival probabilities.</p>
+<p>Here we compute the expected survival probabilies for two patients in the data set who <strong>has not died</strong> by the time of loss to follow-up. The function assumes that the patient has survived up to the last time point <span class="math inline">\(t\)</span> in newdata for which a CD4 measurement was recorded, and will produce survival probabilities for a set of predefined <span class="math inline">\(u &gt; t\)</span> values</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">300716</span>) <span class="co"># it uses Monte Carlo samples</span>
+preds &lt;-<span class="st"> </span><span class="kw">survfitJM</span>(fitJM, <span class="dt">newdata =</span> aids[aids<span class="op">$</span>patient <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;7&quot;</span>, <span class="st">&quot;15&quot;</span>), ],
+          <span class="dt">idVar =</span> <span class="st">&quot;patient&quot;</span>)  <span class="co"># last.time = &quot;Time&quot;</span>
+
+<span class="kw">survfitJM</span>(fitJM, <span class="dt">newdata =</span> aids[aids<span class="op">$</span>patient <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;7&quot;</span>, <span class="st">&quot;15&quot;</span>), ], <span class="dt">idVar =</span> <span class="st">&quot;patient&quot;</span>, 
+          <span class="dt">survTimes =</span> <span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>))  <span class="co"># you can specify the times</span>
+## 
+## Prediction of Conditional Probabilities for Event
+##  based on 200 Monte Carlo samples
+## 
+## $`7`
+##   times   Mean Median  Lower  Upper
+## 1    12 1.0000 1.0000 1.0000 1.0000
+## 1    20 0.7197 0.7306 0.4801 0.8757
+## 2    30 0.3992 0.4043 0.0312 0.7728
+## 3    40 0.2045 0.1467 0.0001 0.6766
+## 
+## $`15`
+##   times   Mean Median  Lower  Upper
+## 1    12 1.0000 1.0000 1.0000 1.0000
+## 1    20 0.8680 0.8873 0.7288 0.9472
+## 2    30 0.6804 0.7309 0.2372 0.9068
+## 3    40 0.5088 0.5660 0.0129 0.8799</code></pre></div>
+<p>Note that the first time of the output is the last time observed in the longitudinal study. This is because for the time points that are earlier than this time we know that this subject was alive and therefore survival probability is 1.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+<span class="kw">plot</span>(preds, <span class="dt">which =</span> <span class="st">&quot;7&quot;</span>, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>)
+
+<span class="kw">plot</span>(preds, <span class="dt">which =</span> <span class="st">&quot;7&quot;</span>, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>, 
+     <span class="dt">fun =</span> <span class="cf">function</span> (x) <span class="op">-</span><span class="kw">log</span>(x), <span class="dt">ylab =</span> <span class="st">&quot;Cumulative Risk&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+
+</div>
+<!-- </div> -->
+<div class="footnotes">
+<hr />
+<ol start="6">
+<li id="fn6"><p>The CD4 cell counts are known to exhibit right skewed shapes of distribution, and therefore, for the remainder of this analysis we will work with the square root of the CD4 cell values.<a href="the-jm-package.html#fnref6">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="estimation-of-the-joint-model.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="condsurv.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-joint_model.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub"],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

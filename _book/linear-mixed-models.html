@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>A short course on Survival Analysis applied to the Financial Industry</title>
+  <meta name="description" content="This is a short course on survival analysis applied to the financial field.">
+  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short course on survival analysis applied to the financial field." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A short course on Survival Analysis applied to the Financial Industry" />
+  
+  <meta name="twitter:description" content="This is a short course on survival analysis applied to the financial field." />
+  
+
+<meta name="author" content="Marta Sestelo">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="joint-models-for-longitudinal-and-time-to-event-data.html">
+<link rel="next" href="estimation-of-the-joint-model.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><strong><a href="./">A short course on Survival Analysis</a></strong></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a></li>
+<li class="chapter" data-level="" data-path="programing-language-and-software.html"><a href="programing-language-and-software.html"><i class="fa fa-check"></i>Programing language and software</a></li>
+<li class="chapter" data-level="" data-path="main-references-and-credits.html"><a href="main-references-and-credits.html"><i class="fa fa-check"></i>Main references and credits</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="intro-what.html"><a href="intro-what.html"><i class="fa fa-check"></i><b>1.1</b> What is survival analysis?</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="intro-what.html"><a href="intro-what.html#time-time-origen-time-scale-event"><i class="fa fa-check"></i><b>1.1.1</b> Time, time origen, time scale, event</a></li>
+<li class="chapter" data-level="1.1.2" data-path="intro-what.html"><a href="intro-what.html#goals-of-the-survival-analysis"><i class="fa fa-check"></i><b>1.1.2</b> Goals of the survival analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="intro-censor.html"><a href="intro-censor.html"><i class="fa fa-check"></i><b>1.2</b> Censoring</a></li>
+<li class="chapter" data-level="1.3" data-path="intro-notation.html"><a href="intro-notation.html"><i class="fa fa-check"></i><b>1.3</b> Some notation</a></li>
+<li class="chapter" data-level="1.4" data-path="intro-functions.html"><a href="intro-functions.html"><i class="fa fa-check"></i><b>1.4</b> Survival/hazard functions</a></li>
+<li class="chapter" data-level="1.5" data-path="relation-between-functions.html"><a href="relation-between-functions.html"><i class="fa fa-check"></i><b>1.5</b> Relation between functions</a></li>
+<li class="chapter" data-level="1.6" data-path="intro-distri.html"><a href="intro-distri.html"><i class="fa fa-check"></i><b>1.6</b> Some common distributions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="km.html"><a href="km.html"><i class="fa fa-check"></i><b>2</b> Kaplan Meier estimator</a><ul>
+<li class="chapter" data-level="2.1" data-path="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><a href="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><i class="fa fa-check"></i><b>2.1</b> Estimating survival by means of the Kaplan Meier estimator</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="estimating-survival-by-means-of-the-kaplan-meier-estimator.html"><a href="estimating-survival-by-means-of-the-kaplan-meier-estimator.html#other-representation"><i class="fa fa-check"></i><b>2.1.1</b> Other representation</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="pointwise-confidence-interval-for-st.html"><a href="pointwise-confidence-interval-for-st.html"><i class="fa fa-check"></i><b>2.2</b> Pointwise confidence interval for <span class="math inline">\(S(t)\)</span></a></li>
+<li class="chapter" data-level="2.3" data-path="comparing-survival-curves.html"><a href="comparing-survival-curves.html"><i class="fa fa-check"></i><b>2.3</b> Comparing survival curves</a></li>
+<li class="chapter" data-level="2.4" data-path="pros-and-cons-of-the-kaplan-meirs-estimator.html"><a href="pros-and-cons-of-the-kaplan-meirs-estimator.html"><i class="fa fa-check"></i><b>2.4</b> Pros and Cons of the Kaplan-Meirs estimator</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="cox.html"><a href="cox.html"><i class="fa fa-check"></i><b>3</b> The Cox Proportional Hazards Model</a><ul>
+<li class="chapter" data-level="3.1" data-path="the-semiparametric-model.html"><a href="the-semiparametric-model.html"><i class="fa fa-check"></i><b>3.1</b> The semiparametric model</a></li>
+<li class="chapter" data-level="3.2" data-path="estimation.html"><a href="estimation.html"><i class="fa fa-check"></i><b>3.2</b> Estimation</a></li>
+<li class="chapter" data-level="3.3" data-path="computing-the-hazard-ratio.html"><a href="computing-the-hazard-ratio.html"><i class="fa fa-check"></i><b>3.3</b> Computing the Hazard Ratio</a></li>
+<li class="chapter" data-level="3.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>3.4</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="3.5" data-path="adjusting-survival-curves.html"><a href="adjusting-survival-curves.html"><i class="fa fa-check"></i><b>3.5</b> Adjusting Survival Curves</a></li>
+<li class="chapter" data-level="3.6" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html"><i class="fa fa-check"></i><b>3.6</b> How to evaluate the PH assumption?</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html#graphical-approach"><i class="fa fa-check"></i><b>3.6.1</b> Graphical approach</a></li>
+<li class="chapter" data-level="3.6.2" data-path="how-to-evaluate-the-ph-assumption.html"><a href="how-to-evaluate-the-ph-assumption.html#goodness-of-fit-test"><i class="fa fa-check"></i><b>3.6.2</b> Goodness-of-fit test</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="non-proportional-hazards-and-now-what.html"><a href="non-proportional-hazards-and-now-what.html"><i class="fa fa-check"></i><b>3.7</b> Non-Proportional Hazards… and now what?</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="non-proportional-hazards-and-now-what.html"><a href="non-proportional-hazards-and-now-what.html#an-example-stratified-proportional-hazards-models"><i class="fa fa-check"></i><b>3.7.1</b> An example… Stratified Proportional Hazards Models</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="why-cox-ph-model-is-so-popular-pros-of-the-model.html"><a href="why-cox-ph-model-is-so-popular-pros-of-the-model.html"><i class="fa fa-check"></i><b>3.8</b> Why Cox PH model is so popular? (pros of the model)</a></li>
+<li class="chapter" data-level="3.9" data-path="bonus-track-1-additive-cox-model.html"><a href="bonus-track-1-additive-cox-model.html"><i class="fa fa-check"></i><b>3.9</b> Bonus track 1: Additive Cox model</a></li>
+<li class="chapter" data-level="3.10" data-path="bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html"><a href="bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html"><i class="fa fa-check"></i><b>3.10</b> Bonus track 2: Machine Learning for estimating the Cox PM model</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="joint-models-for-longitudinal-and-time-to-event-data.html"><a href="joint-models-for-longitudinal-and-time-to-event-data.html"><i class="fa fa-check"></i><b>4</b> Joint Models for Longitudinal and Time-to-Event Data</a><ul>
+<li class="chapter" data-level="4.1" data-path="linear-mixed-models.html"><a href="linear-mixed-models.html"><i class="fa fa-check"></i><b>4.1</b> Linear Mixed Models</a></li>
+<li class="chapter" data-level="4.2" data-path="estimation-of-the-joint-model.html"><a href="estimation-of-the-joint-model.html"><i class="fa fa-check"></i><b>4.2</b> Estimation of the Joint Model</a></li>
+<li class="chapter" data-level="4.3" data-path="the-jm-package.html"><a href="the-jm-package.html"><i class="fa fa-check"></i><b>4.3</b> The <code>JM</code> package</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="condsurv.html"><a href="condsurv.html"><i class="fa fa-check"></i><b>5</b> Conditinal Survival with <code>condSURV</code></a><ul>
+<li class="chapter" data-level="5.1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="notation.html"><a href="notation.html"><i class="fa fa-check"></i><b>5.2</b> Notation</a></li>
+<li class="chapter" data-level="5.3" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html"><i class="fa fa-check"></i><b>5.3</b> Estimation of the conditional survival</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#kaplan-meier-weighted-estimator-kmw"><i class="fa fa-check"></i><b>5.3.1</b> Kaplan-Meier Weighted Estimator (<code>KMW</code>)</a></li>
+<li class="chapter" data-level="5.3.2" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#the-landmark-approach-ldm"><i class="fa fa-check"></i><b>5.3.2</b> The Landmark approach (<code>LDM</code>)</a></li>
+<li class="chapter" data-level="5.3.3" data-path="estimation-of-the-conditional-survival.html"><a href="estimation-of-the-conditional-survival.html#the-presmoothed-landmark-approach-pldm"><i class="fa fa-check"></i><b>5.3.3</b> The Presmoothed Landmark approach (<code>PLDM</code>)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="the-condsurv-package.html"><a href="the-condsurv-package.html"><i class="fa fa-check"></i><b>5.4</b> The <code>condSURV</code> package</a></li>
+</ul></li>
+<li class="appendix"><span><b>Appendix</b></span></li>
+<li class="chapter" data-level="A" data-path="appendix-install.html"><a href="appendix-install.html"><i class="fa fa-check"></i><b>A</b> Installation of <code>R</code> and <code>RStudio</code></a></li>
+<li class="chapter" data-level="B" data-path="appendix-rstudio.html"><a href="appendix-rstudio.html"><i class="fa fa-check"></i><b>B</b> Introduction to <code>RStudio</code></a></li>
+<li class="chapter" data-level="C" data-path="appendix-r.html"><a href="appendix-r.html"><i class="fa fa-check"></i><b>C</b> Introduction to <code>R</code></a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A short course on Survival Analysis applied to the Financial Industry</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-mixed-models" class="section level2">
+<h2><span class="header-section-number">4.1</span> Linear Mixed Models</h2>
+<p>As we mentioned, <strong>Joint Models</strong> take two outcomes into account, the <strong>longitudinal response</strong> and the <strong>survival time</strong>. In order to estimate these type of models, we need first to fit a model for the longitudinal response (usually a <strong>linear mixed model</strong>) and then for the survival time. I am assuming here that you have understood entirely the Chapter <a href="cox.html#cox">3</a> and you do not have any problem with the estimation of the Cox model by means of the <code>coxph</code> function. Regarding the linear mixed model you can see an brief introduction with examples below using the <a href="https://cran.r-project.org/web/packages/nlme/index.html"><code>nlme</code></a> package. For a good overview you can consult the Chapter 2 of <span class="citation">Rizopoulos (<a href="#ref-book:1606416">2012</a>)</span>.</p>
+<p><br><br></p>
+<p>So, our focus in this part is on longitudinal data. This data can be defined as the data resulting from the <strong>observations of subjects</strong> (e.g., human beings, animals, etc.) that are <strong>measured repeatedly over time</strong>. From this descriptions, it is evident that in a longitudinal setting we expect repeated measurements taken on the same subject to exhibit positive correlation. This feature implies that standard statistical tools, such as the t-test and simple linear regression that assume independent observations, are not appropriate for longitudinal data analysis (they may produce invalid standard errors). In order to solve this situation and obtain valid inference, one possible approach is to use a <strong>mixed model</strong>, a regression method for continuous outcomes that models longitudinal data by assuming, for example, <strong>random errors within a subject</strong> and <strong>random variation in the trajectory among subjects</strong>.</p>
+<p>We are going to explain briefly this approach. Figure <a href="linear-mixed-models.html#fig:mixed">4.1</a> shows an example with hypothetical longitudinal data for two subjects. In this figure, monthly observations are recorded for up to one year. Note that each subject appears to have their own linear trajectory but with small fluctuations about the line. This fluctuations are referred to as the <strong>within-subject variation</strong> in the outcomes. Note that if we only have data from one person these will be the typical error term in regression. The dashed line in the center of the figure shows the average of individual linear-time trajectories. This line characterizes the <strong>average for the population</strong> as a function of time. For example, the value of the dashed line at month 2 is the mean response if the observation (at two months) for all subjects was averaged. Thus, this line represents both the typical trajectory and the population average as a function of time.</p>
+<p>The main idea of <strong>Linear Mixed Model</strong> is that they make specific assumptions about the variation in observations attributable to <strong>variation within a subject</strong> and to <strong>variation among subjects</strong>. To formally introduce this representation of longitudinal data, we let <span class="math inline">\(Y_{ij}\)</span> denote the response of subject <span class="math inline">\(i, i = 1, \ldots, n\)</span> at time <span class="math inline">\(X_{ij}, j = 1,...,n_i\)</span> and <span class="math inline">\(\beta_{i0} + \beta_{i1} X_{ij}\)</span> denote the line that characterizes the observation path for <span class="math inline">\(i\)</span>. Note that each subject has an individual-specific intercept and slope. Note that</p>
+<ul>
+<li><p>The <strong>within-subject variation</strong> is seen as the deviation between individual observations, <span class="math inline">\(Y_{ij}\)</span>, and the individual linear trajectory, that is <span class="math inline">\(Y_{ij} - (\beta_{i0} + \beta_{i1} X_{ij})\)</span>.</p></li>
+<li><p>The <strong>between-subject variation</strong> is represented by the variation among the intercepts, <span class="math inline">\(var(\beta_{i0})\)</span> and the variation among subject in the slopes <span class="math inline">\(var(\beta_{i1})\)</span>.</p></li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:mixed"></span>
+<img src="images/mixed_image.png" alt="Hypothetical longitudinal data for two subjects." width="432" />
+<p class="caption">
+Figure 4.1: Hypothetical longitudinal data for two subjects.
+</p>
+</div>
+<p>Figure <a href="linear-mixed-models.html#fig:mixed">4.1</a> taken from <span class="citation">Belle et al. (<a href="#ref-bio">2004</a>)</span>.</p>
+<p>If parametric assumptions are made regarding the within- and between-subject components of variation, it is possibel to use <em>maximum likelihood methods</em> for estimating the regression parameters (which characterize the population average), and the variance components (which characterize the magnitude of within- and between-subject heterogeneity). For continuous outcomes it is a good idea to assume that within-subject errors are normally distributed and to assume that intercepts and slopes are normally distributed among subjects. This will be</p>
+<ul>
+<li>within-subjects: <span class="math display">\[
+E(Y_{ij}|\beta_i) = \beta_{i,0} + \beta_{i, 1} X_{ij}
+\]</span></li>
+</ul>
+<p><span class="math display">\[
+Y_{ij} = \beta_{i,0} + \beta_{i, 1} X_{ij} + \varepsilon_{ij}
+\]</span></p>
+<p><span class="math display">\[
+ \varepsilon_{ij} \sim N(0, \sigma^2)
+\]</span></p>
+<ul>
+<li>between-subjects:</li>
+</ul>
+[ (
+<span class="math display">\[\begin{array}{c} \beta_{i,0}\\ \beta_{i,1}\\ \end{array}\]</span>
+<p>) </p>
+<p>N ] where <span class="math inline">\(D\)</span> is the variance-covariance matrix of the random effects, with <span class="math inline">\(D_00= var(b_{i,0})\)</span> and <span class="math inline">\(D_11= var(b_{i,1})\)</span>.</p>
+<p>If we think in <span class="math inline">\(b_{i,0}= (\beta_{i,0} - \beta_0)\)</span> and <span class="math inline">\(b_{i,1}= (\beta_{i,1} - \beta_1)\)</span>, the model can be written as</p>
+<p><span class="math display">\[
+Y_{ij} = \beta_0 + \beta_1 X_{ij} + b_{i,0} + b_{i,1} X_{ij} + \varepsilon_{ij}
+\]</span> where $ b_{i,0}$ and <span class="math inline">\(b_{i,1}\)</span> represent deviations from the population average intercept and slope respectively. In this equation there is <em>systematic</em> variation (given by the two first betas) and a <strong>random</strong> variation (the rest).</p>
+<p>The random component is partitioned into the observation level and subject level fluctuations: that is, the between-subject (<span class="math inline">\(b_{i,0} + b_{i,1} X_{ij}\)</span>) and within-subject (<span class="math inline">\(\varepsilon_{ij}\)</span>) variations.</p>
+<p>A more general form including <span class="math inline">\(p\)</span> predictors is</p>
+<p><span class="math display">\[
+Y_{ij} = \beta_0 + \beta_1 X_{ij,1} +\ldots +  + \beta_p X_{ij,p} + b_{i,0} + b_{i,1} X_{ij,1} + \ldots + b_{i,p} X_{ij,p}+ \varepsilon_{ij}
+\]</span></p>
+<p><span class="math display">\[
+Y_{ij} = X_{ij}&#39;\beta + Z_{ij}&#39; b_i + \varepsilon_{ij}
+\]</span> where <span class="math inline">\(X_{ij}&#39;=[X_{ij,1}, X_{ij,2}, \ldots, X_{ij,p}]\)</span> and <span class="math inline">\(Z_{ij}&#39;=[X_{ij,1}, X_{ij,2}, \ldots, X_{ij,q}]\)</span>. In general way, we assume that the covariates in <span class="math inline">\(Z_{ij}\)</span> are a subset of the variables in <span class="math inline">\(X_{ij}\)</span> and thus <span class="math inline">\(q &lt; p\)</span>.</p>
+
+<div class="rmdhint_sestelo">
+It is important to highlighted that based on this model the coefficient of covariate <span class="math inline">\(k\)</span> for subject <span class="math inline">\(i\)</span> is given as <span class="math inline">\((\beta_k + b_{i,k})\)</span> if <span class="math inline">\(k \le q\)</span>, and is simply <span class="math inline">\(\beta_k\)</span> if <span class="math inline">\(q &lt; k \le p\)</span>. Therefore,inalinearmixed model there may be some regression parameters that vary among subjects while some regression parameters are common to all subjects.
+</div>
+
+<p>Moving again onto the example, it seems that each subject has their own intercept, but the subjects may have a common slope. So, a <strong>random intercept</strong> model assumes parallel trajectories for any two subjects and is given as a special case of the general mixed model:</p>
+<p><span class="math display">\[
+Y_{ij} = \beta_0 + \beta_1 X_{ij,1} + b_{i,0} + \varepsilon_{ij}.
+\]</span></p>
+<p>Using the above model, the intercept for subject <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\beta_0 + b_{i,0}\)</span> while the slope for subject <span class="math inline">\(i\)</span> is simply <span class="math inline">\(\beta_1\)</span> since there is no additional random slope, <span class="math inline">\(b_{i,1}\)</span> in the random intercept model.</p>
+<p>If we assume that the slope for each individual <span class="math inline">\(i\)</span> can also be different, we have to use a <strong>random intercept and slope</strong> model of the type</p>
+<p><span class="math display">\[
+Y_{ij} = \beta_0 + \beta_1 X_{ij,1} + b_{i,0} + b_{i,1} X_{ij,1}+ \varepsilon_{ij}.
+\]</span> and now the intercept for subject <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\beta_0 + b_{i,0}\)</span> while the slope for subject <span class="math inline">\(i\)</span> is <span class="math inline">\(\beta_1 + b_{i, 1}\)</span>.</p>
+<p>In order to fit these models, we can use the <code>lme</code> function of the <code>nlme</code> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(aids) 
+##   patient  Time death       CD4 obstime drug gender prevOI         AZT
+## 1       1 16.97     0 10.677078       0  ddC   male   AIDS intolerance
+## 2       1 16.97     0  8.426150       6  ddC   male   AIDS intolerance
+## 3       1 16.97     0  9.433981      12  ddC   male   AIDS intolerance
+## 4       2 19.00     0  6.324555       0  ddI   male noAIDS intolerance
+## 5       2 19.00     0  8.124038       6  ddI   male noAIDS intolerance
+## 6       2 19.00     0  4.582576      12  ddI   male noAIDS intolerance
+##   start  stop event
+## 1     0  6.00     0
+## 2     6 12.00     0
+## 3    12 16.97     0
+## 4     0  6.00     0
+## 5     6 12.00     0
+## 6    12 18.00     0
+<span class="co"># CD4: square root CD4 cell count measurements</span>
+<span class="co"># obstime: time points at which the corresponding longitudinal response was recorded</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># random-intercepts model (single random effect term for each patient)</span>
+
+fit1 &lt;-<span class="st"> </span><span class="kw">lme</span>(<span class="dt">fixed =</span> CD4 <span class="op">~</span><span class="st"> </span>obstime, <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>patient, <span class="dt">data =</span> aids)
+<span class="kw">summary</span>(fit1)
+## Linear mixed-effects model fit by REML
+##  Data: aids 
+##        AIC      BIC    logLik
+##   7176.633 7197.618 -3584.316
+## 
+## Random effects:
+##  Formula: ~1 | patient
+##         (Intercept) Residual
+## StdDev:    4.506494 1.961662
+## 
+## Fixed effects: CD4 ~ obstime 
+##                 Value  Std.Error  DF   t-value p-value
+## (Intercept)  7.188663 0.22061320 937  32.58492       0
+## obstime     -0.148500 0.01218699 937 -12.18513       0
+##  Correlation: 
+##         (Intr)
+## obstime -0.194
+## 
+## Standardized Within-Group Residuals:
+##         Min          Q1         Med          Q3         Max 
+## -3.84004681 -0.44310988 -0.05388055  0.43593364  6.09265321 
+## 
+## Number of Observations: 1405
+## Number of Groups: 467</code></pre></div>
+<p>Note that the estimation for the variability or the variance components, that is, the variance of the errors (<span class="math inline">\(\varepsilon_{ij}\)</span>, within personal errors) and the variance between subject (the variance of the <span class="math inline">\(b_{i, 0}\)</span>) are given under <em>Random effects</em> heading. Under <code>(Intercept)</code> we can see the estimated standard desviation for the <span class="math inline">\(b_{i,0}\)</span> coefficients and under <code>Residual</code>, the estimated desviation for <span class="math inline">\(\varepsilon_{ij}\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># variance of the beta_i0</span>
+<span class="kw">getVarCov</span>(fit1)
+## Random effects variance covariance matrix
+##             (Intercept)
+## (Intercept)      20.308
+##   Standard Deviations: 4.5065
+
+<span class="co"># standard desviation of e_ij</span>
+fit1<span class="op">$</span>sigma
+## [1] 1.961662
+
+<span class="co"># total variance of the model</span>
+<span class="kw">getVarCov</span>(fit1)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>fit1<span class="op">$</span>sigma<span class="op">**</span><span class="dv">2</span> 
+## [1] 24.15661
+
+<span class="co"># % variance within person</span>
+(fit1<span class="op">$</span>sigma<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="kw">getVarCov</span>(fit1)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>fit1<span class="op">$</span>sigma<span class="op">**</span><span class="dv">2</span>)) <span class="op">*</span><span class="st"> </span><span class="dv">100</span> 
+## [1] 15.92988
+
+<span class="co"># % variance between person</span>
+(<span class="kw">getVarCov</span>(fit1)[<span class="dv">1</span>]<span class="op">/</span>(<span class="kw">getVarCov</span>(fit1)[<span class="dv">1</span>] <span class="op">+</span><span class="st"> </span>fit1<span class="op">$</span>sigma<span class="op">**</span><span class="dv">2</span>)) <span class="op">*</span><span class="st"> </span><span class="dv">100</span> 
+## [1] 84.07012</code></pre></div>
+<p>The total variation in CD4 is estimated as 24.16. So, the proportion of total variation that is attributed to within-person variability is 15.93% with 84.07% of total variation attributable to individual variation in their general level of CD4 (attributable to random intercepts).</p>
+<p>The estimated regression coefficients <span class="math inline">\(\beta\)</span> are provided under the <em>Fixed effects</em> heading. As expected, the coefficient for the time effect has a negative sign indicating that on average the square root CD4 cell counts declines in time.</p>
+<p>Well, this random-intercepts model poses the unrealistic restriction that the correlation between the repeated measurements remains constant over time (we are not includiying the random slope yet). So, a natural extension is a more flexible specification of the covariance structure with the random-intercepts and random-slopes model. This model introduces an additional random effects term, and assumes that the rate of change in the CD4 cell count is different from patient to patient.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># random-intercepts and random-slopes model</span>
+fit2 &lt;-<span class="st"> </span><span class="kw">lme</span>(CD4 <span class="op">~</span><span class="st"> </span>obstime, <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span>obstime <span class="op">|</span><span class="st"> </span>patient, <span class="dt">data =</span> aids) <span class="co"># the intercept is  included by default</span>
+<span class="kw">summary</span>(fit2)
+## Linear mixed-effects model fit by REML
+##  Data: aids 
+##        AIC     BIC    logLik
+##   7141.282 7172.76 -3564.641
+## 
+## Random effects:
+##  Formula: ~obstime | patient
+##  Structure: General positive-definite, Log-Cholesky parametrization
+##             StdDev    Corr  
+## (Intercept) 4.5898645 (Intr)
+## obstime     0.1728724 -0.152
+## Residual    1.7507904       
+## 
+## Fixed effects: CD4 ~ obstime 
+##                 Value  Std.Error  DF  t-value p-value
+## (Intercept)  7.189048 0.22215494 937 32.36051       0
+## obstime     -0.150059 0.01518146 937 -9.88435       0
+##  Correlation: 
+##         (Intr)
+## obstime -0.218
+## 
+## Standardized Within-Group Residuals:
+##         Min          Q1         Med          Q3         Max 
+## -4.31679141 -0.41425035 -0.05227632  0.41094183  4.37413201 
+## 
+## Number of Observations: 1405
+## Number of Groups: 467</code></pre></div>
+<p>We observe very minor differences in the estimated fixed-effect parameters compared with the previous model.</p>
+<p>For the random effects, we can observe that there is greater variability between patients in the baseline levels of CD4 (given by <code>(Intercept)</code> variance) than in the evolutions of the marker in time (<code>obstime</code> variance).</p>
+</div>
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-book:1606416">
+<p>Rizopoulos, Dimitris. 2012. <em>Joint Models for Longitudinal and Time-to-Event Data: With Applications in R</em>. 1st ed. Chapman &amp; Hall/Crc Biostatistics Series. Chapman; Hall/CRC. <a href="http://gen.lib.rus.ec/book/index.php?md5=99C084286F029FD36E10FE18AA587A7C" class="uri">http://gen.lib.rus.ec/book/index.php?md5=99C084286F029FD36E10FE18AA587A7C</a>.</p>
+</div>
+<div id="ref-bio">
+<p>Belle, Gerald van, Lloyd D. Fisher, Patrick J. Heagerty, and Thomas Lumley. 2004. <em>Biostatistics: A Methodology for the Health Sciences</em>. Wiley Online Library.</p>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="joint-models-for-longitudinal-and-time-to-event-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="estimation-of-the-joint-model.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-joint_model.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub"],
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

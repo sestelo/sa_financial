@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>A short course on Survival Analysis in the Financial Industry</title>
+  <meta name="description" content="This is a short course on survival analysis applied to financial field.">
+  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="A short course on Survival Analysis in the Financial Industry" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a short course on survival analysis applied to financial field." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A short course on Survival Analysis in the Financial Industry" />
+  
+  <meta name="twitter:description" content="This is a short course on survival analysis applied to financial field." />
+  
+
+<meta name="author" content="Marta Sestelo">
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="intro.html">
+<link rel="next" href="censoring.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="programing-language-and-software.html"><a href="programing-language-and-software.html"><i class="fa fa-check"></i>Programing language and software</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> Introduction</a><ul>
+<li class="chapter" data-level="1.1" data-path="what-is-survival-analysis.html"><a href="what-is-survival-analysis.html"><i class="fa fa-check"></i><b>1.1</b> What is survival analysis?</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="what-is-survival-analysis.html"><a href="what-is-survival-analysis.html#time-time-origen-time-scale-event"><i class="fa fa-check"></i><b>1.1.1</b> Time, time origen, time scale, event</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="censoring.html"><a href="censoring.html"><i class="fa fa-check"></i><b>1.2</b> Censoring</a></li>
+<li class="chapter" data-level="1.3" data-path="survivalhazard-functions.html"><a href="survivalhazard-functions.html"><i class="fa fa-check"></i><b>1.3</b> Survival/hazard functions</a></li>
+<li class="chapter" data-level="1.4" data-path="some-common-distributions.html"><a href="some-common-distributions.html"><i class="fa fa-check"></i><b>1.4</b> Some common distributions</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>2</b> Literature</a></li>
+<li class="chapter" data-level="3" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>3</b> Methods</a></li>
+<li class="chapter" data-level="4" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>4</b> Applications</a><ul>
+<li class="chapter" data-level="4.1" data-path="example-one.html"><a href="example-one.html"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
+<li class="chapter" data-level="4.2" data-path="example-two.html"><a href="example-two.html"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>5</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="" data-path="about-the-author.html"><a href="about-the-author.html"><i class="fa fa-check"></i>About the Author</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A short course on Survival Analysis in the Financial Industry</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="what-is-survival-analysis" class="section level2">
+<h2><span class="header-section-number">1.1</span> What is survival analysis?</h2>
+<p>In a general way, survival analysis is a collection of statistical procedures for data analysis for which the outcome variable of interest is <strong>time until an event occurs</strong>, often referred to as a failure time, survival time, or event time.</p>
+<p>Survival time refers to a variable which measures the time from a particular starting time (e.g., time initiated the treatment) to a particular endpoint of interest: <strong>time-to-event</strong>.</p>
+<p>The problem of analyzing time to event data arises in a number of applied fields, such as:</p>
+<ul>
+<li>medicine, biology, public health (time to death)</li>
+<li>social sciences (time for doing some task)</li>
+<li>economics (time looking for employment)</li>
+<li>financial or credit scoring (time to default)</li>
+<li>engineering (time to a failure of some electronic component)</li>
+</ul>
+<div id="time-time-origen-time-scale-event" class="section level3">
+<h3><span class="header-section-number">1.1.1</span> Time, time origen, time scale, event</h3>
+<p>In survival analysis three requirements are needed for the precise definition of the failure time of an individual. A <strong>time origin</strong> must be specified, a <strong>time scale</strong> for measuring time must be agreed upon and the meaning of <strong>failure - event</strong> must be clear.</p>
+<ul>
+<li><p>By <strong>time</strong>, we mean years, months, weeks, or days from the beginning of follow-up of an individual until the event of study occurs, but we need to specify the scale.</p></li>
+<li><p>By <strong>time origin</strong> we understand the time of entry into the study</p></li>
+<li><p>By <strong>event</strong>, we mean –it depends on the field– death, disease incidence, recovery (e.g., return to work) if we focus on biomedical applications, default in the credit scoring field, renewals in insurance framework, fault in the engeniering field, etc.</p></li>
+</ul>
+<p>Generally, we will assume that only <strong>one event</strong> is of designated interest. When more than one event is considered (e.g., death from any of several causes), the statistical problem can be characterized as either a <strong>recurrent event</strong> or a <strong>competing risk</strong>. We will see the case of the recurrence event using the <a href="https://cran.r-project.org/web/packages/condSURV/index.html">condSURV</a> package.</p>
+<!-- Also we need to specify other options like the time scale, the scale of the time that we are mesuring there may be more than one plausible measure of time for each individual -->
+<!-- By time origin we mean the time of entry into the study -->
+<p>buscar un ejemplo como heart pero que salgan las cuentas</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># heart dataset (Stanford Heart Transplant) with origin and end</span>
+?survival<span class="op">::</span>heart
+<span class="kw">head</span>(heart)
+##   start stop event        age      year surgery transplant id
+## 1     0   50     1 -17.155373 0.1232033       0          0  1
+## 2     0    6     1   3.835729 0.2546201       0          0  2
+## 3     0    1     0   6.297057 0.2655715       0          0  3
+## 4     1   16     1   6.297057 0.2655715       0          1  3
+## 5     0   36     0  -7.737166 0.4900753       0          0  4
+## 6    36   39     1  -7.737166 0.4900753       0          1  4
+
+<span class="co"># stanford2 dataset with time to the event (death)</span>
+<span class="kw">head</span>(stanford2)
+##      id time status age   t5
+## 139 139   86      1  12 1.26
+## 159 159   10      1  13 1.49
+## 181 181   60      0  13   NA
+## 119 119 1116      0  14 0.54
+## 74   74 2006      0  15 1.26
+## 120 120 1107      0  18 0.25</code></pre></div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="censoring.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01_intro.Rmd",
+"text": "Edit"
+},
+"download": ["bookdown.pdf", "bookdown.epub"],
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+</body>
+
+</html>

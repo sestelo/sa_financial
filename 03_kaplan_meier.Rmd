@@ -1,0 +1,407 @@
+# Kaplan Meier estimator {#km}
+
+
+Once we have explained what is the survival curve and other introductory questions, we move on the estimation. Note that we can estimate the survival (or hazard) function in two ways:
+
+- by specifying a **parametric** model for $\lambda(t)$ based on a particular density function $f(t)$ (parametric estimation)
+
+- by developing an **empirical** estimate of the survival function (i.e., **nonparametric** estimation)
+
+
+
+This Chapter describes how to plot and interpret survival data using the Kaplan-Meier (KM) estimator (nonparametric) and how to test whether or not two or more KM curves are equivalent using the log–rank test. Alternative tests to the log–rank test are also described. Furthermore, methods for computing $(1-\alpha)$% confidence intervals for a KM curve are afforded.
+
+
+
+## Estimating survival by means of the Kaplan Meier estimator
+
+
+If there are no censored observations in a sample of dimension $n$, the most natural estimator for survival is the **empirical estimator**, given by
+
+\[
+\hat S(t) = P(T \gt t) = \frac{1}{n} \sum_{i=1}^{n} I(t_i \gt t)
+\]
+that is, the proportion of observations with failure times greater than $t$. 
+
+```{r}
+x <- c(1, 1, 2, 2, 3, 4, 4, 5, 5, 8, 8, 8, 8, 11, 11, 12, 12, 15, 17, 22, 23)
+sum(x > 8/length(n)) # hat S(8) 
+sum(x > 12/length(n)) # hat S(12) 
+
+```
+
+Another option for estimating survival could be to use the hazard:
+
+\[
+\hat S(t) = \prod_{k = 1}^{t-1} \bigg [ 1- \hat \lambda(k)\bigg] \quad {\text{where}} \quad  \hat \lambda(t) = \frac{\sum_{i=1}^{n} I(Y_i = t)}{\sum_{i=1}^{n} I (Y_i \ge t)} 
+\]
+
+
+Note that $\hat \lambda(t)$ is obtained as the number of individuals that die at time $t$ divided by the number of individuals that survive to $t$, the number of individuals at risk at time $t$ (using the death as event).
+
+
+
+However, alternative methods are necessary to incorporate censoring (censored times are different than event times).
+
+```{r}
+#  preprocesing data
+
+head(loan)[, c(51, 65, 6, 7, 19, 18, 50)]
+table(loan$LoanStatus)
+
+# removing duplicates
+loan_nd <- loan[unique(loan$LoanKey), ] 
+
+# removing LoanStatus no needed 
+sel_status  <- loan_nd$LoanStatus %in% c("Completed", "Current", 
+                                          "ChargedOff", "Defaulted", 
+                                          "Cancelled")
+loan_filtered <- loan_nd[sel_status, ]
+
+# creating status variable for censoring
+loan_filtered$status <- ifelse(
+  loan_filtered$LoanStatus == "Defaulted" |
+    loan_filtered$LoanStatus == "Chargedoff",  1, 0)
+
+# adding the final date to "current" status
+head(levels(loan_filtered$ClosedDate))
+levels(loan_filtered$ClosedDate)[1] <- "2014-11-03 00:00:00"
+
+# creating the time-to-event variable
+loan_filtered$start <- as.Date(loan_filtered$LoanOriginationDate)
+loan_filtered$end <- as.Date(loan_filtered$ClosedDate)
+loan_filtered$time <- as.numeric(difftime(loan_filtered$end, loan_filtered$start, units = "days"))
+
+# there is an error in the data (time to event less than 0)
+loan_filtered <- loan_filtered[-loan_filtered$time < 0, ]
+
+# just considering a year of loans creation
+ii <- format(as.Date(loan_filtered$LoanOriginationDate),'%Y') %in% 
+  c("2006")
+loan_filtered <- loan_filtered[ii, ] 
+
+
+dim(loan_filtered)
+head(loan_filtered)[, c(51, 65, 6, 7, 19, 18, 50, 83, 84, 85)]
+
+#------
+
+
+
+# censoring status 0 = censored, 1 = no censored (default)
+table(loan_filtered$status)
+prop.table(table(loan_filtered$status))
+
+
+# median time until default (taking into account just no cendored data)
+median(loan_filtered$time[loan_filtered$status==1])  # I'm underestimating
+
+
+# median time until default (with all data)
+mean(loan_filtered$time)  # I'm underestimating the median survival too 
+# (in censored times, the real time is bigger)
+
+```
+
+
+
+
+
+@KM58 obtained a nonparametric estimate of the survival function, called product-limit, which is the generalization of the empirical estimator for censored data
+
+\[
+\hat S(t) = P(T \gt t) = \prod_{i:t_i \le t} \bigg[1-\frac{d_i}{n_i} \bigg]
+\]
+where $t_1, t_2, \ldots,t_n$ are the observed event times, $d_i$ is the number of events at time $t_i$, and $n_i$ is the number of individuals at risk at time $t_i$ (i.e, the original sample minus all those who had the event before $t_j$.)
+
+Note that $d_i/n_i$ is the proportion that failed at the event time $t_i$ and $1 - d_i/n_i$ is the proportion surviving the event time $t_j$.
+
+The Kaplan-Meier estimate is a step function with jumps at event times. The size of the steps depend on the number of events and the number of individuals at risk at the corresponding time. Note that if the last data is censored, the estimator will not reach the zero value.
+
+Without censoring, the estimator is equivalent to the empirical survival function 
+$\hat S(t) = \frac{1}{n} \sum_{i=1}^{n} I(t_i \gt t)$ or  to the one using the risk estimates $\hat S(t) = \prod_{k = 1}^{t-1} \bigg [ 1- \hat \lambda(k)\bigg]$.
+
+```{r}
+km <- survfit(Surv(time, status) ~ 1, data = loan_filtered)
+km  # we can see the correct estimated median
+print(km, print.rmean = TRUE)
+```
+
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+Take a look at `?Surv` of the survival package.
+```
+
+
+
+### Other representation 
+
+Assume that $\widetilde T_i = min (T_i, C_i)$ and $\Delta_i = I (T_i \le C_i)$, we introduce a weighted average representation of the Kaplan-Meier estimator which will be used later to introduce estimators for the conditional survival function
+
+\begin{equation*}
+\widehat S(y)=1-\sum_{i=1}^{n}W_{i}I(\widetilde T_{(i)}\leq y),
+\end{equation*}
+where $\widetilde T_{\left( 1\right) }\leq ...\leq \widetilde T_{\left( n\right) }$ denotes the ordered $\widetilde T$-sample and 
+
+
+\begin{equation*}
+W_{i}=\frac{\Delta_{\left[ i\right] }}{n-i+1}\prod_{j=1}^{i-1}\left[ 1-\frac{%
+\Delta _{\left[ j\right] }}{n-j+1}\right]
+\end{equation*}
+
+\noindent is the Kaplan-Meier weight attached to $\widetilde T_{\left( i\right) }$. In the expression of $W_{i}$ notation $\Delta_{\left[ i\right] }$ is used for the $i$-th concomitant value of the censoring indicator (that is, $\Delta_{\left[ i \right] }=\Delta _{j}$ if $\widetilde T_{\left( i\right) }=\widetilde T_{j}$).
+
+
+
+
+
+
+
+
+
+## Pointwise confidence interval for $S(t)$
+
+For the contruction of the confidence interval for the estimated survival we can use a well-know estimator of the variance, the **Greenwood estimator**[@greenwood]. The Greenwood variance estimate for a Kaplan-Meier curve is defined as
+
+
+\[
+\hat \sigma^2[\hat S(t)] = \widehat var[\hat S(t)] = \hat S(t)^2 \sum_{i:t_i \le t} \frac{d_i}{n_i(n_i-d_i)}
+\]
+
+In case of no censoring, this estimator reduces to
+
+$\hat \sigma^2[\hat S(t)] = \frac{\hat S(t) [1- \hat S(t)]}{n}$.
+
+
+
+It is possible to use this estimator to derive a confidence interval for all time points $t$. Assuming asintotic normality ($\hat S(t) \simeq N(\hat S(t), \sigma(t)/\sqrt(n))$) and let $\sigma$ denotes the Greenwood’s standard deviation. Then confidence intervals for the survival function are then computed as follows (plain)
+
+
+\[
+\bigg(\hat S(t) \pm z_{1-\alpha/2}  \cdot \hat \sigma/\sqrt(n) \bigg), 
+\]
+where $\hat \sigma = se(\hat S(t))$ is calculated using Greenwood's formula.
+
+It is important to hightlight here that this confidence interval may be out of the (0,1) interval! For solve this, the approximation to the normal distribution is improved by using the **log-minus-log** transformation
+
+\[
+\bigg(\hat S(t) \pm e^{z_{1-\alpha/2}  \cdot  \frac{\hat\sigma}{\hat S(t) ln \hat S(t)}} \bigg). 
+\]
+
+Other options include the **log** transformation
+\[
+ \exp \bigg( \ln(\hat S(t)) \pm z_{1-\alpha/2}  \cdot \hat\sigma/ \hat S(t)  \bigg). 
+\]
+
+In `R` we can select these options as: `log`(default), `log-log` and `plain`.
+
+
+```{r}
+km1 <- survfit(Surv(time, status) ~ 1, data = loan_filtered) # conf.type = "log" (default) 
+summary(km1, times = c(200, 1100))
+
+km2 <- survfit(Surv(time, status) ~ 1, data = loan_filtered, conf.type = "plain") 
+summary(km2, times = c(200, 1100))
+
+km3 <- survfit(Surv(time, status) ~ 1, data = loan_filtered, conf.type = "log-log") 
+summary(km3, times = c(200, 1100))
+```
+
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+See arguments `times` and `censored` of the function `summary.survfit`.
+```
+
+<br><br>
+
+And now... what about the **empirical distribution** (without taking into account the censored data)? We can compare both!
+
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+With the Prosper dataset, try to compare in a graphical manner the survival function based on empirical distribution function of the time to default and based on the Kaplan-Meier estimator.
+```
+
+
+
+<!-- ```{r, eval = FALSE} -->
+<!-- ed <- survfit(Surv(time, rep(1, length(time))) ~ 1, data = loan_filtered)  # with survfit taking the censoring into account -->
+
+<!-- aux <- ecdf(loan_filtered$time) # with ecdf -->
+<!-- t <- sort(loan_filtered$time) -->
+<!-- res <- aux(t) -->
+
+<!-- plot(km, conf.int = FALSE) -->
+<!-- lines(ed$time, ed$surv, col = 2, type = "s") -->
+<!-- lines(t, 1 - res, col = 3, type = "s") -->
+
+<!-- ``` -->
+
+
+
+
+
+
+
+
+
+## Comparing survival curves 
+
+As we have seen before, we can use the `survfit` function to estimate the survival using the Kaplan-Meier estimator taking into account the censored data. Additionally, it is possible to include a **factor** in the model and to obtain the estimated survival for each of the levels of the factor. 
+
+
+```{r}
+model <- survfit(Surv(time, status) ~ IsBorrowerHomeowner, data = loan_filtered)
+plot(model, ylab = "Survival", xlab = "Time (in days)", col = 1:2, mark.time = TRUE)
+legend("topright", col = 1:2, legend =
+         levels(factor(lung$sex)), 
+       bty = "n", pch = 19)
+```
+
+
+
+Now, the questions that arises is if **these two curves are statistivally equivalent**. For answering it, we can use the **log-rank test** [@mantel;@CIS-11103]. This is the most well-known and widely used method to test the null hypothesis of no difference in survival between two or more independent groups. It is a large-sample chi-square test that is obtained by constructing a two by two contingency table at each distinct event time, and comparing the failure rates between the two groups, conditional on the number at risk in each group. The test compares the entire survival experience between groups and can be thought of as a test of whether the survival curves are identical or not. 
+
+
+
+
+```{block2, type = "rmdhint_sestelo"}
+When we state that two KM curves are *statistically equivalent*, we mean that, based on a testing procedure that compares the two curves in some *overall sense*, we do not have evidence to indicate that the true (population) survival curves are different.
+```
+
+
+
+
+The null hypothesis ($H_0$) of the testing procedure is that **there is no overall difference between the two (or $k$) survival curves**. Under this $H_0$, the log–rank statistic is approximately a chi-square with $k-1$ degree of freedom. Thus, tables of the chi-square distribution are used to determine the pvalue. 
+
+
+This test is the one with most power to test differences that fit the proportional hazards model - so works well as a set-up for subsequent Cox regression. It gives equal weight to early and late failures. 
+
+An alternative test that is often used is the **Peto & Peto**  [@CIS-11103] modification of the Gehan-Wilcoxon test [@10.2307/2333825]. This last one is a variation of the log-rank test statistic and is derived by applying different weights at the $f-$th failure time. This approach  is most sensitive to early differences (or earlier time points) between survival.
+
+
+ 
+ This type of weighting may be used to assess whether the effect of a treatment/marketing campaing on survival is strongest in the earlier phases of administration/contacto and tends to be less effective over time.
+ 
+ 
+
+ <!-- The log-rank or Mantel-Haenszel test is the most powerful under proportional hazards whereas the Peto \& Peto modification of the log-rank test is more sensitive to early differences between survival -->
+
+
+
+
+In the **absence of censoring**, these methods reduce to the Wilcoxon-Mann-Whitney rank-sum test  [@mann1947] for two samples and to the Kruskal-Wallis test [@doi:10.1080/01621459.1952.10483441] for more than two groups of survival times.
+
+
+
+Of course, several other variations of the log-rank test statistic using weights on each event time have been proposed in the literature [@CIS-23788; doi:10.1093/biomet/69.3.553; 10.2307/2289169].
+
+
+
+
+The log-rank test and the Peto & Peto  modification of the log-rank test are both implemented in the `survdiff` function in library `survival`.
+
+```{r}
+survdiff(Surv(time, status) ~ IsBorrowerHomeowner, data = loan_filtered, rho = 0) # log-rank
+
+survdiff(Surv(time, status) ~ IsBorrowerHomeowner, data = loan_filtered, rho = 1)# peto & peto
+
+# with more than 2 groups
+survdiff(Surv(time, status) ~ CreditGrade, data = loan_filtered)
+```
+
+If the null hyphotesis is rejected, we can apply a post-hoc analysis. One approach would be to perform pairwise comparisons. This can be achieved with the `pairwise_survdiff` function of the package `survminer` which calculates pairwise comparisons between group levels with corrections for multiple testing.  
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+Use the function `pairwise_survdiff` of the library `survminer` in order to perform pairwise comparisons.
+```
+
+
+
+More beaitiful plots... 
+
+```{r}
+autoplot(model) #using ggplot2
+survminer::ggsurvplot(model)
+survminer::ggsurvplot(model, conf.int = TRUE)
+
+
+
+
+
+```
+
+
+
+
+
+
+## Pros and Cons of the Kaplan-Meirs estimator
+
+
+Pros:
+
+- It is commonly used to describe survivor.
+- It is commonly used to compare two study populations.
+- It is intuitive graphical presentation.
+
+Cons:
+
+- It is mainly descriptive.
+- It does not control for covariates.
+- It can not accommodate time-dependent variables.
+
+
+
+
+
+
+```{block2, type = "rmdexercise_sestelo"}
+With your dataset, obtain the estimated survival curve with the Kaplan-Meier estimator for the time-to-event "bring the payroll to the BBVA". Try to find some differences between type of client.
+```
+
+
+
+
+
+
+
+
+<!-- Nelson-Aalen estimator -->
+
+<!-- ```{r} -->
+<!-- km <- survfit(Surv(time, status) ~ 1, data = lung) -->
+<!-- h <- km$n.event/km$n.risk -->
+<!-- na <- cumsum(h) # Nelson-Aalen (NA) -->
+
+<!-- plot(km$time, na, type = "s", main = "Nelson-Aalen estimator", -->
+<!--      xlab = "Time", ylab = "Cumulative hazard")  -->
+<!-- #points(km$time,-log(km$surv),col=2) #NA aprox.  -->
+<!-- lines(km$time, na + qnorm(0.975, 0, 1) * km$std.err, lty = 2) -->
+<!-- lines(km$time, na - qnorm(0.975, 0, 1) * km$std.err, lty = 2)  -->
+
+<!-- z=survreg(Surv(time,status)~1,dist="weibull",data=lung) -->
+
+<!-- sur <- pweibull(lung$time,shape = 1/exp(z$icoef[1]), scale = exp(z$icoef[1])) -->
+<!-- plot(lung$time, 1 - sur) -->
+<!-- par(add = T) -->
+<!-- plot(km) -->
+
+
+
+<!-- ``` -->
+
+
+
+<!-- See examples of `?survreg` for parametrization weibull. -->
+
+
+
+

@@ -1,0 +1,482 @@
+# Introduction {#intro}
+
+This introduction to survival analysis tries to give a small overview of the statistical approach called survival analysis. This approach includes the type of problem addressed by survival analysis, the outcome variable considered, the need to take into account *censored data*,  what a survival function and a hazard function represent, the goals of survival analysis, and some examples of survival analysis.
+
+
+
+## What is survival analysis? {#intro-what}
+
+In a general way, survival analysis is a collection of statistical procedures for data analysis for which the outcome variable of interest is **time until an event occurs**, often referred to as a failure time, survival time, or event time.
+
+
+Survival time refers to a variable which measures the time from a particular starting time (e.g., time initiated the treatment) to a particular endpoint of interest: **time-to-event**.
+
+
+The problem of analyzing time to event data arises in a number of applied fields, such as:
+
+* medicine, biology, public health (time to death)
+* social sciences (time for doing some task)
+* economics (time looking for employment)
+* financial or credit scoring (time to default)
+* engineering (time to a failure of some electronic component)
+
+
+
+
+### Time, time origen, time scale, event
+
+In survival analysis three requirements are needed for the precise definition of the failure time of an individual. A **time origin** must be specified, a **time scale** for measuring time must be agreed upon and the meaning of **failure - event** must be clear. 
+
+* By **time**, we mean years, months, weeks, or days from the beginning of follow-up of an individual until the event of study occurs, but we need to specify the scale.
+
+* By **time origin** we understand the time of entry into the study.
+
+* By **event**, we mean --it depends on the field-- death, disease incidence, recovery (e.g., return to work) if we focus on biomedical applications,  default in the credit scoring field, renewals in insurance framework, fault in the engeniering field, etc.
+
+Generally, we will assume that only **one event** is of designated interest. When more than one event is considered (e.g., death from any of several causes), the statistical problem can be characterized as either a **recurrent event** or a **competing risk**. We will see the case of the recurrence event using the [condSURV](https://cran.r-project.org/web/packages/condSURV/index.html) package in the Chapter \@ref(condsurv).
+
+
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE, 
+                      warning = FALSE, cache = TRUE)
+```
+
+<br>
+It is time to see now an example in a real dataset. This is the **Prosper Loan data** provided by Udacity Data Analyst Nanodegree (last updated 3/11/14). It is also at [Kaggle](https://www.kaggle.com/jschnessl/prosperloans). 
+
+[Prosper.com](https://www.prosper.com/) is a peer-to-peer lending marketplace. Borrowers make loan requests and investors contribute as little as $25 towards the loans of their choice. Historically, Prosper made their loan data public nightly, however, effective January 2015, information will be made available 45 days after the end of the quarter.
+
+A link to the data is [here](https://s3.amazonaws.com/udacity-hosted-downloads/ud651/prosperLoanData.csv) and a variable dictionary can be found [here](https://docs.google.com/spreadsheets/d/1gDyi_L4UvIrLTEC6Wri5nbaMmkGmLQBk-Yx3z0XDEtI/edit#gid=0).
+
+
+
+```{r}
+# Prosper Loan data
+web <- "https://s3.amazonaws.com/udacity-hosted-downloads/ud651/prosperLoanData.csv"
+loan <- read.csv(web)
+head(loan)[, c(51, 65, 6, 7, 19, 18, 50)]
+```
+
+
+### Goals of the survival analysis
+
+* Estimate time-to-event for a group of individuals, such as time until default for a group of clients.
+
+* Compare time-to-event between two or more groups, such as residence place for clients.
+
+* Assess the relationship of covariates to time-to-event, such as: occupation, state, income, etc. 
+
+
+
+
+
+
+## Censoring {#intro-censor}
+
+
+The distinguishing feature of survival analysis is that it incorporates a phenomen called **censoring**. Censoring occurs when we have some information about individual survival time, but we don't know the time exactly. 
+
+There are generally several reasons why censoring may occur:
+
+* a person does not experience the event before the study ends
+* a person is lost to follow-up during the study period
+* a person withdraws from the study because of death (if death is not the event of interest) or some other reason
+* a person cancela anticipadamente el credito (in credit scoring)
+* el palzo del credito es inferior a la longitud del estudio y por lo tanto el acreditado cumple integramente con el pago de la deuda antes de concluir el estudio (in credit scoring)
+
+
+
+
+There are three types:
+
+
+* **Right censoring**: Random right censoring arise often in medical, biological and financial applications. In this studies, patients may enter the study at different times and **the real event time is greater than the observed time**. We know that the person’s true survival time becomes incomplete at the right side of the follow-up period, occurring when the study ends or when the person is lost to follow-up or is withdrawn. For these data, the complete survival time interval, which we don’t really know, has been cut off (i.e., censored) at the right side of the observed survival time interval.  **This is the assumed censoring in the case of credit scoring**.
+
+
+* **Left censoring**: The survival time of some subject is considered to be left censored if it is less than the value observed. That is, **the event of interest has already occurred for the individual before the observed time** (not easy to deal with). For example, if we are following persons until they become HIV positive, we may record a failure when a subject first tests positive for the virus. However, we may not know the exact time of first exposure to the virus, and therefore do not know exactly when the failure occurred.  Thus, the survival time is censored on the left side since the true survival time, which ends at exposure, is shorter than the follow-up time, which ends when the subject’s test is positive.
+
+
+
+
+* **Interval censoring**: When **the survival time is only known to occur within an interval**. Such interval censoring occurs when patients in a clinical trial or longitudinal study have periodic follow-up and the patient’s event time is only known to fall in some interval.  As an example, again considering HIV, a subject may have had two HIV tests, where he/she was HIV negative at the time (say, $t_1$) of the first test and HIV positive at the time ($t_2$) of the second test. In such a case, the subject's true survival time occurred after time $t_1$ and before time $t_2$, i.e., the subject is interval-censored in the time interval ($t_1$, $t_2$).
+
+
+
+
+```{r, "censoring", fig.cap = "Illustration of censoring.", echo = FALSE, fig.align = 'center'}
+knitr::include_graphics("images/saBBVA_censoring.pdf")
+```
+
+
+```{block2, type = "rmdhint_sestelo"}
+
+It is important to highlight in this context (**time-to-default**) which situations we are going to considered as censoring. The bank has special characteristics that are not seen in other applications. **Censored cases** are considered to be loans that did **not experience default** by the moment of data gathering. Additionally, early **repayment** and **mature** cases (or complete, those ones who reach their predefined end date before the moment of data gathering) are also marked censored. 
+```
+
+
+
+Another classification:
+
+* **Random type I censoring**: Also known as *Generalized Type I Censoring*. When individuals enter the study at different times and the terminal point of the study is predetermined by the investigator, so that the censoring times are known when an individual is entered into the study.
+
+* **Type II censoring**: The study continues until the failure of the first $r$ individuals, where $r$ is some predetermined integer ($r<n$). All subjects are put on test at the same time, and the test is terminated when $r$ of the $n$ subjects have "failed".
+
+
+
+
+
+## Some notation {#intro-notation}
+
+We are now ready to introduce **basic mathematical terminology** and **notation** for survival analysis.
+
+Let $T$ the random variable that denotes the survival time, i.e., the time to an event. Since $T$ denotes time, its possible values include all nonnegative numbers; that is, $T$ can be any number equal to or greater than zero. Furthermore, $t$ will be any specific value of interest for the random variable $T$. 
+
+
+Additionally, when each subject has a random right censoring time $C_i$ that is independent of their failure time $T_i$, the data is represented by $(Y_i, \Delta_i)$ where $Y_i = \min(T_i, C_i)$ and $\Delta_i = I(T_i \le C_i)$, this $\Delta$ define a $(0,1)$ random variable indicating either failure or censorship. That is, $\Delta = 1$ for failure if the event occurs during the study period, or $\Delta = 0$ if the survival time is censored by the end of the study period.
+
+
+
+
+
+## Survival/hazard functions {#intro-functions}
+
+Assuming that $T$ is a continuous non-negative random variable which denote the time-to-event. There is a certain probability that an individual will have an event at exactly time $t$. For example, about human longevity, human beings have a certain probability of dying at ages $2$, $20$, $80$, and $140$, that could be: $P(T=2)$, $P(T=20)$, $P(T=80)$ and $P(T=140)$. 
+
+Similarly, human beings have a certain probability of being alive at those same ages: $P(T>2)$, $P(T>20)$, $P(T>80)$, and $P(T>140)$.
+
+
+Here an example with same real data [^1]: 
+
+```{r, fig.cap = "Relative frequiencies for grouped ages."}
+data <- read.table("data/deaths_esp.txt", header = TRUE, sep = "")
+data <- data[!data$Age == "110+", ] # to avoid errors
+data$Age_cut <- cut(as.numeric(as.character(data$Age)), 
+                 breaks =  seq(0,110, 10), right = FALSE)
+
+by_age <- data %>%
+  group_by(Age_cut)  %>%
+  summarise (sum_deaths = sum(Total, na.rm = TRUE))
+
+barplot(by_age$sum_deaths/sum(data$Total), names.arg = by_age$Age_cut, ylab= "Relative frequency") 
+
+``` 
+
+<!-- ggplot(data = by_age) + -->
+<!--   geom_bar(mapping = aes(x = Age_cut, y = sum_deaths/data$Total), stat = "identity") -->
+
+
+
+[^1]: Data from *The Human Mortality Database* at http://www.mortality.org.
+  
+  
+  
+
+
+
+
+  
+In the case of human longevity, the probability of death is higher at the beginning and end of life (in Spain). Therefore, $T$ is unlikely to follow a normal distribution. We can see a higher chance of dying (the event of interest) in their 70's and 80's and smaller chance of dying in their 100's and 110’s, because few
+people make it long enough to die at these age.
+  
+  
+The function that gives the probability of the failure time occurring at exactly time $t$ is the **density function $f(t)$** [^2]
+
+[^2]: The probability mass function  is a function that gives the probability that a discrete random variable is exactly equal to some value.
+  
+
+\[
+f(t) = \displaystyle{lim_{\Delta_t \to 0}} \frac{P(t \le T < t + \Delta t)}{\Delta t}
+\]
+and the function that gives the probability of the failure time occur before or exactly at time $t$ is the **cumulative distribution function $F(t)$**
+  
+\[
+F(t) = P(T \le t) = \int_{0}^{t} f(u) du.
+\]  
+  
+
+  
+  
+Note that $F(t)$  is more interesting than $f(t)$... And why? Well, as we said, the main goal of survival analysis is to estimate and compare survival experiences of different groups and the survival experience is described by the **survival function $S(t)$**
+
+\[
+S(t) = P(T > t) = 1 - F(t)
+\]  
+
+The survival function gives the probability that a person survives longer than some specified time $t$: that is, $S(t)$ gives the probability that the random variable $T$ exceeds the specified time $t$. And here, some important characteristics:
+
+- It is nonincreasing; that is, it heads downward as $t$ increases.
+
+- At time $t = 0$, $S(t) = S(0)= 1$; that is, at the start of the study, since no one has gotten the event yet, the probability of surviving past time zero is one.
+
+- At time $t = \inf$, $S(t) = S(\inf) = 0$; that is, theoretically, if the study period increased without limit, eventually nobody would survive, so the survival curve must eventually fall to zero.
+
+
+
+
+
+```{r}
+t <- seq(0, 110, 1)
+tdf <- pweibull(t, scale = 80, shape = 5) # weibull dist
+
+d <- reshape2::melt(data.frame(x = t, dist = tdf, surv = 1 - tdf), id = "x")
+qplot(x = x, y = value, col = variable, data = d, geom = "line", 
+      ylab = "probability", xlab = "t") + 
+  scale_colour_discrete(labels= c("F(t)", "S(t)"), name = "") 
+``` 
+
+
+
+
+Note that these are theoretical properties of survival curves.
+In practice, when using actual data, we usually obtain graphs that are step functions, rather than smooth curves. Moreover, because the study period is never infinite in length and there may be competing risks for failure, it is possible that not everyone studied gets the event. The estimated survival function, $\hat{S}(t)$ thus may not go all the way down to zero at the end of the study.
+
+
+
+
+```{r}
+by_age <- data %>%
+  group_by(Age)  %>%
+  summarise (sum_deaths = sum(Total, na.rm = T))
+t <- rep(as.numeric(as.character(by_age$Age)), by_age$sum_deaths) # real times
+
+aux <- ecdf(t)
+x <- seq(0, 110, 1)
+edf <- aux(x) # evaluating the ecdf in some points
+esf <- 1- edf
+
+d <- reshape2::melt(data.frame(x = x, dist = edf, surv = esf), id = "x")
+qplot(x = x, y = value, col = variable, data = d, geom = "step", 
+      ylab = "Probability", xlab = "t") + scale_colour_discrete(labels = c("F(t)", "S(t)"), name = "")
+
+``` 
+
+<!-- ```{r} -->
+<!-- #t <- sort(runif(30, 0, 7)) -->
+<!-- #t <- seq(0, 7, length.out = 100) -->
+<!-- t <- sort(rweibull(500, scale = 80, shape = 5)) -->
+<!-- edf <- ecdf(t) -->
+<!-- edf2 <- edf(t) -->
+<!-- plot(t, edf2, type = "s", ylab = "Probability", xlab = "t") -->
+<!-- lines(t, 1 - edf2, type = "s", ylab = "Probability", xlab = "t", col = 2) -->
+<!-- legend("right", c("F(t)", "S(t)"), col = c(1,2), lwd = c(1, 1)) -->
+<!-- ```  -->
+
+
+
+
+The **hazard function $h(t)$**, is given by the formula: 
+
+\[
+h(t) = \displaystyle{lim_{\Delta_t \to 0}} \frac{P(t \le T < t + \Delta t | T \ge t)}{\Delta t}
+\]
+This mathematical formula is difficult to explain in practical terms.
+We could say that the hazard function is the probability that if you survive to time $t$, you will experience the event in the next instant, or in other words, the hazard function gives the instantaneous potential per unit time for the event to occur, given that the individual has survived up to time $t$. Because of the given sign here, the hazard function is sometimes called a **conditional failure rate**.
+
+Note that, in contrast to the **survival function**, which focuses on **not failing**, the **hazard function** focuses on **failing**, that is, on the event occurring. Thus, in some sense, the hazard function can be considered as giving the opposite side of the information given by the survivor function. 
+
+
+Additionally, in contrast to a survival function, the graph of $h(t)$ does not have to start at one and go down to zero, but rather can start anywhere and go up and down in any direction over time. In particular, for a specified value of $t$, the hazard function $h(t)$ has the following characteristics:
+
+
+- It is always nonnegative, that is, equal to or greater than zero.
+
+- It has no upper bound.
+
+
+
+
+Finally note that the hazard function can be expressed as the probability density function divided by the survival function, $h(t) = \frac{f(t)}{S(t)}$:
+  
+
+\[
+P(t \le T \lt t + dt | T \ge t) = \frac{P(t \le T \lt t + dt, T \ge t)}{P(T \ge t)} = 
+\frac{P(t \le T \lt t + dt)}{P(T \ge t)}
+\]
+
+
+
+
+```{r}
+h <- hist(t, plot = FALSE)
+x <- h$mids
+dens <- h$density
+surv <- 1 - aux(x)
+hazard <- dens/surv
+qplot(x = x, y = hazard, geom = "line", ylab = "Conditional probability of death",
+      xlab = "Age")
+```
+
+
+
+
+<!-- In the shiny application below you can see some examples of hazard functions: -->
+<!--  TODO shiny with several hazard: exponential, increasing weibull, decresing weibull, lognormal -->
+
+<!-- ```{r} -->
+<!-- x <- seq(0, 5, 0.01) -->
+<!-- den <- dexp(x, 1) -->
+<!-- surv <- 1 - pexp(x, 1) -->
+<!-- plot(x, den/surv, type = "l", ylim = c(0.5,1.5), ylab = "Hazard", xlab = "t") -->
+
+<!-- ``` -->
+
+
+
+
+
+In some cases it can be more interesting to present the cumulative hazard. It will be $H(t) = \int_{0}^{t} h(u) du$.
+
+
+
+```{block2, type = "rmdhint_sestelo"}
+**Hazard vs. density function**
+
+According to the human longevity study, note that when you are born, you have a certain probability of dying at any age, that will be $P(T = t)$, i.e. the density function. A woman born today has, say, a 1% chance of dying at 80 years. However, as you survive for a while, your probabilities keep changing, and these new conditional probabilities are given by the hazard function. In such case, we have a woman who is 79 today and has, say, a 7% chance of dying at 80 years.
+```
+
+
+
+
+## Relation between functions 
+
+For **parametric** survival models, time is assumed to follow some well-known distribution whose probability density function $f(t)$ can be expressed in terms of unknown parameters. Once a probability density function is specified for survival time, the corresponding survival and hazard functions can be determined. 
+
+
+For example, the **survival function** can be ascertained from the **probability density function** by integrating over the probability density function from time $t$ to infinity, or by calculating the difference between one and the **cumulative distribution function** $F(t)$. The **hazard** can then be found by dividing the negative derivative of the survival function by the survival function.  Note that the functions $f(t)$, $F(t)$, $h(t)$, and $H(t)$ are all related. 
+
+
+#.  Assume that $T$ is **non-negative and continuos**:
+
+    * Probability density function: 
+  
+        + $f(t) = F'(t) = \frac{dF(t)}{dt}$ 
+      
+    * Cumulative distribution function:
+    
+        + $F(t) = P(T \le t) =  \int_0^t{f(u)}{du}$ 
+    
+    
+    * Survival function
+    
+        + $S(t) = 1 - F(t)$ 
+        
+        + $S(t) = P(T > t) = \int_t^{+\infty}{f(u)}{du}$ 
+        
+        + $S(t) = exp \left( - \int_0^t h(u) du \right)$ 
+        
+        + $S(t) =  \exp(-H(t))$
+        
+        
+    * Hazard function
+    
+        + $h(t) = \frac{ f(t)}{S(t)}= \frac{ -d[S(t)]/dt}{S(t)}$
+    
+    * Cumulative hazard function
+    
+        + $H(t) =  \int_0^t h(u) du$
+   
+<br>
+
+#. Assume that $T$ is **non-negative and discrete**,
+
+    
+    * Probability mass function: 
+        + $p(t_i) = P(T = t_i)$
+        + $p(t_i) = S(t_{i-1}) - S(t_i)$
+        + $p(t_i) = F(t_i) - F(t_{i-1})$
+        
+    * Cumulative distribution function:
+        + $F(t) = P(T \le t) =  \sum_{t_i \le t}{p(t_i)}$ 
+    
+    
+    * Survival function
+        + $S(t) = \prod_{t_i \le t} \left( 1 - h(t_i) \right)$ 
+        
+    * Hazard function
+        + $h(t) = \frac{ p(t_i)}{S(t_{i-1})}= \frac{ -d[S(t)]/dt}{S(t)}$
+        + $h(t) = 1- \frac{ S(t_i)}{S(t_{i-1})}$
+    
+    * Cumulative hazard function
+        + $H(t) =  \sum_{t_i \le t} h(t_i)$
+
+
+## Some common distributions {#intro-distri}
+
+
++--------------------+-----------------------+---------------------------------+
+| Definition         | Functions             | Measures                        |
++====================+=======================+=================================+
+| **Exponential**    |* $f(t)=\lambda        |  $E(T)=\int_0^{+\infty}uf(u)    |
+|                    | exp(-\lambda t)$      | du= \frac{1}{\lambda}$          |                            
+|   $T\sim Exp(      | where $t \ge 0 and    |                                 |
+|  \lambda)$         |  \lambda > 0$         |                                 |
+|                    |                       |                                 |
+|                    |* $F(t)=1-exp(-\lambda |                                 |
+|                    |  t)$                  |  $Var(T)=E(T^2)-E(T)^2 =        |
+|                    |                       |   \ldots = \frac{1}{\lambda^2}$ |
+|                    |* $S(t)=exp(-\lambda   |                                 |
+|                    |   t)$                 |                                 |
+|                    |                       |                                 |
+|                    |* $h(t) =  \lambda$    |                                 |
+|                    |                       |                                 |
+|                    |* $H(t) =  \lambda t$  |                                 |
++--------------------+-----------------------+---------------------------------+
+| **Weibull**        |* $f(t)=\frac{a}{b}    | $E(T)=b\Gamma \left(1+          |
+|                    | (\frac{t}{b})^{a-1}   |   \frac{1}{a}\right)$           |
+|   $T\sim Weib(a,b)$| exp^{-\left(\frac{t}  |                                 |
+|   with $a$ shape   | {b} \right)^a}$       | $Var(T) = b^2 \Gamma \left(1+   |
+|  and $b$ scale     |  where                |  \frac{2}{a}\right) - b^2       |
+|                    |  $t\ge 0$ and $a,b> 0$|  \left [ \Gamma \left(1+        |
+|                    |                       |   \frac{1}{a}\right)\right]^2$  |
+|                    |* $F(t)= 1-exp^{-      |                                 |
+|                    |   \left(\frac{t}{b}   | where, $\Gamma(k)$ is the gamma |
+|                    |   \right)^a}$         | function.                       |
+|                    |                       |                                 |
+|                    |* $S(t)=exp^{-\left(   | $\Gamma (k) = \int_0^{+\infty}  |
+|                    |    \frac{t}{b}        | u^{k-1} exp^{-u}du$             |
+|                    | \right)^a}$           |                                 |
+|                    |                       |                                 |
+|                    |* $h(t)=ab^{-a}t^{a-1}$|                                 |
+|                    |                       |                                 |
+|                    |* $H(t)=(\frac{t}      |                                 |
+|                    | {b})^a$               |                                 |
++--------------------+-----------------------+---------------------------------+
+
+
+
+
+There are other distributions such as Log-Normal, Log-Logistic, Pareto, Rayleigh, Gomptertz, or even more. For more details see http://data.princeton.edu/pop509/ParametricSurvival.pdf. 
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- You can label chapter and section titles using `{#label}` after them, e.g., we can reference Chapter \@ref(intro). If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \@ref(methods). -->
+
+<!-- Figures and tables with captions will be placed in `figure` and `table` environments, respectively. -->
+
+<!-- ```{r nice-fig, fig.cap='Here is a nice figure!', out.width='80%', fig.asp=.75, fig.align='center'} -->
+<!-- par(mar = c(4, 4, .1, .1)) -->
+<!-- plot(pressure, type = 'b', pch = 19) -->
+<!-- ``` -->
+
+<!-- Reference a figure by its code chunk label with the `fig:` prefix, e.g., see Figure \@ref(fig:nice-fig). Similarly, you can reference tables generated from `knitr::kable()`, e.g., see Table \@ref(tab:nice-tab). -->
+
+<!-- ```{r nice-tab, tidy=FALSE} -->
+<!-- knitr::kable( -->
+<!--   head(iris, 20), caption = 'Here is a nice table!', -->
+<!--   booktabs = TRUE -->
+<!-- ) -->
+<!-- ``` -->
+
+<!-- You can write citations, too. For example, we are using the **bookdown** package [@R-bookdown] in this sample book, which was built on top of R Markdown and **knitr** [@xie2015]. -->
+
