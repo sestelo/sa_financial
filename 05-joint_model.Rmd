@@ -82,11 +82,9 @@ Y_{ij} = \beta_{i,0} + \beta_{i, 1} X_{ij} + \varepsilon_{ij}
 
 
 \[
- \bigg(\begin{array}{c} \beta_{i,0}\\ \beta_{i,1}\\ \end{array} \bigg) \sim
- 
- N \bigg[ \bigg(\begin{array}{c} \beta_{0}\\ \beta_{1}\\ \end{array} \bigg),  \bigg(\begin{array}{c} D_{00} & D_{01}\\ D_{10} & D_{11}\\ \end{array} \bigg)   \bigg]
+ \bigg(\begin{array}{c} \beta_{i,0}\\ \beta_{i,1}\\ \end{array} \bigg) \sim N \bigg[ \bigg(\begin{array}{c} \beta_{0}\\ \beta_{1}\\ \end{array} \bigg),  \bigg(\begin{array}{c} D_{00} & D_{01}\\ D_{10} & D_{11}\\ \end{array} \bigg)   \bigg]
 \]
-where $D$ is the variance-covariance matrix of the random effects, with $D_00= var(b_{i,0})$  and $D_11= var(b_{i,1})$.
+where $D$ is the variance-covariance matrix of the random effects, with $D_{00}= var(b_{i,0})$  and $D_{11}= var(b_{i,1})$.
 
 
 

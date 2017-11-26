@@ -1,0 +1,117 @@
+
+# Spoiler!! {#clustcurv}
+
+
+
+Here we are going to see a new methodology to **perform groups of survival curves**. This works is still under revision in the *Statistics in Medicine* journal.
+
+
+
+## Introduction
+
+
+
+In many medical studies it could be interesting to ascertain whether groups of survival curves can be carried out, especially when confronted with a considerable number of curves. Though the aforementioned methods like Log-rank, Peto & Peto, etc. can be used to compare multiple survival curves, to the best of our knowledge, there are none available method that can be used to determine groups among a series of survival curves. When the log-rank test (or its analogous) is used to compare three or more survival curves at once, the test reports a single p-value testing the null hypothesis that all the samples come from populations with identical survival. If the null hypothesis of equality of curves is rejected, then, this leads to the clear conclusion that at least one curve is different. However, these methods cannot be used to ascertain whether groups of curves can be performed or if all these curves are different from each other.   
+
+`clustcurv` proposes an approach that allows determining survival groups with an automatic selection of their number. 
+
+
+## Algortihm 
+
+
+**$k$-survival curves  algorithm**
+
+
+
+1. With $\{(\widetilde{T}_{ij}, \Delta_{ij})$, $i=1, \ldots, n_j$\}, $j = 1, \ldots, J$, and using the Kaplan-Meier estimator obtain $\hat S_j$.
+
+
+2. Initialize with $K = 1$ and test $H_0(K)$:
+
+
+  +  Obtain the ``best" partition $G_1, \ldots, G_K$ by means of the $k$-means or $k$-medians algorithm.
+
+  + For $k = 1, \ldots, K$, estimate $M_k$ and retrieve the test statistic $D$.
+
+  + Generate $B$ bootstrap samples and calculate $D^{\ast b}$, for $b = 1, \ldots, B$.
+
+  + \textbf{if} $D > D^{\ast (1-\alpha)}$ \textbf{then} 
+  	- reject $H_0(K)$
+  	- $K = K + 1$
+  	- go back to the beginning of current section 
+	
+	     else
+	  - accept $H_0(K)$
+        end 
+  
+3. The number $K$ of groups of survival curves is determined.
+
+
+	
+## Aplication to real data
+
+
+
+```{r, eval = FALSE}
+head(veteran)
+
+fit <- survfit(Surv(time, status) ~ factor(celltype), data = veteran)
+autoplot(fit)
+survdiff(Surv(time,status)~factor(celltype), data=veteran)
+survminer::pairwise_survdiff(Surv(time, status) ~ celltype,
+                                    data = veteran, p.adjust.method = "BH") 
+
+?clustcurv_surv
+res <- clustcurv_surv(time = veteran$time, status = veteran$status,
+                      fac = veteran$celltype, algorithm = "kmeans",
+                      nboot = 100,
+                      cluster = TRUE, seed = 29072016)
+res
+
+autoplot(res, groups_by_colour = TRUE, xlab = "Time (in days)")
+```
+
+
+
+
+
+
+
+```{r, eval = FALSE}
+colonCSm <- na.omit(data.frame(time = colonCS$Stime, status = colonCS$event,
+                       nodes = colonCS$nodes))
+table(colonCSm$nodes)
+# deleting people with zero nodes
+colonCSm <- colonCSm[-c(which(colonCSm$nodes == 0)), ]
+table(colonCSm$nodes)
+
+# grouping people with more than 10 nodes
+colonCSm$nodes[colonCSm$nodes >= 10] <- 10
+table(colonCSm$nodes)  # 10 levels
+
+
+model <- survfit(Surv(time, status) ~ factor(nodes), data = colonCSm)
+survdiff(Surv(time,status)~factor(nodes), data = colonCSm)
+
+
+survminer::pairwise_survdiff(Surv(time, status) ~ nodes,
+                                    data = colonCSm, p.adjust.method = "BH")
+
+
+
+res <- clustcurv_surv(time = colonCSm$time, status = colonCSm$status,
+                      fac = colonCSm$nodes, algorithm = "kmeans",
+                      nboot = 100, cluster = TRUE, seed = 300716)
+
+autoplot(res, groups_by_colour = FALSE, xlab = "Time (in days)")
+
+autoplot(res, groups_by_colour = TRUE, xlab = "Time (in days)")
+
+
+res$table
+data.frame(res$levels, res$cluster)
+```
+
+	
+	
+
