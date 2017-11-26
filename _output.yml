@@ -16,8 +16,6 @@ bookdown::gitbook:
 
   
 bookdown::epub_book: default
-
-
 sharing:
       facebook: yes
       twitter: yes
