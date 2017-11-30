@@ -52,7 +52,7 @@ In many medical studies it could be interesting to ascertain whether groups of s
 
 
 
-```{r, eval = FALSE}
+```{r}
 head(veteran)
 
 fit <- survfit(Surv(time, status) ~ factor(celltype), data = veteran)
@@ -71,13 +71,12 @@ res
 autoplot(res, groups_by_colour = TRUE, xlab = "Time (in days)")
 ```
 
+Now we are going to see anoyher example with a catgorical variable with more levels.
 
 
 
 
-
-
-```{r, eval = FALSE}
+```{r}
 colonCSm <- na.omit(data.frame(time = colonCS$Stime, status = colonCS$event,
                        nodes = colonCS$nodes))
 table(colonCSm$nodes)
@@ -112,6 +111,26 @@ res$table
 data.frame(res$levels, res$cluster)
 ```
 
+	One faster option than applying directly the `clustcurv_surv` function, that is based on boostrap techniques for detecting the number of groups, is to use the `kgroups_surv` for $k = 1, \ldots, J-1$.  Then  you can plot the resulted measures for each $k$ and choose the one that with the "less" measure.
 	
 	
+
+
+```{r}
+fun <- function(x){
+  kgroups_surv(time = colonCSm$time, status = colonCSm$status,
+                      fac = colonCSm$nodes, algorithm = "kmeans", k = x)$measure
+}
+
+ts <- sapply(1:8, fun) 
+qplot(1:8, ts, xlab = "Number of groups", ylab = "Test estatistic value")
+
+```
+
+
+
+
+
+
+
 

@@ -197,9 +197,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <div id="an-example-stratified-proportional-hazards-models" class="section level3">
 <h3><span class="header-section-number">3.7.1</span> An example… Stratified Proportional Hazards Models</h3>
-<p>Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to stratify taking this variable into account and use the proportional hazards model in each stratum for the other covariates. We include in the model predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.</p>
-<p>Now, the subjects in the <span class="math inline">\(z\)</span>-th stratum have an arbitrary baseline hazard function <span class="math inline">\(h_{0z}(t)\)</span> and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum.</p>
-<p>In the Stratified Proportional Hazards Model the regression coefficients are assumed to be the same for each stratum although the baseline hazard functions may be different and completely unrelated.</p>
+<p>Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to <strong>stratify taking this variable into account</strong> and use the proportional hazards model in each stratum for the other covariates. We include in the model predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.</p>
+<p>Now, the <strong>subjects in the <span class="math inline">\(z\)</span>-th stratum</strong> have an arbitrary baseline hazard function <span class="math inline">\(h_{0z}(t)\)</span> and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum</p>
+<p><span class="math display">\[
+h_z(t, \textbf X) = h_{0z}(t)  e^{\sum_{j=1}^p \beta_j X_j}
+\]</span> with <span class="math inline">\(z = 1, \ldots, k\)</span> levels of the variable that is stratified.</p>
+<p>In the <strong>Stratified Proportional Hazards Model</strong> the regression <strong>coefficients are assumed to be the same for each stratum</strong> although the <strong>baseline hazard functions may be different</strong> and completely unrelated.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m3 &lt;-<span class="st"> </span><span class="kw">coxph</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>LoanOriginalAmount2  <span class="op">+</span>
 <span class="st">              </span><span class="kw">strata</span>(IsBorrowerHomeowner), <span class="dt">data =</span> loan_filtered) 
 <span class="kw">summary</span>(m3)
@@ -222,7 +225,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 ## Likelihood ratio test= 3.35  on 1 df,   p=0.06731
 ## Wald test            = 3.22  on 1 df,   p=0.07264
 ## Score (logrank) test = 3.22  on 1 df,   p=0.07255</code></pre></div>
-<p>You can see that the output is similar to previous model without stratification however, in this case, we do not have information about the hazard ratio of the stratification variable, <code>IsBorrowerHomeowner</code>. This variable is not really in the model. In any case, you can plot it…</p>
+<p>You can see that the output is similar to previous model without stratification however, in this case, <strong>we do not have information about the hazard ratio of the stratification variable</strong>, <code>IsBorrowerHomeowner</code>. This variable is not really in the model. In any case, you can plot it…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsurvplot</span>(<span class="kw">survfit</span>(m3), <span class="dt">data =</span> loan_filtered, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 

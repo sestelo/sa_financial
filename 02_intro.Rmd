@@ -83,8 +83,10 @@ There are generally several reasons why censoring may occur:
 * a person does not experience the event before the study ends
 * a person is lost to follow-up during the study period
 * a person withdraws from the study because of death (if death is not the event of interest) or some other reason
-* a person cancela anticipadamente el credito (in credit scoring)
-* el palzo del credito es inferior a la longitud del estudio y por lo tanto el acreditado cumple integramente con el pago de la deuda antes de concluir el estudio (in credit scoring)
+
+
+<!-- * a person cancela anticipadamente el credito (in credit scoring) -->
+<!-- * el palzo del credito es inferior a la longitud del estudio y por lo tanto el acreditado cumple integramente con el pago de la deuda antes de concluir el estudio (in credit scoring) -->
 
 
 
@@ -96,8 +98,6 @@ There are three types:
 
 
 * **Left censoring**: The survival time of some subject is considered to be left censored if it is less than the value observed. That is, **the event of interest has already occurred for the individual before the observed time** (not easy to deal with). For example, if we are following persons until they become HIV positive, we may record a failure when a subject first tests positive for the virus. However, we may not know the exact time of first exposure to the virus, and therefore do not know exactly when the failure occurred.  Thus, the survival time is censored on the left side since the true survival time, which ends at exposure, is shorter than the follow-up time, which ends when the subject’s test is positive.
-
-
 
 
 * **Interval censoring**: When **the survival time is only known to occur within an interval**. Such interval censoring occurs when patients in a clinical trial or longitudinal study have periodic follow-up and the patient’s event time is only known to fall in some interval.  As an example, again considering HIV, a subject may have had two HIV tests, where he/she was HIV negative at the time (say, $t_1$) of the first test and HIV positive at the time ($t_2$) of the second test. In such a case, the subject's true survival time occurred after time $t_1$ and before time $t_2$, i.e., the subject is interval-censored in the time interval ($t_1$, $t_2$).

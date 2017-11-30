@@ -190,53 +190,192 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="aplication-to-real-data" class="section level2">
 <h2><span class="header-section-number">6.3</span> Aplication to real data</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(veteran)
+##   trt celltype time status karno diagtime age prior
+## 1   1 squamous   72      1    60        7  69     0
+## 2   1 squamous  411      1    70        5  64    10
+## 3   1 squamous  228      1    60        3  38     0
+## 4   1 squamous  126      1    60        9  63    10
+## 5   1 squamous  118      1    70       11  65    10
+## 6   1 squamous   10      1    20        5  49     0
 
 fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(celltype), <span class="dt">data =</span> veteran)
-<span class="kw">autoplot</span>(fit)
-<span class="kw">survdiff</span>(<span class="kw">Surv</span>(time,status)<span class="op">~</span><span class="kw">factor</span>(celltype), <span class="dt">data=</span>veteran)
+<span class="kw">autoplot</span>(fit)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">survdiff</span>(<span class="kw">Surv</span>(time,status)<span class="op">~</span><span class="kw">factor</span>(celltype), <span class="dt">data=</span>veteran)
+## Call:
+## survdiff(formula = Surv(time, status) ~ factor(celltype), data = veteran)
+## 
+##                             N Observed Expected (O-E)^2/E (O-E)^2/V
+## factor(celltype)=squamous  35       31     47.7      5.82     10.53
+## factor(celltype)=smallcell 48       45     30.1      7.37     10.20
+## factor(celltype)=adeno     27       26     15.7      6.77      8.19
+## factor(celltype)=large     27       26     34.5      2.12      3.02
+## 
+##  Chisq= 25.4  on 3 degrees of freedom, p= 1.27e-05
 survminer<span class="op">::</span><span class="kw">pairwise_survdiff</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>celltype,
                                     <span class="dt">data =</span> veteran, <span class="dt">p.adjust.method =</span> <span class="st">&quot;BH&quot;</span>) 
+## 
+##  Pairwise comparisons using Log-Rank test 
+## 
+## data:  veteran and celltype 
+## 
+##           squamous smallcell adeno  
+## smallcell 0.00134  -         -      
+## adeno     0.00134  0.75565   -      
+## large     0.43731  0.00331   0.00016
+## 
+## P value adjustment method: BH
 
 ?clustcurv_surv
 res &lt;-<span class="st"> </span><span class="kw">clustcurv_surv</span>(<span class="dt">time =</span> veteran<span class="op">$</span>time, <span class="dt">status =</span> veteran<span class="op">$</span>status,
                       <span class="dt">fac =</span> veteran<span class="op">$</span>celltype, <span class="dt">algorithm =</span> <span class="st">&quot;kmeans&quot;</span>,
                       <span class="dt">nboot =</span> <span class="dv">100</span>,
                       <span class="dt">cluster =</span> <span class="ot">TRUE</span>, <span class="dt">seed =</span> <span class="dv">29072016</span>)
+## Checking 1 cluster... 
+## Checking 2 clusters... 
+## 
+## Finally, there are 2 clusters.
 res
+## $table
+##   H0    Tvalue pvalue
+## 1  1 3.2108812   0.00
+## 2  2 0.3799373   0.43
+## 
+## $levels
+## [1] &quot;squamous&quot;  &quot;smallcell&quot; &quot;adeno&quot;     &quot;large&quot;    
+## 
+## $cluster
+## [1] 2 1 1 2
+## 
+## $centers
+## Call: survfit(formula = Surv(time, status) ~ aux$cluster[fac])
+## 
+##                     n events median 0.95LCL 0.95UCL
+## aux$cluster[fac]=1 75     71     51      30      73
+## aux$cluster[fac]=2 62     57    143     110     216
+## 
+## $curves
+## Call: survfit(formula = Surv(time, status) ~ fac)
+## 
+##                n events median 0.95LCL 0.95UCL
+## fac=squamous  35     31    118      82     314
+## fac=smallcell 48     45     51      25      63
+## fac=adeno     27     26     51      35      92
+## fac=large     27     26    156     105     231
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;clustcurv_surv&quot;
 
 <span class="kw">autoplot</span>(res, <span class="dt">groups_by_colour =</span> <span class="ot">TRUE</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days)&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-73-2.png" width="672" /></p>
+<p>Now we are going to see anoyher example with a catgorical variable with more levels.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">colonCSm &lt;-<span class="st"> </span><span class="kw">na.omit</span>(<span class="kw">data.frame</span>(<span class="dt">time =</span> colonCS<span class="op">$</span>Stime, <span class="dt">status =</span> colonCS<span class="op">$</span>event,
                        <span class="dt">nodes =</span> colonCS<span class="op">$</span>nodes))
 <span class="kw">table</span>(colonCSm<span class="op">$</span>nodes)
+## 
+##   0   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17 
+##   2 274 194 125  84  46  43  38  23  20  13  10  11   7   4   6   1   2 
+##  19  20  22  24  27  33 
+##   2   2   1   1   1   1
 <span class="co"># deleting people with zero nodes</span>
 colonCSm &lt;-<span class="st"> </span>colonCSm[<span class="op">-</span><span class="kw">c</span>(<span class="kw">which</span>(colonCSm<span class="op">$</span>nodes <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)), ]
 <span class="kw">table</span>(colonCSm<span class="op">$</span>nodes)
+## 
+##   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  19 
+## 274 194 125  84  46  43  38  23  20  13  10  11   7   4   6   1   2   2 
+##  20  22  24  27  33 
+##   2   1   1   1   1
 
 <span class="co"># grouping people with more than 10 nodes</span>
 colonCSm<span class="op">$</span>nodes[colonCSm<span class="op">$</span>nodes <span class="op">&gt;=</span><span class="st"> </span><span class="dv">10</span>] &lt;-<span class="st"> </span><span class="dv">10</span>
 <span class="kw">table</span>(colonCSm<span class="op">$</span>nodes)  <span class="co"># 10 levels</span>
+## 
+##   1   2   3   4   5   6   7   8   9  10 
+## 274 194 125  84  46  43  38  23  20  62
 
 
 model &lt;-<span class="st"> </span><span class="kw">survfit</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span><span class="kw">factor</span>(nodes), <span class="dt">data =</span> colonCSm)
 <span class="kw">survdiff</span>(<span class="kw">Surv</span>(time,status)<span class="op">~</span><span class="kw">factor</span>(nodes), <span class="dt">data =</span> colonCSm)
+## Call:
+## survdiff(formula = Surv(time, status) ~ factor(nodes), data = colonCSm)
+## 
+##                    N Observed Expected (O-E)^2/E (O-E)^2/V
+## factor(nodes)=1  274       94   151.93   22.0901   33.9249
+## factor(nodes)=2  194       74   102.87    8.1022   10.5979
+## factor(nodes)=3  125       61    62.56    0.0387    0.0453
+## factor(nodes)=4   84       43    38.26    0.5868    0.6434
+## factor(nodes)=5   46       34    17.06   16.8249   17.5428
+## factor(nodes)=6   43       27    16.43    6.8027    7.0736
+## factor(nodes)=7   38       25    15.41    5.9636    6.1880
+## factor(nodes)=8   23       18     7.22   16.0875   16.3765
+## factor(nodes)=9   20       14     8.05    4.3931    4.4795
+## factor(nodes)=10  62       49    19.21   46.2239   48.6066
+## 
+##  Chisq= 129  on 9 degrees of freedom, p= 0
 
 
 survminer<span class="op">::</span><span class="kw">pairwise_survdiff</span>(<span class="kw">Surv</span>(time, status) <span class="op">~</span><span class="st"> </span>nodes,
                                     <span class="dt">data =</span> colonCSm, <span class="dt">p.adjust.method =</span> <span class="st">&quot;BH&quot;</span>)
+## 
+##  Pairwise comparisons using Log-Rank test 
+## 
+## data:  colonCSm and nodes 
+## 
+##    1       2       3       4       5       6       7       8       9      
+## 2  0.41644 -       -       -       -       -       -       -       -      
+## 3  0.00853 0.10482 -       -       -       -       -       -       -      
+## 4  0.00221 0.04032 0.51450 -       -       -       -       -       -      
+## 5  3.9e-09 1.8e-06 0.00072 0.03427 -       -       -       -       -      
+## 6  1.7e-05 0.00072 0.03750 0.22540 0.60307 -       -       -       -      
+## 7  2.1e-05 0.00072 0.04219 0.25752 0.49274 0.95088 -       -       -      
+## 8  3.0e-08 4.1e-06 0.00047 0.01407 0.51450 0.30796 0.25752 -       -      
+## 9  0.00043 0.00493 0.08152 0.23872 0.76034 0.90717 0.79064 0.51450 -      
+## 10 &lt; 2e-16 1.2e-11 9.1e-07 0.00047 0.37154 0.16671 0.10386 0.95088 0.37007
+## 
+## P value adjustment method: BH
 
 
 
 res &lt;-<span class="st"> </span><span class="kw">clustcurv_surv</span>(<span class="dt">time =</span> colonCSm<span class="op">$</span>time, <span class="dt">status =</span> colonCSm<span class="op">$</span>status,
                       <span class="dt">fac =</span> colonCSm<span class="op">$</span>nodes, <span class="dt">algorithm =</span> <span class="st">&quot;kmeans&quot;</span>,
                       <span class="dt">nboot =</span> <span class="dv">100</span>, <span class="dt">cluster =</span> <span class="ot">TRUE</span>, <span class="dt">seed =</span> <span class="dv">300716</span>)
+## Checking 1 cluster... 
+## Checking 2 clusters... 
+## 
+## Finally, there are 2 clusters.
 
-<span class="kw">autoplot</span>(res, <span class="dt">groups_by_colour =</span> <span class="ot">FALSE</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days)&quot;</span>)
-
-<span class="kw">autoplot</span>(res, <span class="dt">groups_by_colour =</span> <span class="ot">TRUE</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days)&quot;</span>)
-
+<span class="kw">autoplot</span>(res, <span class="dt">groups_by_colour =</span> <span class="ot">FALSE</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days)&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="kw">autoplot</span>(res, <span class="dt">groups_by_colour =</span> <span class="ot">TRUE</span>, <span class="dt">xlab =</span> <span class="st">&quot;Time (in days)&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-74-2.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
 
 res<span class="op">$</span>table
-<span class="kw">data.frame</span>(res<span class="op">$</span>levels, res<span class="op">$</span>cluster)</code></pre></div>
+##   H0    Tvalue pvalue
+## 1  1 15.425589   0.00
+## 2  2  2.364531   0.18
+<span class="kw">data.frame</span>(res<span class="op">$</span>levels, res<span class="op">$</span>cluster)
+##    res.levels res.cluster
+## 1           1           2
+## 2           2           2
+## 3           3           2
+## 4           4           2
+## 5           5           1
+## 6           6           1
+## 7           7           1
+## 8           8           1
+## 9           9           1
+## 10         10           1</code></pre></div>
+<pre><code>One faster option than applying directly the `clustcurv_surv` function, that is based on boostrap techniques for detecting the number of groups, is to use the `kgroups_surv` for $k = 1, \ldots, J-1$.  Then  you can plot the resulted measures for each $k$ and choose the one that with the &quot;less&quot; measure.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fun &lt;-<span class="st"> </span><span class="cf">function</span>(x){
+  <span class="kw">kgroups_surv</span>(<span class="dt">time =</span> colonCSm<span class="op">$</span>time, <span class="dt">status =</span> colonCSm<span class="op">$</span>status,
+                      <span class="dt">fac =</span> colonCSm<span class="op">$</span>nodes, <span class="dt">algorithm =</span> <span class="st">&quot;kmeans&quot;</span>, <span class="dt">k =</span> x)<span class="op">$</span>measure
+}
+
+ts &lt;-<span class="st"> </span><span class="kw">sapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, fun) 
+<span class="kw">qplot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">8</span>, ts, <span class="dt">xlab =</span> <span class="st">&quot;Number of groups&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Test estatistic value&quot;</span>)</code></pre></div>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
 
 </div>
 <!-- </div> -->

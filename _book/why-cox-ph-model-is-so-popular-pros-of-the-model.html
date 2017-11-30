@@ -190,10 +190,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="why-cox-ph-model-is-so-popular-pros-of-the-model" class="section level2">
 <h2><span class="header-section-number">3.8</span> Why Cox PH model is so popular? (pros of the model)</h2>
 <ul>
-<li><p>It is a “robust” model, so that the results from using the Cox model will closely approximate the results for the correct parametric model (even though the baseline hazard is not specified).</p></li>
-<li><p>The specific form of the model - which gives the hazard function as a product of a baseline hazard involving <span class="math inline">\(t\)</span> and an exponential expression involving the <span class="math inline">\(X\)</span>’s without <span class="math inline">\(t\)</span> - is very interesting. The exponential part of this product is appealing because it ensures that the fitted model will always give estimated hazards that are non-negative (this is perfect, because by definition, the value of the hazard function must range between zero and plus infinity).</p></li>
-<li><p>Although the baseline hazard part of the model is unspecified, we can estimate the betas in the exponential part of the model (as we have seen). Then, the hazard function <span class="math inline">\(h(t,\textbf X)\)</span> and its corresponding survival curves <span class="math inline">\(S(t, \textbf X\)</span>) can also be estimated.</p></li>
-<li><p>Finally, it is preferred over the logistic model when survival time information is available and there is censoring. Because you can obtain more information!</p></li>
+<li>It is a <strong>“robust” model</strong>, so that the results from using the Cox model will closely <strong>approximate</strong> the results for the <strong>correct parametric</strong> model (even though the baseline hazard is not specified).</li>
+</ul>
+<!-- - The specific form of the model - which gives the hazard function as a product of a baseline hazard involving $t$ and an exponential expression involving the $X$'s without $t$ - is very interesting. The exponential part of this product is appealing because it ensures that the fitted model will always give estimated hazards that are non-negative (this is perfect, because by definition, the value of the hazard function must range between zero and plus infinity). -->
+<ul>
+<li><p>Although the <strong>baseline hazard part of the model is unspecified</strong>, we can estimate the betas in the exponential part of the model (as we have seen). Then, the hazard function <span class="math inline">\(h(t,\textbf X)\)</span> and its corresponding survival curves <span class="math inline">\(S(t, \textbf X\)</span>) can also be estimated.</p></li>
+<li><p>Finally, it is <strong>preferred over the logistic model</strong> when survival time information is available and there is censoring. Because you can obtain more information!</p></li>
 </ul>
 </div>
             </section>

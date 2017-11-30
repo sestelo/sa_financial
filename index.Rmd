@@ -2,7 +2,7 @@
 title: "A short course on Survival Analysis applied to the Financial Industry"
 subtitle: "BBVA Data & Analytics, Madrid"
 author: "Marta Sestelo"
-date: "27-28 /11/2017, v1.0"
+date: "27-28 /11/2017, v1.1"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
@@ -44,6 +44,7 @@ library(JM)
 library(dplyr)
 library(survminer)
 library(clustcurv)
+library(ggplot2)
 ```
 
 Links: [`survival`](https://cran.r-project.org/web/packages/survival/index.html)[@survival-package],  [`condSURV`](https://cran.r-project.org/web/packages/condSURV/index.html)[@condsurv_package; @meiramachado-sestelo:2016],

@@ -80,7 +80,7 @@ The estimation of the model is obtained by **Maximun Likelihood**, particularly 
 \[
 L(\boldsymbol \beta) = \prod_{i:\Delta_i = 1} \frac{\exp\bigg[ \sum_{j=1}^{p}\beta_j X_{(i)j} \bigg]}{\sum_{k \in R(t_i)} \exp \bigg[ \sum_{j=1}^{p}\beta_j X_{(k)j} \bigg]}
 \]
-being $t_1 < t_2 < \ldots < t_D$  the ordered event times, $Z_{(i)j}$ the $j$-th covariate associated with the individual whose failure time is $t_i$ and $R(t_i)$ the risk set at time $t_i$, that is, the the set of all individuals who are still under study at a time just prior to $t_i$.
+being $t_1 < t_2 < \ldots < t_D$  the ordered event times, $X_{(i)j}$ the $j$-th covariate associated with the individual whose failure time is $t_i$ and $R(t_i)$ the risk set at time $t_i$, that is, the the set of all individuals who are still under study at a time just prior to $t_i$.
 
 Note that the numerator of the likelihood depends only on information from the individual who experiences the event, whereas the denominator uses information about all individuals who have not yet experienced the event (including some individuals who will be censored later).
 
@@ -172,7 +172,7 @@ Note that $e^{\beta_{age}}$ is the hazard ratio for a 1-unit increase in the pre
   
   - HR = 1: no effect 
   - HR > 1: increase in the hazard      
-  - HR < 1/10: reduction in the hazard    
+  - HR < 1: reduction in the hazard    
 ```
 
 
@@ -383,7 +383,14 @@ It seems that **the proportional hazards assumption is violated** as the log-log
 
 <br>
 
-Another graphical option could be to use the **Schoenfeld residuals** to examine model fit and detect outlying covariate values.  Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero.
+Another graphical option could be to use the **Schoenfeld residuals** to examine model fit and detect outlying covariate values.  Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero. You can see the explanation in this [paper](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.544.6796&rep=rep1&type=pdf).
+
+The main idea is that he defined a partial residual as the different between the observed value of $X_i$ and its conditional
+expectation given the risk set $R_i$ and demostrated that these  residuals have to be independent of the time. So, if you represent them  ranked by its event time, this plot must not show any pattern.
+
+
+
+
 
 
 ```{r}
@@ -438,13 +445,18 @@ A insignificant nonproportionality may make no difference to the interpretation 
 
 ### An example... Stratified Proportional Hazards Models
 
-Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to stratify taking this variable into account and use the proportional hazards model in each stratum for the other covariates. We include in the model  predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.
+Sometimes the proportional hazard assumption is violated for some covariate. In such cases, it is possible to **stratify taking this variable into account** and use the proportional hazards model in each stratum for the other covariates. We include in the model  predictors that satify the proportional hazard assumption and remove from it the predictor that is stratified.
 
-Now, the subjects in the $z$-th stratum have an arbitrary baseline hazard function $h_{0z}(t)$ and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum.
+Now, the **subjects in the $z$-th stratum** have an arbitrary baseline hazard function $h_{0z}(t)$ and the effect of other explanatory variables on the hazard function can be represented by a proportional hazards model in that stratum
 
 
+\[
+h_z(t, \textbf X) = h_{0z}(t)  e^{\sum_{j=1}^p \beta_j X_j}
+\]
+with $z = 1, \ldots, k$ levels of the variable that is stratified.
 
-In the Stratified Proportional Hazards Model the regression coefficients are assumed to be the same for each stratum although the baseline hazard functions may be different and completely unrelated.
+
+In the **Stratified Proportional Hazards Model** the regression **coefficients are assumed to be the same for each stratum** although the **baseline hazard functions may be different** and completely unrelated.
 
 
 
@@ -455,7 +467,7 @@ m3 <- coxph(Surv(time, status) ~ LoanOriginalAmount2  +
               strata(IsBorrowerHomeowner), data = loan_filtered) 
 summary(m3)
 ```
-You can see that the output is similar to previous model without stratification however, in this case, we do not have information about the hazard ratio of the stratification variable, `IsBorrowerHomeowner`. This variable is not really in the model.  In any case, you can plot it...
+You can see that the output is similar to previous model without stratification however, in this case, **we do not have information about the hazard ratio of the stratification variable**, `IsBorrowerHomeowner`. This variable is not really in the model.  In any case, you can plot it...
 
 
 ```{r}
@@ -475,13 +487,13 @@ Check  the proportional hazard assumption of the Cox PH model estimated in your 
 
 
 
-- It is a "robust" model, so that the results from using the Cox model will closely approximate the results for the correct parametric model (even though the baseline hazard is not specified).
+- It is a **"robust" model**, so that the results from using the Cox model will closely **approximate** the results for the **correct parametric** model (even though the baseline hazard is not specified).
 
-- The specific form of the model - which gives the hazard function as a product of a baseline hazard involving $t$ and an exponential expression involving the $X$'s without $t$ - is very interesting. The exponential part of this product is appealing because it ensures that the fitted model will always give estimated hazards that are non-negative (this is perfect, because by definition, the value of the hazard function must range between zero and plus infinity).
+<!-- - The specific form of the model - which gives the hazard function as a product of a baseline hazard involving $t$ and an exponential expression involving the $X$'s without $t$ - is very interesting. The exponential part of this product is appealing because it ensures that the fitted model will always give estimated hazards that are non-negative (this is perfect, because by definition, the value of the hazard function must range between zero and plus infinity). -->
 
-- Although the baseline hazard part of the model is unspecified, we can estimate the betas in the exponential part of the model (as we have seen). Then, the hazard function $h(t,\textbf X)$ and its corresponding survival curves $S(t, \textbf X$) can also be estimated. 
+- Although the **baseline hazard part of the model is unspecified**, we can estimate the betas in the exponential part of the model (as we have seen). Then, the hazard function $h(t,\textbf X)$ and its corresponding survival curves $S(t, \textbf X$) can also be estimated. 
 
-- Finally, it is preferred over the logistic model when survival time information is available and there is censoring. Because you can obtain more information!
+- Finally, it is **preferred over the logistic model** when survival time information is available and there is censoring. Because you can obtain more information!
 
 
 
@@ -491,14 +503,14 @@ Check  the proportional hazard assumption of the Cox PH model estimated in your 
 
 ## Bonus track 1: Additive Cox model
 
-The Cox PH model assumes a linear effect of the predictors. If the true effect is highly nonlinear this can lead to a nonproportinal hazards or misleading statistical conclusions.
+The Cox PH model **assumes a linear effect** of the predictors. If the true effect is highly nonlinear this can lead to a nonproportinal hazards or misleading statistical conclusions.
 
 One alternative approach is to use an Additive Cox model [@NoRefworks:5] of the form
 
 \[
 h(t, \textbf X) = h_0(t) e^{\sum_{j=1}^p f_j(\textbf X_j)}
 \]
-with $f_j$ being an unknown and smooth function.
+with $f_j$ being an **unknown** and **smooth** function.
 
 In order to estimate this model one could use  the [`mgcv`](https://cran.r-project.org/web/packages/mgcv/index.html) package as follows 
 
@@ -526,7 +538,8 @@ The [`rpart`](https://cran.r-project.org/web/packages/rpart/index.html) package 
 Additionally, the new package [`ranger`](https://cran.r-project.org/web/packages/ranger/index.html) [@Wright:2017aa] is a fast implementation of the Random Forests algorithm for building ensembles of classification and regression trees, working also with survival data. Since `ranger()` uses standard `Surv survival objects, it’s an ideal tool for getting acquainted with survival analysis in this machine-learning age.
 
 
-Under construction!
+Under construction...
+
 
 
 

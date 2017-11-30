@@ -226,7 +226,8 @@ S(t|\textbf X) = \bigg[ S_0(t) \bigg]^{e^{\sum_{j=1}^p \beta_j X_j}}
 <p><img src="bookdown_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
 <p>It seems that <strong>the proportional hazards assumption is violated</strong> as the log-log survival curves are not parallel.</p>
 <p><br></p>
-<p>Another graphical option could be to use the <strong>Schoenfeld residuals</strong> to examine model fit and detect outlying covariate values. Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero.</p>
+<p>Another graphical option could be to use the <strong>Schoenfeld residuals</strong> to examine model fit and detect outlying covariate values. Shoenfeld residuals represent the difference between the observed covariate and the expected given the risk set at that time. They should be flat, centered about zero. You can see the explanation in this <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.544.6796&amp;rep=rep1&amp;type=pdf">paper</a>.</p>
+<p>The main idea is that he defined a partial residual as the different between the observed value of <span class="math inline">\(X_i\)</span> and its conditional expectation given the risk set <span class="math inline">\(R_i\)</span> and demostrated that these residuals have to be independent of the time. So, if you represent them ranked by its event time, this plot must not show any pattern.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggcoxdiagnostics</span>(m2, <span class="dt">type =</span> <span class="st">&quot;schoenfeld&quot;</span>)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another option</span>

@@ -189,11 +189,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="bonus-track-1-additive-cox-model" class="section level2">
 <h2><span class="header-section-number">3.9</span> Bonus track 1: Additive Cox model</h2>
-<p>The Cox PH model assumes a linear effect of the predictors. If the true effect is highly nonlinear this can lead to a nonproportinal hazards or misleading statistical conclusions.</p>
+<p>The Cox PH model <strong>assumes a linear effect</strong> of the predictors. If the true effect is highly nonlinear this can lead to a nonproportinal hazards or misleading statistical conclusions.</p>
 <p>One alternative approach is to use an Additive Cox model <span class="citation">(Hastie and Tibshirani <a href="#ref-NoRefworks:5">1990</a>)</span> of the form</p>
 <p><span class="math display">\[
 h(t, \textbf X) = h_0(t) e^{\sum_{j=1}^p f_j(\textbf X_j)}
-\]</span> with <span class="math inline">\(f_j\)</span> being an unknown and smooth function.</p>
+\]</span> with <span class="math inline">\(f_j\)</span> being an <strong>unknown</strong> and <strong>smooth</strong> function.</p>
 <p>In order to estimate this model one could use the <a href="https://cran.r-project.org/web/packages/mgcv/index.html"><code>mgcv</code></a> package as follows</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">m4 &lt;-<span class="st"> </span>mgcv<span class="op">::</span><span class="kw">gam</span>(time <span class="op">~</span><span class="st"> </span><span class="kw">s</span>(LoanOriginalAmount2) <span class="op">+</span><span class="st"> </span>IsBorrowerHomeowner, 
                 <span class="dt">data =</span> loan_filtered, <span class="dt">family =</span> <span class="st">&quot;cox.ph&quot;</span>, <span class="dt">weights =</span> status)

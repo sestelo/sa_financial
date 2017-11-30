@@ -348,7 +348,7 @@ survminer::ggsurvplot(model, conf.int = TRUE)
 
 Pros:
 
-- It is commonly used to describe survivor.
+- It is commonly used to describe survival.
 - It is commonly used to compare two study populations.
 - It is intuitive graphical presentation.
 
