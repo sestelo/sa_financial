@@ -17,8 +17,8 @@ To account to this extra difficulty several generalizations to the Kaplan-Meier 
 In many longitudinal medical studies, patients may experience **several events** through a follow-up period. In these studies, the analysis of sequentially ordered events are often of interest. The events of concern can be of the same nature (e.g., recurrent disease episodes in cancer studies) or represent different states in the disease process (e.g., 'alive and disease-free', 'alive with recurrence' and 'dead'). If the events are of the same nature, this is usually referred as **recurrent events** [@Cook]. One example of this scheme can be see at Figure \@ref(fig:image).
 
 
-```{r, "image", fig.cap = "Illustration of censoring.", echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("images/saBBVA_recurrence.png")
+```{r, "image", fig.cap = "Illustration of censoring.", echo = FALSE, fig.align = 'center', out.width = "80%"}
+knitr::include_graphics("images/sa_recurrence.png")
 ```
 
 
