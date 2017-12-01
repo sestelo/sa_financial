@@ -208,14 +208,14 @@ fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(m2, <span clas
 <span class="co">#summary(fit) # to see the estimated values</span>
 <span class="kw">plot</span>(fit, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
 <span class="kw">legend</span>(<span class="st">&quot;bottomleft&quot;</span>, <span class="kw">levels</span>(newdf[,<span class="dv">1</span>]), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-83-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another option using the survminer package</span>
 survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(fit)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-84-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># easier... without refitting</span>
 <span class="kw">ggcoxadjustedcurves</span>(m2, <span class="dt">data =</span> loan_filtered, 
                     <span class="dt">variable =</span> loan_filtered<span class="op">$</span>IsBorrowerHomeowner)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
 
 <div class="rmdhint_sestelo">
 For some help with the <code>survminer</code> package… Download the cheatsheet <a href="http://www.sthda.com/english/rpkgs/survminer/survminer_cheatsheet.pdf">here</a>.

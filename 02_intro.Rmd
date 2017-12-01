@@ -106,7 +106,7 @@ There are three types:
 
 
 ```{r, "censoring", fig.cap = "Illustration of censoring.", echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("images/saBBVA_censoring.pdf")
+knitr::include_graphics("images/saBBVA_censoring.png")
 ```
 
 

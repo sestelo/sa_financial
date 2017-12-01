@@ -202,8 +202,8 @@ by_age &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarise</span> (<span class="dt">sum_deaths =</span> <span class="kw">sum</span>(Total, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>))
 
 <span class="kw">barplot</span>(by_age<span class="op">$</span>sum_deaths<span class="op">/</span><span class="kw">sum</span>(data<span class="op">$</span>Total), <span class="dt">names.arg =</span> by_age<span class="op">$</span>Age_cut, <span class="dt">ylab=</span> <span class="st">&quot;Relative frequency&quot;</span>) </code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-56"></span>
-<img src="bookdown_files/figure-html/unnamed-chunk-56-1.png" alt="Relative frequiencies for grouped ages." width="672" />
+<div class="figure"><span id="fig:unnamed-chunk-6"></span>
+<img src="bookdown_files/figure-html/unnamed-chunk-6-1.png" alt="Relative frequiencies for grouped ages." width="672" />
 <p class="caption">
 Figure 1.2: Relative frequiencies for grouped ages.
 </p>
@@ -235,7 +235,7 @@ d &lt;-<span class="st"> </span>reshape2<span class="op">::</span><span class="k
 <span class="kw">qplot</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> value, <span class="dt">col =</span> variable, <span class="dt">data =</span> d, <span class="dt">geom =</span> <span class="st">&quot;line&quot;</span>, 
       <span class="dt">ylab =</span> <span class="st">&quot;probability&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;t&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_colour_discrete</span>(<span class="dt">labels=</span> <span class="kw">c</span>(<span class="st">&quot;F(t)&quot;</span>, <span class="st">&quot;S(t)&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;&quot;</span>) </code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Note that these are theoretical properties of survival curves. In practice, when using actual data, we usually obtain graphs that are step functions, rather than smooth curves. Moreover, because the study period is never infinite in length and there may be competing risks for failure, it is possible that not everyone studied gets the event. The estimated survival function, <span class="math inline">\(\hat{S}(t)\)</span> thus may not go all the way down to zero at the end of the study.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">by_age &lt;-<span class="st"> </span>data <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">group_by</span>(Age)  <span class="op">%&gt;%</span>
@@ -250,7 +250,7 @@ esf &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">-</s
 d &lt;-<span class="st"> </span>reshape2<span class="op">::</span><span class="kw">melt</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> x, <span class="dt">dist =</span> edf, <span class="dt">surv =</span> esf), <span class="dt">id =</span> <span class="st">&quot;x&quot;</span>)
 <span class="kw">qplot</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> value, <span class="dt">col =</span> variable, <span class="dt">data =</span> d, <span class="dt">geom =</span> <span class="st">&quot;step&quot;</span>, 
       <span class="dt">ylab =</span> <span class="st">&quot;Probability&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;t&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">scale_colour_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;F(t)&quot;</span>, <span class="st">&quot;S(t)&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;&quot;</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <!-- ```{r} -->
 <!-- #t <- sort(runif(30, 0, 7)) -->
 <!-- #t <- seq(0, 7, length.out = 100) -->
@@ -282,7 +282,7 @@ surv &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-<
 hazard &lt;-<span class="st"> </span>dens<span class="op">/</span>surv
 <span class="kw">qplot</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> hazard, <span class="dt">geom =</span> <span class="st">&quot;line&quot;</span>, <span class="dt">ylab =</span> <span class="st">&quot;Conditional probability of death&quot;</span>,
       <span class="dt">xlab =</span> <span class="st">&quot;Age&quot;</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <!-- In the shiny application below you can see some examples of hazard functions: -->
 <!--  TODO shiny with several hazard: exponential, increasing weibull, decresing weibull, lognormal -->
 <!-- ```{r} -->

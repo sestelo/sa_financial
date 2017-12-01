@@ -18,7 +18,7 @@ In many longitudinal medical studies, patients may experience **several events**
 
 
 ```{r, "image", fig.cap = "Illustration of censoring.", echo = FALSE, fig.align = 'center'}
-knitr::include_graphics("images/saBBVA_recurrence.pdf")
+knitr::include_graphics("images/saBBVA_recurrence.png")
 ```
 
 

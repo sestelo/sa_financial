@@ -195,7 +195,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>, <span class="dt">legend =</span>
          <span class="kw">levels</span>(<span class="kw">factor</span>(lung<span class="op">$</span>sex)), 
        <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-68-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>Now, the questions that arises is if <strong>these two curves are statistivally equivalent</strong>. For answering it, we can use the <strong>log-rank test</strong> <span class="citation">(Mantel <a href="#ref-mantel">1966</a>; Peto and Peto <a href="#ref-CIS-11103">1972</a>)</span>. This is the most well-known and widely used method to test the null hypothesis of no difference in survival between two or more independent groups. It is a large-sample chi-square test that is obtained by constructing a two by two contingency table at each distinct event time, and comparing the failure rates between the two groups, conditional on the number at risk in each group. The test compares the entire survival experience between groups and can be thought of as a test of whether the survival curves are identical or not.</p>
 
 <div class="rmdhint_sestelo">
@@ -256,11 +256,11 @@ Use the function <code>pairwise_survdiff</code> of the library <code>survminer</
 
 <p>More beaitiful plots…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">autoplot</span>(model) <span class="co">#using ggplot2</span></code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(model)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-72-2.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-22-2.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(model, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-72-3.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-22-3.png" width="672" /></p>
 </div>
 <h3>References</h3>
 <div id="refs" class="references">
