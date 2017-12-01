@@ -227,7 +227,7 @@ h_z(t, \textbf X) = h_{0z}(t)  e^{\sum_{j=1}^p \beta_j X_j}
 ## Score (logrank) test = 3.22  on 1 df,   p=0.07255</code></pre></div>
 <p>You can see that the output is similar to previous model without stratification however, in this case, <strong>we do not have information about the hazard ratio of the stratification variable</strong>, <code>IsBorrowerHomeowner</code>. This variable is not really in the model. In any case, you can plot it…</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggsurvplot</span>(<span class="kw">survfit</span>(m3), <span class="dt">data =</span> loan_filtered, <span class="dt">conf.int =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p><img src="bookdown_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
 
 <div class="rmdexercise_sestelo">
 Check the proportional hazard assumption of the Cox PH model estimated in your dataset.
