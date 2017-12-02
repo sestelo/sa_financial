@@ -11,11 +11,16 @@ This book is designed to provide a guide for a short course on **Survival Analys
 
 
 
-## Syllabus
+## Outline
 
-The notes are available at <https://bookdown.org/sestelo/sa_financial>.
+The book is available at <https://bookdown.org/sestelo/sa_financial>.
 
-Here is a broad view of the syllabus:
+Here is a view of the outline:
+
+- [Preface](https://bookdown.org/sestelo/sa_financial/)
+- [Programing language and software](https://bookdown.org/sestelo/sa_financial/programing-language-and-software.html)
+- [Main references and credits](https://bookdown.org/sestelo/sa_financial/main-references-and-credits.html)
+- [About the Author](https://bookdown.org/sestelo/sa_financial/about-the-author.html)
 1.  [Introduction](https://bookdown.org/sestelo/sa_financial/intro.html)
     1.  [What is Survival Analysis?](https://bookdown.org/sestelo/sa_financial/intro-what.html)
     2.  [Censoring](https://bookdown.org/sestelo/sa_financial/intro-cendor.html)
@@ -52,10 +57,10 @@ Here is a broad view of the syllabus:
     1.  [Introduction](https://bookdown.org/sestelo/sa_financial/introduction-1.html)
     2.  [Algorithm](https://bookdown.org/sestelo/sa_financial/algortihm.html)
     3.  [Aplication to real data](https://bookdown.org/sestelo/sa_financial/aplication-to-real-data.html)
-7.  Appendix A: [Installation of `R` and `RStudio`](https://bookdown.org/sestelo/sa_financial/appendix-install.html)
-8.  Appendix B: [Introduction to `RStudio`](https://bookdown.org/sestelo/sa_financial/appendix-rstudio.html)
-9.  Appendix C: [Introduction to `R`](https://bookdown.org/sestelo/sa_financial/appendix-r.html)
-10. [References](https://bookdown.org/sestelo/sa_financial/references.html)
+- Appendix A: [Installation of `R` and `RStudio`](https://bookdown.org/sestelo/sa_financial/appendix-install.html)
+- Appendix B: [Introduction to `RStudio`](https://bookdown.org/sestelo/sa_financial/appendix-rstudio.html)
+- Appendix C: [Introduction to `R`](https://bookdown.org/sestelo/sa_financial/appendix-r.html)
+- [References](https://bookdown.org/sestelo/sa_financial/references.html)
 
 
 ## Contributions

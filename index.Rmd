@@ -69,10 +69,8 @@ the most important ones:
 - @kleinbaum2011survival
 - @book:1606416
 
-In addition, this material is possible due to the work of persons who contribute greatly to the open source software with incredible pieces of software: @Xie:2015aa, @Xie:2016aa, @R-rmarkdown and @NoRefWorks:1.
+In addition, this material is possible due to the work of persons who contribute greatly to the open source software with incredible pieces of software: @Xie:2015aa, @Xie:2016aa, @R-rmarkdown and @NoRefWorks:1. The icons used in the notes were designed by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresna) from [Flaticon](http://www.flaticon.com/). Some inspiration taken from the repository [egarpor/nonpar-eafit](https://github.com/egarpor/nonpar-eafit). Feedback, comments and some help from [Luís Meira-Machado](http://w3.math.uminho.pt/~lmachado/) and [Nora M. Villanueva](http://noramvillanueva.github.io/).
 
-
-The icons used in the notes were designed by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresna) from [Flaticon](http://www.flaticon.com/).
 
 All material in these notes is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
