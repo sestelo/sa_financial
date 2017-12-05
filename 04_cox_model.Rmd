@@ -530,7 +530,7 @@ Note the change in the sintaxis compared with the previous examples. The status 
 
 
 
-## Bonus track 2: Machine Learning for estimating the Cox PM model
+## Bonus track 2: Machine Learning for estimating the Cox PH model
 
 The [`rpart`](https://cran.r-project.org/web/packages/rpart/index.html) package  builds R's basic tree models of survival data. For an overview you can consult the section 8.4 of the rpart [vignette](https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf).
 

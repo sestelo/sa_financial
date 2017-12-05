@@ -163,7 +163,7 @@ W_{i}=\frac{\Delta_{\left[ i\right] }}{n-i+1}\prod_{j=1}^{i-1}\left[ 1-\frac{%
 
 ## Pointwise confidence interval for $S(t)$
 
-For the contruction of the confidence interval for the estimated survival we can use a well-know estimator of the variance, the **Greenwood estimator**[@greenwood]. The Greenwood variance estimate for a Kaplan-Meier curve is defined as
+For the contruction of the confidence interval for the estimated survival we can use a well-know estimator of the variance, the **Greenwood estimator** [@greenwood]. The Greenwood variance estimate for a Kaplan-Meier curve is defined as
 
 
 \[

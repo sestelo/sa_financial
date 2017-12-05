@@ -43,7 +43,7 @@ Here is a view of the outline:
     7.  [Non-Proportional Hazards… and now what?](https://bookdown.org/sestelo/sa_financial/non-proportional-hazards-and-now-what.html)
     8.  [Why Cox PH model is so popular? (pros of the model)](https://bookdown.org/sestelo/sa_financial/why-cox-ph-model-is-so-popular-pros-of-the-model.html)
     9.  [Bonus track 1: Additive Cox model](https://bookdown.org/sestelo/sa_financial/bonus-track-1-additive-cox-model.html)
-    10. [Bonus track 2: Machine Learning for estimating the Cox PM model](https://bookdown.org/sestelo/sa_financial/bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html)
+    10. [Bonus track 2: Machine Learning for estimating the Cox PH model](https://bookdown.org/sestelo/sa_financial/bonus-track-2-machine-learning-for-estimating-the-cox-pm-model.html)
 4.  [Joint Models for Longitudinal and Time-to-Event Data](https://bookdown.org/sestelo/sa_financial/joint-models-for-longitudinal-and-time-to-event-data.html)
     1.  [Linear Mixed Models](https://bookdown.org/sestelo/sa_financial/linear-mixed-models.html)
     2.  [Estimation of the Joint Model](https://bookdown.org/sestelo/sa_financial/estimation-of-the-joint-model.html)

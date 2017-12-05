@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   
   
-<link rel="prev" href="clustcurv.html">
-<link rel="next" href="algortihm.html">
+<link rel="prev" href="bonus-track-1-additive-cox-model.html">
+<link rel="next" href="joint-models-for-longitudinal-and-time-to-event-data.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -187,18 +187,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction-1" class="section level2">
-<h2><span class="header-section-number">6.1</span> Introduction</h2>
-<p>In many medical studies it could be interesting to ascertain whether groups of survival curves can be carried out, especially when confronted with a considerable number of curves. Though the aforementioned methods like Log-rank, Peto &amp; Peto, etc. can be used to compare multiple survival curves, to the best of our knowledge, there are none available method that can be used to determine groups among a series of survival curves. When the log-rank test (or its analogous) is used to compare three or more survival curves at once, the test reports a single p-value testing the null hypothesis that all the samples come from populations with identical survival. If the null hypothesis of equality of curves is rejected, then, this leads to the clear conclusion that at least one curve is different. However, these methods cannot be used to ascertain whether groups of curves can be performed or if all these curves are different from each other.</p>
-<p><code>clustcurv</code> proposes an approach that allows determining survival groups with an automatic selection of their number.</p>
+<div id="bonus-track-2-machine-learning-for-estimating-the-cox-ph-model" class="section level2">
+<h2><span class="header-section-number">3.10</span> Bonus track 2: Machine Learning for estimating the Cox PH model</h2>
+<p>The <a href="https://cran.r-project.org/web/packages/rpart/index.html"><code>rpart</code></a> package builds R’s basic tree models of survival data. For an overview you can consult the section 8.4 of the rpart <a href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf">vignette</a>.</p>
+<p>Additionally, the new package <a href="https://cran.r-project.org/web/packages/ranger/index.html"><code>ranger</code></a> <span class="citation">(Wright and Ziegler <a href="#ref-Wright:2017aa">2017</a>)</span> is a fast implementation of the Random Forests algorithm for building ensembles of classification and regression trees, working also with survival data. Since <code>ranger()</code> uses standard `Surv survival objects, it’s an ideal tool for getting acquainted with survival analysis in this machine-learning age.</p>
+<p>Under construction…</p>
+
+</div>
+<!-- </div> -->
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Wright:2017aa">
+<p>Wright, Marvin N., and Andreas Ziegler. 2017. “ranger: A Fast Implementation of Random Forests for High Dimensional Data in C++ and R.” <em>Journal of Statistical Software</em> 77 (1): 1–17. doi:<a href="https://doi.org/10.18637/jss.v077.i01">10.18637/jss.v077.i01</a>.</p>
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="clustcurv.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="algortihm.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="bonus-track-1-additive-cox-model.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="joint-models-for-longitudinal-and-time-to-event-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -227,7 +236,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/sestelo/sa_financial/edit/master/07-clustcurv.Rmd",
+"link": "https://github.com/sestelo/sa_financial/edit/master/04_cox_model.Rmd",
 "text": "Edit"
 },
 "download": ["bookdown.epub", "bookdown.mobi"],
