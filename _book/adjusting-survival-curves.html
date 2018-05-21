@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>A short course on Survival Analysis applied to the Financial Industry</title>
   <meta name="description" content="This is a short course on survival analysis applied to the financial field.">
-  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7.10 and GitBook 2.6.7">
 
   <meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
   <meta property="og:type" content="book" />
@@ -210,12 +210,11 @@ fit &lt;-<span class="st"> </span><span class="kw">survfit</span>(m2, <span clas
 <span class="kw">legend</span>(<span class="st">&quot;bottomleft&quot;</span>, <span class="kw">levels</span>(newdf[,<span class="dv">1</span>]), <span class="dt">col =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">lty =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># another option using the survminer package</span>
-survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(fit)</code></pre></div>
+survminer<span class="op">::</span><span class="kw">ggsurvplot</span>(fit, <span class="dt">data =</span> newdf)</code></pre></div>
 <p><img src="bookdown_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># easier... without refitting</span>
-<span class="kw">ggcoxadjustedcurves</span>(m2, <span class="dt">data =</span> loan_filtered, 
-                    <span class="dt">variable =</span> loan_filtered<span class="op">$</span>IsBorrowerHomeowner)</code></pre></div>
-<p><img src="bookdown_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<span class="co">#survminer::ggadjustedcurves(m2, data = loan_filtered, </span>
+<span class="co">#                    variable = loan_filtered$IsBorrowerHomeowner)</span></code></pre></div>
 
 <div class="rmdhint_sestelo">
 For some help with the <code>survminer</code> package… Download the cheatsheet <a href="http://www.sthda.com/english/rpkgs/survminer/survminer_cheatsheet.pdf">here</a>.
@@ -251,10 +250,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -279,9 +279,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

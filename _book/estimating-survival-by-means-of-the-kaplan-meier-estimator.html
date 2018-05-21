@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>A short course on Survival Analysis applied to the Financial Industry</title>
   <meta name="description" content="This is a short course on survival analysis applied to the financial field.">
-  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7.10 and GitBook 2.6.7">
 
   <meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
   <meta property="og:type" content="book" />
@@ -194,10 +194,10 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 \hat S(t) = P(T \gt t) = \frac{1}{n} \sum_{i=1}^{n} I(t_i \gt t)
 \]</span> that is, the proportion of observations with failure times greater than <span class="math inline">\(t\)</span>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">8</span>, <span class="dv">11</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">17</span>, <span class="dv">22</span>, <span class="dv">23</span>)
-<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span><span class="op">/</span><span class="kw">length</span>(n)) <span class="co"># hat S(8) </span>
-## [1] 8
-<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span><span class="op">/</span><span class="kw">length</span>(n)) <span class="co"># hat S(12) </span>
-## [1] 4</code></pre></div>
+<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>)<span class="op">/</span><span class="kw">length</span>(x) <span class="co"># hat S(8) </span>
+## [1] 0.3809524
+<span class="kw">sum</span>(x <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>)<span class="op">/</span><span class="kw">length</span>(x) <span class="co"># hat S(12) </span>
+## [1] 0.1904762</code></pre></div>
 <p>Another option for estimating survival could be to use the hazard:</p>
 <p><span class="math display">\[
 \hat S(t) = \prod_{k = 1}^{t-1} \bigg [ 1- \hat \lambda(k)\bigg] \quad {\text{where}} \quad  \hat \lambda(t) = \frac{\sum_{i=1}^{n} I(Y_i = t)}{\sum_{i=1}^{n} I (Y_i \ge t)} 
@@ -261,8 +261,7 @@ loan_filtered<span class="op">$</span>time &lt;-<span class="st"> </span><span c
 loan_filtered &lt;-<span class="st"> </span>loan_filtered[<span class="op">-</span>loan_filtered<span class="op">$</span>time <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>, ]
 
 <span class="co"># just considering a year of loans creation</span>
-ii &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.Date</span>(loan_filtered<span class="op">$</span>LoanOriginationDate),<span class="st">&#39;%Y&#39;</span>) <span class="op">%in%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">c</span>(<span class="st">&quot;2006&quot;</span>)
+ii &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.Date</span>(loan_filtered<span class="op">$</span>LoanOriginationDate),<span class="st">&#39;%Y&#39;</span>) <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;2006&quot;</span>)
 loan_filtered &lt;-<span class="st"> </span>loan_filtered[ii, ] 
 
 
@@ -385,10 +384,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -413,9 +413,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

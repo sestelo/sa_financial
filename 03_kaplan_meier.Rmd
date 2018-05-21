@@ -25,8 +25,8 @@ that is, the proportion of observations with failure times greater than $t$.
 
 ```{r}
 x <- c(1, 1, 2, 2, 3, 4, 4, 5, 5, 8, 8, 8, 8, 11, 11, 12, 12, 15, 17, 22, 23)
-sum(x > 8/length(n)) # hat S(8) 
-sum(x > 12/length(n)) # hat S(12) 
+sum(x > 8)/length(x) # hat S(8) 
+sum(x > 12)/length(x) # hat S(12) 
 
 ```
 
@@ -76,8 +76,7 @@ loan_filtered$time <- as.numeric(difftime(loan_filtered$end, loan_filtered$start
 loan_filtered <- loan_filtered[-loan_filtered$time < 0, ]
 
 # just considering a year of loans creation
-ii <- format(as.Date(loan_filtered$LoanOriginationDate),'%Y') %in% 
-  c("2006")
+ii <- format(as.Date(loan_filtered$LoanOriginationDate),'%Y') %in% c("2006")
 loan_filtered <- loan_filtered[ii, ] 
 
 

@@ -285,14 +285,14 @@ legend("bottomleft", levels(newdf[,1]), col = c(1, 2), lty = c(1,1))
 
 ```{r}
 # another option using the survminer package
-survminer::ggsurvplot(fit)
+survminer::ggsurvplot(fit, data = newdf)
 ```
 
 
 ```{r}
 # easier... without refitting
-ggcoxadjustedcurves(m2, data = loan_filtered, 
-                    variable = loan_filtered$IsBorrowerHomeowner)
+#survminer::ggadjustedcurves(m2, data = loan_filtered, 
+#                    variable = loan_filtered$IsBorrowerHomeowner)
 ```
 
 

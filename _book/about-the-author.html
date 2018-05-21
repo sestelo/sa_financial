@@ -7,7 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>A short course on Survival Analysis applied to the Financial Industry</title>
   <meta name="description" content="This is a short course on survival analysis applied to the financial field.">
-  <meta name="generator" content="bookdown 0.5.4 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown 0.7.10 and GitBook 2.6.7">
 
   <meta property="og:title" content="A short course on Survival Analysis applied to the Financial Industry" />
   <meta property="og:type" content="book" />
@@ -189,7 +189,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="about-the-author" class="section level1 unnumbered">
 <h1>About the Author</h1>
-<p>Marta Sestelo is a PhD in Statistics and Data Scientist at the Centre of Mathematics (CMAT) of the University of Minho. She is focused on the development of new methodologies and algorithms linked with statistics. She is interested in estimation and inference methods of flexible models, in developing practical tools for data analysis and in gaining better understanding of real life issues through statistical knowledge. At the moment, her lines of research are closely related to computational statistics and machine learning, particularly, software development, feature selection, applied predictive modeling, nonparametric curves estimation, survival, clustering, model performance, testing procedures, bootstrap resampling methods and applications to different areas of knowledge.</p>
+<p>Marta Sestelo is a Senior Researcher and Data Scientist at the Galician Research and Development Center in Advanced Telecommunications (Gradiant) and Lecturer at the Department of Statistics and O. R. at University of Vigo (accredited by the ANECA - Spanish National Agency for Quality Assessment and Accreditation - as Associate Professor). In 2013, she received her PhD in Statistics from this university, with international accreditation, with the title ‘Development and computational implementation of estimation and inference methods in flexible regression models. Applications in Biology, Engineering and Environment’. During this period, and as part of her learning process in the field of computational development, she carried out a predoctoral research stay at the Department of Mathematics and Applications at University of Minho. After that, she worked under the supervision of the professor L. Meira-Machado as postdoctoral researcher at the Center of Mathematics (CMAT) at the same university, funded by a highly competitive fellowship of the Fundação para a Ciência e a Tecnologia (FCT) of Portugal (2014-2018). Just before getting this opportunity, she combined her research with some teaching experience at the Department of Mathematics at Autonomous University of Barcelona, by means of a postdoctoral contract during the 2013/2014 academic year.</p>
+<p>During these last few years she has received institutional support, both from Spain and other countries, to develop her scientific work (4 predoctoral and 1 postdoctoral fellowships). She has also taken part in 23 research projects, presented 43 papers in national and international congresses, developed 6 R packages and, so far, written 15 articles either published or accepted on JCR journals such as Journal of Statistical Software, Biometrical Journal, The R Journal, etc. (Statistics &amp; Probability) or Applied Mathematics and Computation, Fisheries Research, Atmospheric Environment, etc. On an ongoing basis she collaborates with several researchers in the field of Statistics, as well as in other fields (Luís Meira Machado, CMAT; Isabel Serra Mochales, Centre de Recerca Matemàtica; Gorka Bidegain, University of Southern Mississippi; Ángel Guerra, Consejo Superior de Investigaciones Científicas; Celestino Ordóñez, Universidad de Oviedo; Turgut Durduran, Institute of Photonic Sciences; Jorge Hernández Urcera, Instituto Español de Oceanografía, etc.) obtaining as a result a multidisciplinary research.</p>
+<p>She has broad experience in the development of new methodologies in the field of nonparametric statistics, applied both to regression and survival analysis. She has worked on variable selection, regression, hypothesis testing, etc. She is currently focusing her interest on the study of new machine learning techniques for data analysis and on the resolution of real life problems throughout statistics. Besides, she strongly believes in the need for a more open, transparent and reproducible science, reason why her research relates to computational statistics, and more especially to the development of free software.</p>
 <p>You can see some topics of her cv at <a href="http://sestelo.github.io" class="uri">http://sestelo.github.io</a>.</p>
 
 </div>
@@ -217,10 +219,11 @@ gitbook.start({
 "facebook": true,
 "twitter": true,
 "google": false,
+"linkedin": false,
 "weibo": false,
 "instapper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -245,9 +248,11 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:" && /^https?:/.test(script.src))
-      script.src  = script.src.replace(/^https?:/, '');
+    var src = "";
+    if (src === "" || src === "true") src = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(src))
+      src = src.replace(/^https?:/, '');
+    script.src = src;
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

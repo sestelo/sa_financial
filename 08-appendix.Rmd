@@ -1,5 +1,5 @@
-
 # (APPENDIX) Appendix {-}
+
 
 # Installation of `R` and `RStudio` {#appendix-install}
 
@@ -13,7 +13,7 @@ You can follow these steps to install `R` and `Rstudio`, please note that there 
 
 
 ```{r, screenshot.opts = list(delay = 5), echo = FALSE, fig.width = 8}
- knitr::include_url("https://cran.r-project.org")
+knitr::include_url('https://cran.r-project.org')
 ```
 
 

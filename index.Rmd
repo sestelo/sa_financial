@@ -2,7 +2,7 @@
 title: "A short course on Survival Analysis applied to the Financial Industry"
 subtitle: "BBVA Data & Analytics, Madrid"
 author: "Marta Sestelo"
-date: "27-28 /11/2017, v1.1"
+date: "27-28 /11/2017, v1.2"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
@@ -25,7 +25,7 @@ This book is designed to provide a guide for a short course on survival analysis
 
 # Programing language and software {-}
 
-The **software** used in the course is the statistical language [`R`](https://cran.r-project.org/) and the IDE (Integrated Development Environment) used is [`RStudio`](https://www.rstudio.com/products/rstudio/download/). A basic prior knowledge of both is assumed. Basic introductions to `R` and `RStudio` are presented in the Appendix \@ref(appendix-r) and \@ref(appendix-rstudio) for those students lacking basic expertise on them.
+The **software** used in the course is the statistical language [`R`](https://cran.r-project.org/) and the IDE (Integrated Development Environment) used is [`RStudio`](https://www.rstudio.com/products/rstudio/download/). A basic prior knowledge of both is assumed. Basic introductions to `R` and `RStudio` are presented in the Appendix \@ref(appendix-r) and \@ref(appendix-rstudio) for those students lacking basic expertise on them. 
 
 The required packages for the course are:
 
